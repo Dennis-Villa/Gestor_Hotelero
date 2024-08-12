@@ -20,7 +20,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout" stretch="6,6,1">
         <item>
-         <widget class="QDateEdit" name="dateEdit">
+         <widget class="QDateEdit" name="dateEditActual">
           <property name="font">
            <font>
             <family>Segoe UI Semibold</family>
@@ -43,7 +43,7 @@
            <bool>false</bool>
           </property>
           <property name="currentSection">
-           <enum>QDateTimeEdit::Section::DaySection</enum>
+           <enum>QDateTimeEdit::Section::MonthSection</enum>
           </property>
           <property name="displayFormat">
            <string>MMMM dd, yyyy</string>
@@ -144,7 +144,7 @@
                   <item>
                    <widget class="QLabel" name="label_4">
                     <property name="text">
-                     <string>·# Confirmación</string>
+                     <string># Confirmación</string>
                     </property>
                    </widget>
                   </item>
@@ -275,7 +275,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>17</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

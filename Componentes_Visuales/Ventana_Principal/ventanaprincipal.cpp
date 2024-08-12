@@ -6,6 +6,8 @@ VentanaPrincipal::VentanaPrincipal(QWidget *parent)
     , ui(new Ui::VentanaPrincipal)
 {
     ui->setupUi(this);
+
+    ui->dateEditActual->setDate(this->fechaActual);
 }
 
 VentanaPrincipal::~VentanaPrincipal()
