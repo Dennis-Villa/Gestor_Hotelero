@@ -8,4 +8,7 @@
 
 using namespace std;
 
-vector <string> stringSplit(string cadena, string separador);
+vector <string> stringSplit(string cadena, char separador);
+bool soloLetras(string cadena);
+bool estadoReservaValido(string estadoReserva);
+float importeMaximoDecimales(float importe);

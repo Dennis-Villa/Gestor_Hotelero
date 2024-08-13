@@ -1,25 +1,63 @@
 #include "Funciones_Auxiliares.h"
 
-vector <string> stringSplit(string cadena, string separador)
+vector <string> stringSplit(string cadena, char separador)
 {
     vector <string> subCadenas;
     int posicionInicio = 0;
 
     for (int i = 0; i < (int)cadena.length(); i++)
     {
-        for (int j = 0; j < (int)separador.length(); j++)
+        if (cadena[i] == separador)
         {
-            if (cadena[i+j] != separador[j])
-                break;
+            string subCadena = cadena.substr(posicionInicio, i - posicionInicio);
 
-            if (j == (int)separador.length() -1 && i > posicionInicio)
-            {
-                subCadenas.push_back(cadena.substr(posicionInicio, i));
-                posicionInicio = i + j + 1;
-                i = i + j;
-            }
+            if (!subCadena.empty())
+                subCadenas.push_back(subCadena);
+
+            posicionInicio = i + 1;
+        }
+
+        else if (i == (int)cadena.length() - 1)
+        {
+            subCadenas.push_back(cadena.substr(posicionInicio, i + 1 - posicionInicio));
         }
     }
 
     return subCadenas;
+}
+
+
+bool soloLetras(string cadena)
+{
+    for (char letra: cadena)
+    {
+        bool esMinuscula = (letra >= 'a' && letra <= 'z');
+        bool esMayuscula = (letra >= 'A' && letra <= 'Z');
+
+        if (letra != ' ' && !esMinuscula && !esMayuscula)
+            return false;
+    }
+
+    return true;
+}
+
+bool estadoReservaValido(string estadoReserva)
+{
+    string estadosValidos[] = {"Pendiente", "Confirmado",
+                               "En Estadía", "Estancia Finalizada"};
+
+    for (string estado: estadosValidos)
+    {
+        if (estadoReserva == estado)
+            return true;
+    }
+
+    return false;
+}
+
+float importeMaximoDecimales(float importe)
+{
+    float importeDosDecimales = (int)(importe * 100);
+
+    return (float)importeDosDecimales / 100.0;
 }
