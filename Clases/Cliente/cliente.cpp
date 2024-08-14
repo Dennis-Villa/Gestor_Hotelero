@@ -22,18 +22,18 @@ void Cliente::setNombre(string nombre)
 
     vector <string> nombreSeparado = stringSplit(nombre, ' ');
 
-    if (nombreSeparado.length() == 1)
+    if (nombreSeparado.size() == 1)
         throw invalid_argument("Se necesita al menos un apellido");
 
     this->nombre = nombre;
 }
 
-void Cliente::setNumeroConfiramcion(int numeroConfirmacion)
+void Cliente::setNumeroConfiramcion(long long numeroConfirmacion)
 {
     if (numeroConfirmacion <= 0)
         throw invalid_argument("El número de confirmación debe ser positivo");
 
-    if ((numeroConfirmacion < 10000000000) || (numeroConfirmacion > 99999999999))
+    if ((numeroConfirmacion < 10000000000ll) || (numeroConfirmacion > 99999999999ll))
         throw invalid_argument("El número de confirmación debe ser de 11 cifras");
 
     this->numeroConfirmacion = numeroConfirmacion;
@@ -58,12 +58,19 @@ void Cliente::setEstadoReserva(string estadoReserva)
     this->estadoReserva = estadoReserva;
 }
 
-void Cliente::setImporte(float importe)
+float Cliente::getImporte()
 {
-    if (importe < 0)
-        throw invalid_argument("El importe no puede ser negativo");
+    float gastoTotal = 0;
 
-    this->importe = importeMaximoDecimales(importe);
+    for (int i = 0; i < (int)this->desgloseGastos.size(); i++)
+    {
+        gastoTotal += this->desgloseGastos[i].second;
+    }
+
+    if (this->importe != gastoTotal)
+        throw logic_error("El importe no coincide con el total de gastos.");
+
+    return this->importe;
 }
 
 void Cliente::AniadirGasto(string nombreServicio, float coste)
@@ -76,6 +83,6 @@ void Cliente::AniadirGasto(string nombreServicio, float coste)
 
     float costeDosDecimales = importeMaximoDecimales(coste);
 
-    this->desgloseGastos.push_back({nombreServicio, coste});
-    this->setImporte(this->importe + coste);
+    this->desgloseGastos.push_back({nombreServicio, costeDosDecimales});
+    this->importe += costeDosDecimales;
 }

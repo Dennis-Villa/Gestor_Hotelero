@@ -11,13 +11,15 @@ CONFIG += c++17
 SOURCES += \
     Archivos_Auxiliares\Funciones_Auxiliares.cpp \
     Clases\Cliente\cliente.cpp \
+    Clases\Habitacion\habitacion.cpp \
     main.cpp \
     Componentes_Visuales\Ventana_Principal\ventanaprincipal.cpp
 
 HEADERS += \
     Archivos_Auxiliares\Funciones_Auxiliares.h \
     Componentes_Visuales\Ventana_Principal\ventanaprincipal.h \
-    Clases\Cliente\cliente.h
+    Clases\Cliente\cliente.h \
+    Clases\Habitacion\habitacion.h
 
 FORMS += \
     Componentes_Visuales\Ventana_Principal\ventanaprincipal.ui

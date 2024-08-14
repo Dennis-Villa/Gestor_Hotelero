@@ -12,3 +12,4 @@ vector <string> stringSplit(string cadena, char separador);
 bool soloLetras(string cadena);
 bool estadoReservaValido(string estadoReserva);
 float importeMaximoDecimales(float importe);
+bool tipoHabitacionValido(string tipoHabitacion);

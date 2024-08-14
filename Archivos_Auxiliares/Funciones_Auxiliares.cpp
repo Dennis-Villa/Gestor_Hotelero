@@ -61,3 +61,16 @@ float importeMaximoDecimales(float importe)
 
     return (float)importeDosDecimales / 100.0;
 }
+
+bool tipoHabitacionValido(string tipoHabitacion)
+{
+    string tiposValidos[] = {"Estandar", "Premium", "Suit"};
+
+    for (string tipo: tiposValidos)
+    {
+        if (tipoHabitacion == tipo)
+            return true;
+    }
+
+    return false;
+}

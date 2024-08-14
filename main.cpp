@@ -1,4 +1,4 @@
-#include "Ventana_Principal\ventanaprincipal.h"
+#include "Componentes_Visuales\Ventana_Principal\ventanaprincipal.h"
 
 #include <QApplication>
 
