@@ -13,13 +13,15 @@ SOURCES += \
     Clases\Cliente\cliente.cpp \
     Clases\Habitacion\habitacion.cpp \
     main.cpp \
-    Componentes_Visuales\Ventana_Principal\ventanaprincipal.cpp
+    Componentes_Visuales\Ventana_Principal\ventanaprincipal.cpp \
+    Clases\Reserva\reserva.cpp
 
 HEADERS += \
     Archivos_Auxiliares\Funciones_Auxiliares.h \
     Componentes_Visuales\Ventana_Principal\ventanaprincipal.h \
     Clases\Cliente\cliente.h \
-    Clases\Habitacion\habitacion.h
+    Clases\Habitacion\habitacion.h \
+    Clases\Reserva\reserva.h
 
 FORMS += \
     Componentes_Visuales\Ventana_Principal\ventanaprincipal.ui

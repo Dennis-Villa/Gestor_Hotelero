@@ -2,36 +2,29 @@
 #define CLIENTE_H
 
 #include <string>
-#include <vector>
 
 using namespace std;
 
 class Cliente
 {
 public:
-    Cliente(string nombre, int numeroConfiramcion);
+    Cliente(long long identificador, string nombre, string nacionalidad);
 
     void setNombre(string nombre);
-    void setNumeroConfiramcion(long long numeroConfirmacion);
-    void setHabitacion(string habitacion);
-    void setEstadoReserva(string estadoReserva);
+    void setIdentificador(long long identificador);
+    void setNacionalidad(string nacionalidad);
 
     string getNombre(){return this->nombre;}
-    int getNumeroConfirmacion(){return this->numeroConfirmacion;}
-    string getHabitacion(){return this->habitacion;}
-    string getEstadoReserva(){return this->estadoReserva;}
-    float getImporte();
-    vector <pair <string, float> > getDesgloseGastos(){return this->desgloseGastos;}
+    long long  getIdentificador(){return this->identificador;}
+    int getCanidadEstancias(){return this->cantidadEstancias;}
 
-    void AniadirGasto(string nombreServicio, float coste);
+    void aniadirEstancia(){this->cantidadEstancias++;}
 
 private:
+    long long identificador;
     string nombre;
-    long long numeroConfirmacion;
-    string habitacion;
-    string estadoReserva;
-    vector < pair <string, float> > desgloseGastos;
-    float importe;
+    string nacionalidad;
+    int cantidadEstancias;
 };
 
 #endif // CLIENTE_H
