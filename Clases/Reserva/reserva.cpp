@@ -9,6 +9,8 @@ Reserva::Reserva(long long numeroConfirmacion, Cliente *cliente, string estadoRe
     this->setCliente(cliente);
     this->habitacion = nullptr;
 
+    this->fechaInicio = 0;
+    this->fechaFin = 0;
 }
 
 Reserva::Reserva(long long numeroConfirmacion, Cliente *cliente, Habitacion *habitacion, string estadoReserva)
@@ -17,6 +19,9 @@ Reserva::Reserva(long long numeroConfirmacion, Cliente *cliente, Habitacion *hab
     this->setEstadoReserva(estadoReserva);
     this->setCliente(cliente);
     this->setHabitacion(habitacion);
+
+    this->fechaInicio = 0;
+    this->fechaFin = 0;
 }
 
 void Reserva::setNumeroConfiramcion(long long numeroConfirmacion)
