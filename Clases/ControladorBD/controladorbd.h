@@ -18,7 +18,7 @@ public:
 
     bool abreBD();
 
-    Cliente* crearCliente(QString nombre, QString nacionalidad);
+    Cliente* crearCliente(QString nombre, QString email, QString nacionalidad, QString telefono = "");
     Cliente* buscarCliente(int identificadorCliente);
     vector <Cliente> getClientes();
     Cliente* aniadirEstancia(int identificadorCliente);

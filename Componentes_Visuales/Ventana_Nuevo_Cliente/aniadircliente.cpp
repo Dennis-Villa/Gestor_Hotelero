@@ -35,7 +35,7 @@ void AniadirCliente::aniadirCliente()
     Cliente *nuevoCliente = nullptr;
 
     try {
-        nuevoCliente = controladorBD->crearCliente(nombre, nacionalidad);
+        nuevoCliente = controladorBD->crearCliente(nombre, email, nacionalidad, telefono);
     }
     catch (exception &e)
     {

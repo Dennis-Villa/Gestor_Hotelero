@@ -25,14 +25,16 @@ bool ControladorBD::abreBD()
     }
 }
 
-Cliente* ControladorBD::crearCliente(QString nombre, QString nacionalidad)
+Cliente* ControladorBD::crearCliente(QString nombre, QString email, QString nacionalidad, QString telefono)
 {
     if (this->abreBD())
     {
         QSqlQuery query(this->bd);
 
-        query.prepare("INSERT INTO clientes (nombre, nacionalidad) VALUES (:nombre, :nacionalidad)");
+        query.prepare("INSERT INTO clientes (nombre, email, telefono, nacionalidad) VALUES (:nombre, :email, :telefono, :nacionalidad)");
         query.bindValue(":nombre", nombre);
+        query.bindValue(":email", email);
+        query.bindValue(":telefono", telefono);
         query.bindValue(":nacionalidad", nacionalidad);
 
         if (query.exec())
@@ -41,7 +43,7 @@ Cliente* ControladorBD::crearCliente(QString nombre, QString nacionalidad)
             int idCliente = query.lastInsertId().toInt();
 
             try{
-                Cliente *nuevoCliente = new Cliente(idCliente, nombre, nacionalidad);
+                Cliente *nuevoCliente = new Cliente(idCliente, nombre, email, nacionalidad, telefono);
                 return nuevoCliente;
             }
             catch(invalid_argument &ex)
@@ -79,11 +81,13 @@ Cliente* ControladorBD::buscarCliente(int identificadorCliente)
                 qDebug() << "Cliente encontrado en la base de datos";
 
                 QString nombreCliente = query.value("nombre").toString();
+                QString emailCliente = query.value("email").toString();
+                QString telefonoCliente = query.value("telefono").toString();
                 QString nacionalidadCliente = query.value("nacionalidad").toString();
                 int cantidadEstancias = query.value("cantidad_estancias").toInt();
 
-                return new Cliente(identificadorCliente, nombreCliente,
-                                   nacionalidadCliente, cantidadEstancias);
+                return new Cliente(identificadorCliente, nombreCliente, emailCliente,
+                                   nacionalidadCliente, telefonoCliente, cantidadEstancias);
             }
             else
             {
@@ -121,11 +125,13 @@ vector<Cliente> ControladorBD::getClientes()
                 {
                     int idCliente = query.value("id").toInt();
                     QString nombreCliente = query.value("nombre").toString();
+                    QString emailCliente = query.value("email").toString();
+                    QString telefonoCliente = query.value("telefono").toString();
                     QString nacionalidadCliente = query.value("nacionalidad").toString();
                     int cantidadEstancias = query.value("cantidad_estancias").toInt();
 
-                    clientes.push_back(Cliente(idCliente, nombreCliente,
-                                       nacionalidadCliente, cantidadEstancias));
+                    clientes.push_back(Cliente(idCliente, nombreCliente, emailCliente,
+                                               nacionalidadCliente, telefonoCliente, cantidadEstancias));
                 }
             }
             else
@@ -157,12 +163,14 @@ Cliente* ControladorBD::aniadirEstancia(int identificadorCliente)
             qDebug() << "Exito al modificar el cliente en la base de datos";
             int idCliente = query.value("id").toInt();
             QString nombreCliente = query.value("nombre").toString();
+            QString emailCliente = query.value("email").toString();
+            QString telefonoCliente = query.value("telefono").toString();
             QString nacionalidadCliente = query.value("nacionalidad").toString();
             int cantidadEstancias = query.value("cantidad_estancias").toInt();
 
             try{
-                return new Cliente(idCliente, nombreCliente,
-                               nacionalidadCliente, cantidadEstancias);
+                return new Cliente(idCliente, nombreCliente, emailCliente,
+                                   nacionalidadCliente, telefonoCliente, cantidadEstancias);
             }
             catch(invalid_argument &ex)
             {
