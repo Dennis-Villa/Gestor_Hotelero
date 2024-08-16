@@ -40,7 +40,16 @@ Cliente* ControladorBD::crearCliente(QString nombre, QString nacionalidad)
             qDebug() << "Exito al guardar el cliente en la base de datos";
             int idCliente = query.lastInsertId().toInt();
 
-            return new Cliente(idCliente, nombre, nacionalidad);
+            try{
+                Cliente *nuevoCliente = new Cliente(idCliente, nombre, nacionalidad);
+                return nuevoCliente;
+            }
+            catch(invalid_argument &ex)
+            {
+                this->eliminarCliente(idCliente);
+
+                throw;
+            }
         }
         else
         {
@@ -151,8 +160,19 @@ Cliente* ControladorBD::aniadirEstancia(int identificadorCliente)
             QString nacionalidadCliente = query.value("nacionalidad").toString();
             int cantidadEstancias = query.value("cantidad_estancias").toInt();
 
-            return new Cliente(idCliente, nombreCliente,
+            try{
+                return new Cliente(idCliente, nombreCliente,
                                nacionalidadCliente, cantidadEstancias);
+            }
+            catch(invalid_argument &ex)
+            {
+                query.prepare("UPDATE clientes SET cantidad_estancias = cantidad_estancias - 1 WHERE id = :id");
+                query.bindValue(":id", identificadorCliente);
+
+                query.exec();
+
+                throw;
+            }
         }
         else
         {
@@ -163,6 +183,29 @@ Cliente* ControladorBD::aniadirEstancia(int identificadorCliente)
 
     return nullptr;
 }
+
+void ControladorBD::eliminarCliente(int identificadorCliente)
+{
+    if (this->abreBD())
+    {
+        QSqlQuery query(this->bd);
+
+        query.prepare("DELETE FROM clientes WHERE id = :id");
+        query.bindValue(":id", identificadorCliente);
+
+        if (query.exec())
+        {
+            qDebug() << "Exito al eliminar el cliente de la base de datos";
+        }
+        else
+        {
+            throw runtime_error("Fallo al eliminar el cliente de la base de datos");
+            qDebug() << "Fallo al eliminar el cliente de la base de datos.";
+        }
+    }
+}
+
+
 
 
 

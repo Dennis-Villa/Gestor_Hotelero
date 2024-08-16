@@ -13,6 +13,7 @@ SOURCES += \
     Clases\Cliente\cliente.cpp \
     Clases\Habitacion\habitacion.cpp \
     Clases\ControladorBD\controladorbd.cpp \
+    Componentes_Visuales\Ventana_Nuevo_Cliente\aniadircliente.cpp \
     main.cpp \
     Componentes_Visuales\Ventana_Principal\ventanaprincipal.cpp \
     Clases\Reserva\reserva.cpp
@@ -23,10 +24,12 @@ HEADERS += \
     Clases\Cliente\cliente.h \
     Clases\Habitacion\habitacion.h \
     Clases\Reserva\reserva.h \
-    Clases\ControladorBD\controladorbd.h
+    Clases\ControladorBD\controladorbd.h \
+    Componentes_Visuales\Ventana_Nuevo_Cliente\aniadircliente.h
 
 FORMS += \
-    Componentes_Visuales\Ventana_Principal\ventanaprincipal.ui
+    Componentes_Visuales\Ventana_Principal\ventanaprincipal.ui \
+    Componentes_Visuales\Ventana_Nuevo_Cliente\aniadircliente.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

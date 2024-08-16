@@ -1,5 +1,8 @@
 #include "cliente.h"
 
+#include <vector>
+#include <stdexcept>
+
 Cliente::Cliente(long long identificador, QString nombre, QString nacionalidad, int cantidadEstancias)
 {
     this->setIdentificador(identificador);

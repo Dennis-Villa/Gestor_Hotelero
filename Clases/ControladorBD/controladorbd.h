@@ -5,7 +5,6 @@
 #include <QtSql/QSqlQuery>
 #include <QString>
 #include <vector>
-#include <stdexcept>
 
 #include "Clases/Cliente/cliente.h"
 #include "Clases/Habitacion/habitacion.h"
@@ -23,6 +22,7 @@ public:
     Cliente* buscarCliente(int identificadorCliente);
     vector <Cliente> getClientes();
     Cliente* aniadirEstancia(int identificadorCliente);
+    void eliminarCliente(int identificadorCliente);
     //void borrarCliente();
 
 

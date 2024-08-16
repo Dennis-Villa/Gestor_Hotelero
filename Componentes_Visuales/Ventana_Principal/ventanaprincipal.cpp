@@ -8,9 +8,28 @@ VentanaPrincipal::VentanaPrincipal(QWidget *parent)
     ui->setupUi(this);
 
     ui->dateEditActual->setDate(this->fechaActual);
+
+    connect(this->ventanaNuevoCliente, &AniadirCliente::cerrarAniadirClientes, this, &VentanaPrincipal::cerrarNuevoCliente);
 }
 
 VentanaPrincipal::~VentanaPrincipal()
 {
     delete ui;
 }
+
+void VentanaPrincipal::cerrarNuevoCliente(bool cerrar)
+{
+    if (cerrar)
+    {
+        this->ventanaNuevoCliente->close();
+        ui->centralwidget->setDisabled(false);
+    }
+}
+
+void VentanaPrincipal::on_actionCliente_triggered()
+{
+    ui->centralwidget->setDisabled(true);
+    this->ventanaNuevoCliente->show();
+    this->ventanaNuevoCliente->abrirVentana();
+}
+

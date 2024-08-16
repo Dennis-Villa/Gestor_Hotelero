@@ -275,11 +275,23 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuA_adir">
+    <property name="title">
+     <string>Añadir</string>
+    </property>
+    <addaction name="actionCliente"/>
+   </widget>
+   <addaction name="menuA_adir"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionCliente">
+   <property name="text">
+    <string>Cliente</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

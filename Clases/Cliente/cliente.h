@@ -2,8 +2,6 @@
 #define CLIENTE_H
 
 #include <QString>
-#include <vector>
-#include <stdexcept>
 #include "Archivos_Auxiliares/Funciones_Auxiliares.h"
 
 using namespace std;
