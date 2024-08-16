@@ -1,17 +1,17 @@
 #include "Funciones_Auxiliares.h"
 
-vector <string> stringSplit(string cadena, char separador)
+vector <QString> stringSplit(QString cadena, char separador)
 {
-    vector <string> subCadenas;
+    vector <QString> subCadenas;
     int posicionInicio = 0;
 
     for (int i = 0; i < (int)cadena.length(); i++)
     {
         if (cadena[i] == separador)
         {
-            string subCadena = cadena.substr(posicionInicio, i - posicionInicio);
+            QString subCadena = cadena.mid(posicionInicio, i - posicionInicio);
 
-            if (!subCadena.empty())
+            if (!subCadena.length() == 0)
                 subCadenas.push_back(subCadena);
 
             posicionInicio = i + 1;
@@ -19,7 +19,7 @@ vector <string> stringSplit(string cadena, char separador)
 
         else if (i == (int)cadena.length() - 1)
         {
-            subCadenas.push_back(cadena.substr(posicionInicio, i + 1 - posicionInicio));
+            subCadenas.push_back(cadena.mid(posicionInicio, i + 1 - posicionInicio));
         }
     }
 
@@ -27,9 +27,9 @@ vector <string> stringSplit(string cadena, char separador)
 }
 
 
-bool soloLetras(string cadena)
+bool soloLetras(QString cadena)
 {
-    for (char letra: cadena)
+    for (QChar letra: cadena)
     {
         bool esMinuscula = (letra >= 'a' && letra <= 'z');
         bool esMayuscula = (letra >= 'A' && letra <= 'Z');
@@ -41,12 +41,12 @@ bool soloLetras(string cadena)
     return true;
 }
 
-bool estadoReservaValido(string estadoReserva)
+bool estadoReservaValido(QString estadoReserva)
 {
-    string estadosValidos[] = {"Pendiente", "Confirmado",
+    QString estadosValidos[] = {"Pendiente", "Confirmado",
                                "En Estadía", "Estancia Finalizada"};
 
-    for (string estado: estadosValidos)
+    for (QString estado: estadosValidos)
     {
         if (estadoReserva == estado)
             return true;
@@ -62,11 +62,11 @@ float importeMaximoDecimales(float importe)
     return (float)importeDosDecimales / 100.0;
 }
 
-bool tipoHabitacionValido(string tipoHabitacion)
+bool tipoHabitacionValido(QString tipoHabitacion)
 {
-    string tiposValidos[] = {"Estandar", "Premium", "Suit"};
+    QString tiposValidos[] = {"Estandar", "Premium", "Suit"};
 
-    for (string tipo: tiposValidos)
+    for (QString tipo: tiposValidos)
     {
         if (tipoHabitacion == tipo)
             return true;

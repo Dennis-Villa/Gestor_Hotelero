@@ -3,13 +3,13 @@
 
 #endif // FUNCIONES_AUXILIARES_H
 
-#include <string>
+#include <QString>
 #include <vector>
 
 using namespace std;
 
-vector <string> stringSplit(string cadena, char separador);
-bool soloLetras(string cadena);
-bool estadoReservaValido(string estadoReserva);
+vector <QString> stringSplit(QString cadena, char separador);
+bool soloLetras(QString cadena);
+bool estadoReservaValido(QString estadoReserva);
 float importeMaximoDecimales(float importe);
-bool tipoHabitacionValido(string tipoHabitacion);
+bool tipoHabitacionValido(QString tipoHabitacion);

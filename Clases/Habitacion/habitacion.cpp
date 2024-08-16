@@ -1,8 +1,6 @@
 #include "habitacion.h"
-#include "Archivos_Auxiliares/Funciones_Auxiliares.h"
-#include <stdexcept>
 
-Habitacion::Habitacion(string numeroHabitacion, string tipoHabitacion, int tamanioM2, int numeroCamas, float costePorNoche)
+Habitacion::Habitacion(QString numeroHabitacion, QString tipoHabitacion, int tamanioM2, int numeroCamas, float costePorNoche)
 {
     this->setNumeroHabitacion(numeroHabitacion);
     this->setTipoHabitacion(tipoHabitacion);
@@ -13,19 +11,19 @@ Habitacion::Habitacion(string numeroHabitacion, string tipoHabitacion, int taman
     this->disponible = true;
     this->enArreglos = false;
 
-    this->piso = this->numeroHabitacion[0] - '0';
+    this->piso = this->numeroHabitacion[0].digitValue();
 }
 
-void Habitacion::setNumeroHabitacion(string numeroHabitacion)
+void Habitacion::setNumeroHabitacion(QString numeroHabitacion)
 {
     if (numeroHabitacion.length() == 0)
         throw invalid_argument("El numero de la habitacion no puede estar vacío.");
 
     this->numeroHabitacion = numeroHabitacion;
-    this->piso = this->numeroHabitacion[0] - '0';
+    this->piso = this->numeroHabitacion[0].digitValue();
 }
 
-void Habitacion::setTipoHabitacion(string tipoHabitacion)
+void Habitacion::setTipoHabitacion(QString tipoHabitacion)
 {
     if (tipoHabitacion.length() == 0)
         throw invalid_argument("El tipo de la habitacion no puede estar vacío.");

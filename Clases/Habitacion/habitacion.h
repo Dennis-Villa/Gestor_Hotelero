@@ -1,26 +1,28 @@
 #ifndef HABITACION_H
 #define HABITACION_H
 
-#include <string>
+#include <QString>
+#include <stdexcept>
+#include "Archivos_Auxiliares/Funciones_Auxiliares.h"
 
 using namespace std;
 
 class Habitacion
 {
 public:
-    Habitacion(string numeroHabitacion, string tipoHabitacion,
+    Habitacion(QString numeroHabitacion, QString tipoHabitacion,
                int tamanioM2, int numeroCamas, float costePorNoche);
 
-    void setNumeroHabitacion(string numeroHabitacion);
-    void setTipoHabitacion(string tipoHabitacion);
+    void setNumeroHabitacion(QString numeroHabitacion);
+    void setTipoHabitacion(QString tipoHabitacion);
     void setTamanioM2(int tamanioM2);
     void setNumeroCamas(int numeroCamas);
     void setCostePorNoche(float costePorNoche);
     void setDisponible(bool disponible);
     void setEnArreglos(bool enArreglos);
 
-    string getNumeroHabitacion(){return this->numeroHabitacion;}
-    string getTipoHabitacion(){return this->tipoHabitacion;}
+    QString getNumeroHabitacion(){return this->numeroHabitacion;}
+    QString getTipoHabitacion(){return this->tipoHabitacion;}
     int getPiso(){return this->piso;}
     int getTamanioM2(){return this->tamanioM2;}
     int getNumeroCamas(){return this->numeroCamas;}
@@ -29,8 +31,8 @@ public:
     bool getEnArreglos(){return this->enArreglos;}
 
 private:
-    string numeroHabitacion;
-    string tipoHabitacion;
+    QString numeroHabitacion;
+    QString tipoHabitacion;
     int piso;
     int tamanioM2;
     int numeroCamas;

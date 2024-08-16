@@ -1,8 +1,6 @@
 #include "reserva.h"
-#include "stdexcept"
-#include "Archivos_Auxiliares/Funciones_Auxiliares.h"
 
-Reserva::Reserva(long long numeroConfirmacion, Cliente *cliente, string estadoReserva)
+Reserva::Reserva(long long numeroConfirmacion, Cliente *cliente, QString estadoReserva)
 {
     this->setNumeroConfiramcion(numeroConfirmacion);
     this->setEstadoReserva(estadoReserva);
@@ -13,7 +11,7 @@ Reserva::Reserva(long long numeroConfirmacion, Cliente *cliente, string estadoRe
     this->fechaFin = 0;
 }
 
-Reserva::Reserva(long long numeroConfirmacion, Cliente *cliente, Habitacion *habitacion, string estadoReserva)
+Reserva::Reserva(long long numeroConfirmacion, Cliente *cliente, Habitacion *habitacion, QString estadoReserva)
 {
     this->setNumeroConfiramcion(numeroConfirmacion);
     this->setEstadoReserva(estadoReserva);
@@ -35,9 +33,9 @@ void Reserva::setNumeroConfiramcion(long long numeroConfirmacion)
     this->numeroConfirmacion = numeroConfirmacion;
 }
 
-void Reserva::setEstadoReserva(string estadoReserva)
+void Reserva::setEstadoReserva(QString estadoReserva)
 {
-    if (estadoReserva.empty())
+    if (estadoReserva.isEmpty())
         throw invalid_argument("El estado de la reserva no puede estar vacío");
 
     if (!estadoReservaValido(estadoReserva))
@@ -95,9 +93,9 @@ void Reserva::registarSalida()
     this->fechaFin = time(0);
 }
 
-void Reserva::AniadirGasto(string nombreServicio, float coste)
+void Reserva::AniadirGasto(QString nombreServicio, float coste)
 {
-    if (nombreServicio.empty())
+    if (nombreServicio.isEmpty())
         throw invalid_argument("El nombre del servicio no puede estar vacío");
 
     if (coste < 0)

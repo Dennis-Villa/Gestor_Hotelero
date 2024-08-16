@@ -1,20 +1,24 @@
 #ifndef CLIENTE_H
 #define CLIENTE_H
 
-#include <string>
+#include <QString>
+#include <vector>
+#include <stdexcept>
+#include "Archivos_Auxiliares/Funciones_Auxiliares.h"
 
 using namespace std;
 
 class Cliente
 {
 public:
-    Cliente(long long identificador, string nombre, string nacionalidad);
+    Cliente(long long identificador, QString nombre, QString nacionalidad, int cantidadEstancias = 0);
 
-    void setNombre(string nombre);
+    void setNombre(QString nombre);
     void setIdentificador(long long identificador);
-    void setNacionalidad(string nacionalidad);
+    void setNacionalidad(QString nacionalidad);
+    void setCantidadEstancias(int cantidadEstancias);
 
-    string getNombre(){return this->nombre;}
+    QString getNombre(){return this->nombre;}
     long long  getIdentificador(){return this->identificador;}
     int getCanidadEstancias(){return this->cantidadEstancias;}
 
@@ -22,8 +26,8 @@ public:
 
 private:
     long long identificador;
-    string nombre;
-    string nacionalidad;
+    QString nombre;
+    QString nacionalidad;
     int cantidadEstancias;
 };
 

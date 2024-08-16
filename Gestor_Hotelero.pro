@@ -12,6 +12,7 @@ SOURCES += \
     Archivos_Auxiliares\Funciones_Auxiliares.cpp \
     Clases\Cliente\cliente.cpp \
     Clases\Habitacion\habitacion.cpp \
+    Clases\ControladorBD\controladorbd.cpp \
     main.cpp \
     Componentes_Visuales\Ventana_Principal\ventanaprincipal.cpp \
     Clases\Reserva\reserva.cpp
@@ -21,7 +22,8 @@ HEADERS += \
     Componentes_Visuales\Ventana_Principal\ventanaprincipal.h \
     Clases\Cliente\cliente.h \
     Clases\Habitacion\habitacion.h \
-    Clases\Reserva\reserva.h
+    Clases\Reserva\reserva.h \
+    Clases\ControladorBD\controladorbd.h
 
 FORMS += \
     Componentes_Visuales\Ventana_Principal\ventanaprincipal.ui
