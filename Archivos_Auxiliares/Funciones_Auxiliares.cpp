@@ -74,3 +74,16 @@ bool tipoHabitacionValido(QString tipoHabitacion)
 
     return false;
 }
+
+int contarDigitos(QString cadenaAlfanumerica)
+{
+    int cantidadDigitos = 0;
+
+    for (QChar caracter: cadenaAlfanumerica)
+    {
+        if (caracter >= '0' && caracter <= '9')
+            cantidadDigitos++;
+    }
+
+    return cantidadDigitos;
+}

@@ -25,6 +25,14 @@ void AniadirCliente::abrirVentana()
     this->ventanaAbierta = true;
 }
 
+void AniadirCliente::limpiarVentana()
+{
+    ui->lineEditNombre->clear();
+    ui->lineEditEmail->clear();
+    ui->lineEditTelefono->clear();
+    ui->lineEditNacionalidad->clear();
+}
+
 void AniadirCliente::aniadirCliente()
 {
     QString nombre = ui->lineEditNombre->text();
@@ -35,7 +43,7 @@ void AniadirCliente::aniadirCliente()
     Cliente *nuevoCliente = nullptr;
 
     try {
-        nuevoCliente = controladorBD->crearCliente(nombre, nacionalidad);
+        nuevoCliente = controladorBD->crearCliente(nombre, email, telefono, nacionalidad);
     }
     catch (exception &e)
     {
@@ -44,6 +52,7 @@ void AniadirCliente::aniadirCliente()
 
     if (nuevoCliente != nullptr)
     {
+        this->limpiarVentana();
         QMessageBox::information(this, "Exito", "Nuevo cliente añadido.");
     }
 }
@@ -53,8 +62,9 @@ void AniadirCliente::cerrar()
 {
     if (this->ventanaAbierta)
     {
+        this->limpiarVentana();
         this->ventanaAbierta = false;
-        emit this->cerrarAniadirClientes(true);
+        emit this->cerrarVentana(true);
     }
 }
 

@@ -13,3 +13,4 @@ bool soloLetras(QString cadena);
 bool estadoReservaValido(QString estadoReserva);
 float importeMaximoDecimales(float importe);
 bool tipoHabitacionValido(QString tipoHabitacion);
+int contarDigitos(QString cadenaAlfanumerica);
