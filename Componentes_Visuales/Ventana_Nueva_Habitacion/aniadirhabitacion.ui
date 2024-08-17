@@ -93,7 +93,23 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEditTipo"/>
+      <widget class="QComboBox" name="comboBoxTipo">
+       <item>
+        <property name="text">
+         <string>Estandar</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Premium</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Suit</string>
+        </property>
+       </item>
+      </widget>
      </item>
     </layout>
    </item>

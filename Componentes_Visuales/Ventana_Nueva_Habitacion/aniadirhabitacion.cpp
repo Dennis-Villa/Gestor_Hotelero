@@ -27,19 +27,19 @@ void AniadirHabitacion::abrirVentana()
 
 void AniadirHabitacion::limpiarVentana()
 {
-    ui->spinBoxPiso->clear();
-    ui->spinBoxNumero->clear();
-    ui->lineEditTipo->clear();
-    ui->spinBoxTamanio->clear();
-    ui->spinBoxCamas->clear();
-    ui->doubleSpinBoxCoste->clear();
+    ui->spinBoxPiso->setValue(ui->spinBoxPiso->minimum());
+    ui->spinBoxNumero->setValue(ui->spinBoxNumero->minimum());
+    ui->comboBoxTipo->setCurrentIndex(0);
+    ui->spinBoxTamanio->setValue(ui->spinBoxTamanio->minimum());
+    ui->spinBoxCamas->setValue(ui->spinBoxCamas->minimum());
+    ui->doubleSpinBoxCoste->setValue(ui->doubleSpinBoxCoste->minimum());
 }
 
 void AniadirHabitacion::aniadirHabitacion()
 {
     int piso = ui->spinBoxPiso->value();
     int numero = ui->spinBoxNumero->value();
-    QString tipo = ui->lineEditTipo->text();
+    QString tipo = ui->comboBoxTipo->currentText();
     int tamanio = ui->spinBoxTamanio->value();
     int camas = ui->spinBoxCamas->value();
     double coste = ui->doubleSpinBoxCoste->value();
