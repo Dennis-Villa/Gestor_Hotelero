@@ -33,6 +33,14 @@ public:
     Habitacion* cambiarEnArreglosHabitacion(int numero, bool enArreglos);
     void eliminarHabitacion(int numero);
 
+
+    Reserva* crearReserva(QString estado, int noches, int cliente,
+                                int habitacion = NULL);
+    Reserva* buscarReserva(long long numeroConfirmacion);
+    vector <Reserva> getReservas();
+    Reserva* cambiarEstadoReserva(long long numeroConfirmacion, QString estado);
+    void eliminarReserva(long long numeroConfirmacion);
+
 private:
     QSqlDatabase bd;
 };

@@ -13,14 +13,19 @@ using namespace std;
 class Reserva
 {
 public:
-    Reserva(long long numeroConfirmacion, Cliente *cliente, QString estadoReserva = "Pendiente");
-    Reserva(long long numeroConfirmacion, Cliente *cliente, Habitacion *habitacion, QString estadoReserva = "Pendiente");
+    Reserva(long long numeroConfirmacion, Cliente *cliente, int cantidadNoches, QString estadoReserva = "Pendiente");
+    Reserva(long long numeroConfirmacion, Cliente *cliente, int cantidadNoches, Habitacion *habitacion, QString estadoReserva = "Pendiente");
+    Reserva(long long numeroConfirmacion, Cliente *cliente, int cantidadNoches, int fechaInicio, int fechaFin,
+            QString desgloseGastos, float importe, QString estadoReserva, Habitacion *habitacion = nullptr);
 
     void setNumeroConfiramcion(long long numeroConfirmacion);
+    void setCantidadNoches(int cantidadNoches);
     void setEstadoReserva(QString estadoReserva);
     void setCliente(Cliente *cliente);
     void setHabitacion(Habitacion *habitacion);
 
+    int getFechaInicio(){return this->fechaInicio;}
+    int getFechaFin(){return this->fechaFin;}
     float getImporte();
     vector <pair <QString, float> > getDesgloseGastos(){return this->desgloseGastos;}
 
@@ -34,6 +39,7 @@ private:
     QString estadoReserva;
     vector < pair <QString, float> > desgloseGastos;
     float importe;
+    int cantidadNoches;
     time_t fechaInicio;
     time_t fechaFin;
     Cliente *cliente;

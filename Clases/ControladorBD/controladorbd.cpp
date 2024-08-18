@@ -214,6 +214,8 @@ void ControladorBD::eliminarCliente(int identificadorCliente)
     }
 }
 
+
+
 Habitacion *ControladorBD::crearHabitacion(int numero, QString tipo, int tamanio, int numeroCamas, float costeNoche)
 {
     if (this->abreBD())
@@ -488,6 +490,186 @@ void ControladorBD::eliminarHabitacion(int numero)
         {
             throw runtime_error("Fallo al eliminar la habitación de la base de datos");
             qDebug() << "Fallo al eliminar la habitación de la base de datos.";
+        }
+    }
+}
+
+
+
+Reserva *ControladorBD::crearReserva(QString estado, int noches, int cliente, int habitacion)
+{
+    if (this->abreBD())
+    {
+        Cliente *clienteReserva = this->buscarCliente(cliente);
+        Habitacion *habitacionReserva = nullptr;
+
+        if (habitacion != NULL)
+        {
+            habitacionReserva = this->buscarHabitacion(cliente);
+
+            // if (habitacionReserva == nullptr)
+            //     throw invalid_argument("La habitación no existe.");
+        }
+
+        // if (clienteReserva == nullptr)
+        //     throw invalid_argument("El cliente no existe.");
+
+        QSqlQuery query(this->bd);
+
+        query.prepare("INSERT INTO reservas (estado_reserva, cantidad_noches,"
+                      "cliente_id, numero_habitacion) VALUES "
+                      "(:estado, :noches, :cliente, :habitacion)");
+        query.bindValue(":estado", estado);
+        query.bindValue(":noches", noches);
+        query.bindValue(":cliente", cliente);
+        query.bindValue(":habitacion", habitacion);
+
+        if (query.exec())
+        {
+            qDebug() << "Exito al guardar la reserva en la base de datos";
+
+            long long numeroConfirmacion = query.lastInsertId().toLongLong();
+
+            try{
+                Reserva *nuevaReserva = nullptr;
+
+                if (habitacionReserva == nullptr)
+                    nuevaReserva = new Reserva(numeroConfirmacion, clienteReserva, noches, estado);
+
+                else
+                    nuevaReserva = new Reserva(numeroConfirmacion, clienteReserva, noches, habitacionReserva, estado);
+
+                /*
+                 * Terminar
+                 *
+                 */
+
+                return nuevaReserva;
+            }
+            catch(invalid_argument &ex)
+            {
+                this->eliminarReserva(numeroConfirmacion);
+
+                throw;
+            }
+            catch(logic_error &ex)
+            {
+                this->eliminarReserva(numeroConfirmacion);
+
+                throw;
+            }
+        }
+        else
+        {
+            throw runtime_error("Fallo al guardar la reserva en la base de datos");
+            qDebug() << "Fallo al guardar la reserva en la base de datos.";
+        }
+    }
+
+    return nullptr;
+}
+
+Reserva *ControladorBD::buscarReserva(long long numeroConfirmacion)
+{
+    if (this->abreBD())
+    {
+        QSqlQuery query(this->bd);
+
+        query.prepare("SELECT * FROM reservas WHERE numero_confirmacion = :numeroConfirmacion");
+        query.bindValue(":numeroConfirmacion", numeroConfirmacion);
+
+        if (query.exec())
+        {
+            qDebug() << "Exito al buscar la reserva en la base de datos";
+
+            if (query.first())
+            {
+                qDebug() << "Reserva encontrada en la base de datos";
+
+                QString estado = query.value("estado_reserva").toString();
+                int noches = query.value("cantidad_noches").toInt();
+                int inicio = query.value("fecha_inicio").toInt();
+                int fin = query.value("fecha_fin").toInt();
+                int cliente = query.value("cliente_id").toInt();
+                int habitacion = query.value("numero_habitacion").toInt();
+                QString gastos = query.value("desglose_gastos").toString();
+                int importe = query.value("importe").toFloat();
+
+                Cliente *clienteReserva = this->buscarCliente(cliente);
+                Habitacion *habitacionReserva = nullptr;
+
+                if (habitacion != NULL)
+                    habitacionReserva = this->buscarHabitacion(habitacion);
+
+                return new Reserva(numeroConfirmacion, clienteReserva, noches, inicio,
+                                   fin, gastos, importe, estado, habitacionReserva);
+            }
+            else
+            {
+                throw runtime_error("La reserva no existe en la base de datos");
+                qDebug() << "La reserva no existe en la base de datos";
+            }
+        }
+        else
+        {
+            throw runtime_error("Fallo al buscar la reserva en la base de datos");
+            qDebug() << "Fallo al buscar la reserva en la base de datos.";
+        }
+    }
+
+    return nullptr;
+}
+
+Reserva *ControladorBD::cambiarEstadoReserva(long long numeroConfirmacion, QString estado)
+{
+    if (this->abreBD())
+    {
+        Reserva *reservaACambiar = this->buscarReserva(numeroConfirmacion);
+        reservaACambiar->setEstadoReserva(estado);
+
+        int inicio = reservaACambiar->getFechaInicio();
+        int fin = reservaACambiar->getFechaFin();
+
+        QSqlQuery query(this->bd);
+        query.prepare("UPDATE reservas SET estado_reserva = :estado, fecha_inicio = :inicio, fecha_fin = :fin WHERE numero_confirmacion = :numeroConfirmacion");
+        query.bindValue(":numeroConfirmacion", numeroConfirmacion);
+        query.bindValue(":estado", estado);
+        query.bindValue(":inicio", inicio);
+        query.bindValue(":fin", fin);
+
+        if (query.exec())
+        {
+            qDebug() << "Exito al modificar el estado de la reserva.";
+
+            return reservaACambiar;
+        }
+        else
+        {
+            throw runtime_error("Fallo al modificar el estado de la reserva.");
+            qDebug() << "Fallo al modificar el estado de la reserva.";
+        }
+    }
+
+    return nullptr;
+}
+
+void ControladorBD::eliminarReserva(long long numeroConfirmacion)
+{
+    if (this->abreBD())
+    {
+        QSqlQuery query(this->bd);
+
+        query.prepare("DELETE FROM reservas WHERE numero_confirmacion = :numeroConfirmacion");
+        query.bindValue(":numeroConfirmacion", numeroConfirmacion);
+
+        if (query.exec())
+        {
+            qDebug() << "Exito al eliminar la reserva de la base de datos";
+        }
+        else
+        {
+            throw runtime_error("Fallo al eliminar la reserva de la base de datos");
+            qDebug() << "Fallo al eliminar la reserva de la base de datos.";
         }
     }
 }

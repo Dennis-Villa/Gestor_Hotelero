@@ -15,6 +15,7 @@ SOURCES += \
     Clases\ControladorBD\controladorbd.cpp \
     Componentes_Visuales\Ventana_Nuevo_Cliente\aniadircliente.cpp \
     Componentes_Visuales\Ventana_Nueva_Habitacion\aniadirhabitacion.cpp \
+    Componentes_Visuales\Ventana_Nueva_Reserva\aniadirreserva.cpp \
     main.cpp \
     Componentes_Visuales\Ventana_Principal\ventanaprincipal.cpp \
     Clases\Reserva\reserva.cpp
@@ -27,12 +28,14 @@ HEADERS += \
     Clases\Reserva\reserva.h \
     Clases\ControladorBD\controladorbd.h \
     Componentes_Visuales\Ventana_Nuevo_Cliente\aniadircliente.h \
-    Componentes_Visuales\Ventana_Nueva_Habitacion\aniadirhabitacion.h
+    Componentes_Visuales\Ventana_Nueva_Habitacion\aniadirhabitacion.h \
+    Componentes_Visuales\Ventana_Nueva_Reserva\aniadirreserva.h
 
 FORMS += \
     Componentes_Visuales\Ventana_Principal\ventanaprincipal.ui \
     Componentes_Visuales\Ventana_Nuevo_Cliente\aniadircliente.ui \
-    Componentes_Visuales\Ventana_Nueva_Habitacion\aniadirhabitacion.ui
+    Componentes_Visuales\Ventana_Nueva_Habitacion\aniadirhabitacion.ui \
+    Componentes_Visuales\Ventana_Nueva_Reserva\aniadirreserva.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

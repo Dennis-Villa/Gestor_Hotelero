@@ -4,6 +4,7 @@
 #endif // FUNCIONES_AUXILIARES_H
 
 #include <QString>
+#include <QStringList>
 #include <vector>
 
 using namespace std;
@@ -14,3 +15,4 @@ bool estadoReservaValido(QString estadoReserva);
 float importeMaximoDecimales(float importe);
 bool tipoHabitacionValido(QString tipoHabitacion);
 int contarDigitos(QString cadenaAlfanumerica);
+vector < pair <QString, float> > stringGastosToVector(QString desgloseGastos);

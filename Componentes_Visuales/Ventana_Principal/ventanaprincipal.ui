@@ -67,7 +67,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="pushButtonNuevaReserva">
           <property name="text">
            <string>Nueva Reserva</string>
           </property>
@@ -284,6 +284,7 @@
     </property>
     <addaction name="actionCliente"/>
     <addaction name="actionHabitacion"/>
+    <addaction name="actionReserva"/>
    </widget>
    <addaction name="menuA_adir"/>
   </widget>
@@ -296,6 +297,11 @@
   <action name="actionHabitacion">
    <property name="text">
     <string>Habitación</string>
+   </property>
+  </action>
+  <action name="actionReserva">
+   <property name="text">
+    <string>Reserva</string>
    </property>
   </action>
  </widget>

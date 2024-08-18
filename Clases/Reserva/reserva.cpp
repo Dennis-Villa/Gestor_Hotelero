@@ -1,25 +1,42 @@
 #include "reserva.h"
 
-Reserva::Reserva(long long numeroConfirmacion, Cliente *cliente, QString estadoReserva)
+Reserva::Reserva(long long numeroConfirmacion, Cliente *cliente, int cantidadNoches, QString estadoReserva)
 {
     this->setNumeroConfiramcion(numeroConfirmacion);
     this->setEstadoReserva(estadoReserva);
     this->setCliente(cliente);
-    this->habitacion = nullptr;
+    this->setCantidadNoches(cantidadNoches);
+    this->setHabitacion(nullptr);
 
     this->fechaInicio = 0;
     this->fechaFin = 0;
 }
 
-Reserva::Reserva(long long numeroConfirmacion, Cliente *cliente, Habitacion *habitacion, QString estadoReserva)
+Reserva::Reserva(long long numeroConfirmacion, Cliente *cliente, int cantidadNoches, Habitacion *habitacion, QString estadoReserva)
 {
     this->setNumeroConfiramcion(numeroConfirmacion);
     this->setEstadoReserva(estadoReserva);
     this->setCliente(cliente);
+    this->setCantidadNoches(cantidadNoches);
     this->setHabitacion(habitacion);
 
     this->fechaInicio = 0;
     this->fechaFin = 0;
+}
+
+Reserva::Reserva(long long numeroConfirmacion, Cliente *cliente, int cantidadNoches, int fechaInicio, int fechaFin, QString desgloseGastos, float importe, QString estadoReserva, Habitacion *habitacion)
+{
+    this->setNumeroConfiramcion(numeroConfirmacion);
+    this->setEstadoReserva(estadoReserva);
+    this->setCliente(cliente);
+    this->setCantidadNoches(cantidadNoches);
+    this->setHabitacion(habitacion);
+
+    this->fechaInicio = fechaInicio;
+    this->fechaFin = fechaFin;
+
+    this->desgloseGastos = stringGastosToVector(desgloseGastos);
+    this->importe = importe;
 }
 
 void Reserva::setNumeroConfiramcion(long long numeroConfirmacion)
@@ -33,6 +50,14 @@ void Reserva::setNumeroConfiramcion(long long numeroConfirmacion)
     this->numeroConfirmacion = numeroConfirmacion;
 }
 
+void Reserva::setCantidadNoches(int cantidadNoches)
+{
+    if (cantidadNoches < 1)
+        throw invalid_argument("La cantidad de noches debe ser positiva.");
+
+    this->cantidadNoches = cantidadNoches;
+}
+
 void Reserva::setEstadoReserva(QString estadoReserva)
 {
     if (estadoReserva.isEmpty())
@@ -40,6 +65,12 @@ void Reserva::setEstadoReserva(QString estadoReserva)
 
     if (!estadoReservaValido(estadoReserva))
         throw invalid_argument("El estado de la reserva no es un estado válido");
+
+    if (estadoReserva == "En Estadía")
+        this->registarEntrada();
+
+    if (estadoReserva == "Estancia Finalizada")
+        this->registarSalida();
 
     this->estadoReserva = estadoReserva;
 }
@@ -54,14 +85,22 @@ void Reserva::setCliente(Cliente *cliente)
 
 void Reserva::setHabitacion(Habitacion *habitacion)
 {
-    if (habitacion == nullptr)
-        throw invalid_argument("La habitación no puede ser un puntero nulo.");
+    if(this->estadoReserva == "En Estadía" || this->estadoReserva == "Estancia Finalizada")
+    {
+        if (habitacion == nullptr)
+            throw invalid_argument("La habitación no puede ser un puntero nulo.");
+    }
 
-    if (!habitacion->getDisponible())
-        throw logic_error("La habitación no está disponible.");
+    else if (habitacion != nullptr)
+    {
+        if (!habitacion->getDisponible())
+            throw logic_error("La habitación no está disponible.");
 
-    this->habitacion = habitacion;
-    this->habitacion->setDisponible(false);
+        this->habitacion = habitacion;
+        this->habitacion->setDisponible(false);
+    }
+
+    this->habitacion = nullptr;
 }
 
 float Reserva::getImporte()
@@ -81,7 +120,6 @@ float Reserva::getImporte()
 
 void Reserva::registarEntrada()
 {
-    this->setEstadoReserva("En Estadía");
     this->cliente->aniadirEstancia();
 
     this->fechaInicio = time(0);
@@ -89,7 +127,6 @@ void Reserva::registarEntrada()
 
 void Reserva::registarSalida()
 {
-    this->setEstadoReserva("Estancia Finalizada");
     this->fechaFin = time(0);
 }
 

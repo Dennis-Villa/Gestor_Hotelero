@@ -87,3 +87,30 @@ int contarDigitos(QString cadenaAlfanumerica)
 
     return cantidadDigitos;
 }
+
+vector<pair<QString, float> > stringGastosToVector(QString desgloseGastos)
+{
+    vector<pair<QString, float> > vectorGastos;
+
+    if (desgloseGastos.isEmpty())
+        return vectorGastos;
+
+    int posicionInicial = 0;
+    int posicionApertura = desgloseGastos.indexOf('{', posicionInicial);
+    int posicionCierre = desgloseGastos.indexOf('}', posicionInicial);
+
+    do
+    {
+        QString cadenaPar = desgloseGastos.mid(posicionApertura + 1, posicionCierre - posicionApertura - 1);
+        QStringList par = cadenaPar.split(',');
+
+        vectorGastos.push_back({par[0], par[1].toFloat()});
+
+        posicionInicial = posicionCierre + 1;
+        posicionApertura = desgloseGastos.indexOf('{', posicionInicial);
+        posicionCierre = desgloseGastos.indexOf('}', posicionInicial);
+    }
+    while (posicionApertura != -1);
+
+    return vectorGastos;
+}
