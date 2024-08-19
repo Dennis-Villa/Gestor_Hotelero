@@ -21,9 +21,10 @@ public:
     ~AniadirCliente();
 
     void abrirVentana();
+    void limpiarVentana();
 
 signals:
-    void cerrarAniadirClientes(bool cerrar = false);
+    void cerrarVentana(bool cerrar = false);
 
 private slots:
     void aniadirCliente();

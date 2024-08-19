@@ -2,17 +2,28 @@
 
 #include <vector>
 #include <stdexcept>
+#include <QRegularExpression>
 
 #include "Archivos_Auxiliares/Funciones_Auxiliares.h"
 
-Cliente::Cliente(long long identificador, QString nombre, QString email, QString nacionalidad, QString telefono, int cantidadEstancias)
+Cliente::Cliente(long long identificador, QString nombre, QString email, QString nacionalidad, QString telefono)
 {
     this->setIdentificador(identificador);
     this->setNombre(nombre);
     this->setEmail(email);
+    this->setNacionalidad(nacionalidad);
+    this->setCantidadEstancias(0);
     this->setTelefono(telefono);
+}
+
+Cliente::Cliente(long long identificador, QString nombre, QString email, QString nacionalidad, int cantidadEstancias, QString telefono)
+{
+    this->setIdentificador(identificador);
+    this->setNombre(nombre);
+    this->setEmail(email);
     this->setNacionalidad(nacionalidad);
     this->setCantidadEstancias(cantidadEstancias);
+    this->setTelefono(telefono);
 }
 
 void Cliente::setNombre(QString nombre)
@@ -37,17 +48,9 @@ void Cliente::setEmail(QString email)
         throw invalid_argument("El email no puede estar vacío.");
 
     if (!email.contains('@') || !email.contains('.'))
-        throw invalid_argument("El email no tiene un formato correcto.");
+        throw invalid_argument("El email no tiene una estructura válida.");
 
     this->email = email;
-}
-
-void Cliente::setTelefono(QString telefono)
-{
-    if (telefono.length() != 0 && contarDigitosTelefono(telefono) != 9)
-        throw invalid_argument("El teléfono debe tener 9 digitos.");
-
-    this->telefono = telefono;
 }
 
 void Cliente::setIdentificador(long long identificador)
@@ -72,4 +75,18 @@ void Cliente::setCantidadEstancias(int cantidadEstancias)
         throw invalid_argument("La cantidad de estancias no puede ser negativa.");
 
     this->cantidadEstancias = cantidadEstancias;
+}
+
+void Cliente::setTelefono(QString telefono)
+{
+    if (telefono.isNull())
+        this->telefono = NULL;
+
+    else
+    {
+        if (!telefono.isEmpty() && contarDigitos(telefono) != 9)
+            throw invalid_argument("El teléfono debe tener 9 dígitos.");
+
+        this->telefono = telefono;
+    }
 }

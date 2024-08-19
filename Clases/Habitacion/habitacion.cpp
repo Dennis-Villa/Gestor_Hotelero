@@ -1,26 +1,41 @@
 #include "habitacion.h"
 
-Habitacion::Habitacion(QString numeroHabitacion, QString tipoHabitacion, int tamanioM2, int numeroCamas, float costePorNoche)
+Habitacion::Habitacion(int numeroHabitacion, QString tipoHabitacion, int tamanioM2, int numeroCamas, float costePorNoche)
 {
     this->setNumeroHabitacion(numeroHabitacion);
     this->setTipoHabitacion(tipoHabitacion);
     this->setTamanioM2(tamanioM2);
     this->setNumeroCamas(numeroCamas);
     this->setCostePorNoche(costePorNoche);
+    this->setEnArreglos(false);
+    this->setDisponible(true);
 
-    this->disponible = true;
-    this->enArreglos = false;
-
-    this->piso = this->numeroHabitacion[0].digitValue();
+    this->piso = this->numeroHabitacion / 100;
 }
 
-void Habitacion::setNumeroHabitacion(QString numeroHabitacion)
+Habitacion::Habitacion(int numeroHabitacion, QString tipoHabitacion, int tamanioM2, int numeroCamas, float costePorNoche, bool disponible, bool enArreglos)
 {
-    if (numeroHabitacion.length() == 0)
-        throw invalid_argument("El numero de la habitacion no puede estar vacío.");
+    this->setNumeroHabitacion(numeroHabitacion);
+    this->setTipoHabitacion(tipoHabitacion);
+    this->setTamanioM2(tamanioM2);
+    this->setNumeroCamas(numeroCamas);
+    this->setCostePorNoche(costePorNoche);
+    this->setEnArreglos(enArreglos);
+    this->setDisponible(disponible);
+
+    this->piso = this->numeroHabitacion / 100;
+}
+
+void Habitacion::setNumeroHabitacion(int numeroHabitacion)
+{
+    if (numeroHabitacion < 0)
+        throw invalid_argument("El numero de la habitación no puede ser negativo.");
+
+    if (numeroHabitacion < 100)
+        throw invalid_argument("La habitación debe estar al menos en el primer piso.");
 
     this->numeroHabitacion = numeroHabitacion;
-    this->piso = this->numeroHabitacion[0].digitValue();
+    this->piso = this->numeroHabitacion / 100;
 }
 
 void Habitacion::setTipoHabitacion(QString tipoHabitacion)
