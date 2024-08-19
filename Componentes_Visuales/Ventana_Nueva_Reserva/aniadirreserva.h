@@ -26,6 +26,8 @@ signals:
 private slots:
     void cerrar();
 
+    void on_pushButtonAniadir_clicked();
+
 private:
     Ui::AniadirReserva *ui;
 

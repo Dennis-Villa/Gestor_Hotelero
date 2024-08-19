@@ -10,7 +10,7 @@ AniadirReserva::AniadirReserva(QWidget *parent, ControladorBD *controladorBD)
     this->controladorBD = controladorBD;
     this->ventanaAbierta = false;
 
-    connect(ui->pushButtonCerrar, SIGNAL(clicked()), this, SLOT(cerrar()));
+    connect(ui->pushButtonCerrar, SIGNAL(clicked(bool)), this, SLOT(cerrar()));
     connect(this, SIGNAL(rejected()), this, SLOT(cerrar()));
 }
 
@@ -33,3 +33,17 @@ void AniadirReserva::cerrar()
         emit this->cerrarVentana(true);
     }
 }
+
+void AniadirReserva::on_pushButtonAniadir_clicked()
+{
+    QString estado = ui->comboBoxEstado->currentText();
+    QString cliente = ui->lineEditCliente->text();
+    int piso = ui->spinBoxPiso->value();
+    int numero = ui->spinBoxNumero->value();
+    int noches = ui->spinBoxNoches->value();
+    QString coste = ui->lineEditCoste->text();
+
+
+    // this->controladorBD->crearReserva(estado, noches);
+}
+

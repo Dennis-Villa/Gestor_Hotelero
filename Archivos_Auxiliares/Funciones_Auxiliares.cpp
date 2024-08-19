@@ -11,7 +11,7 @@ vector <QString> stringSplit(QString cadena, char separador)
         {
             QString subCadena = cadena.mid(posicionInicio, i - posicionInicio);
 
-            if (!subCadena.length() == 0)
+            if (!subCadena.isEmpty())
                 subCadenas.push_back(subCadena);
 
             posicionInicio = i + 1;

@@ -26,15 +26,16 @@ public:
     VentanaPrincipal(QWidget *parent = nullptr);
     ~VentanaPrincipal();
 
-    void cerrarNuevoCliente(bool cerrar = false);
-    void cerrarNuevaHabitacion(bool cerrar = false);
-
 private slots:
     void on_actionCliente_triggered();
 
     void on_actionHabitacion_triggered();
 
     void crearNuevaReserva();
+
+    void cerrarNuevoCliente(bool cerrar = false);
+    void cerrarNuevaHabitacion(bool cerrar = false);
+    void cerrarNuevaReserva(bool cerrar = false);
 
 private:
     Ui::VentanaPrincipal *ui;

@@ -11,6 +11,7 @@ VentanaPrincipal::VentanaPrincipal(QWidget *parent)
 
     connect(this->ventanaNuevoCliente, &AniadirCliente::cerrarVentana, this, &VentanaPrincipal::cerrarNuevoCliente);
     connect(this->ventanaNuevaHabitacion, &AniadirHabitacion::cerrarVentana, this, &VentanaPrincipal::cerrarNuevaHabitacion);
+    connect(this->ventanaNuevaReserva, SIGNAL(cerrarVentana(bool)), this, SLOT(cerrarNuevaReserva(bool)));
     connect(ui->pushButtonNuevaReserva, SIGNAL(clicked()), this, SLOT(crearNuevaReserva()));
     connect(ui->actionReserva, SIGNAL(triggered()), this, SLOT(crearNuevaReserva()));
 }
@@ -38,6 +39,15 @@ void VentanaPrincipal::cerrarNuevaHabitacion(bool cerrar)
     }
 }
 
+void VentanaPrincipal::cerrarNuevaReserva(bool cerrar)
+{
+    if (cerrar)
+    {
+        this->ventanaNuevaReserva->close();
+        ui->centralwidget->setDisabled(false);
+    }
+}
+
 void VentanaPrincipal::on_actionCliente_triggered()
 {
     ui->centralwidget->setDisabled(true);
@@ -57,6 +67,6 @@ void VentanaPrincipal::crearNuevaReserva()
 {
     ui->centralwidget->setDisabled(true);
     this->ventanaNuevaReserva->show();
-    //this->ventanaNuevaReserva->abrirVentana();
+    this->ventanaNuevaReserva->abrirVentana();
 }
 
