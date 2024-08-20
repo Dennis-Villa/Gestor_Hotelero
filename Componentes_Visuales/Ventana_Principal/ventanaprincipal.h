@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QDateTime>
+#include <vector>
 
 #include "Clases/ControladorBD/controladorbd.h"
 #include "Clases/Cliente/cliente.h"
@@ -37,13 +38,20 @@ private slots:
     void cerrarNuevaHabitacion(bool cerrar = false);
     void cerrarNuevaReserva(bool cerrar = false);
 
+    void on_pushButtonDebug_clicked();
+
 private:
     Ui::VentanaPrincipal *ui;
     QDate fechaActual = QDate::currentDate();
 
     ControladorBD *controladorBD = new ControladorBD();
-    AniadirCliente *ventanaNuevoCliente = new AniadirCliente(this, controladorBD);
-    AniadirHabitacion *ventanaNuevaHabitacion = new AniadirHabitacion(this, controladorBD);
-    AniadirReserva *ventanaNuevaReserva = new AniadirReserva(this, controladorBD);
+
+    vector<Cliente> clientes;
+    vector<Habitacion> habitaciones;
+    vector<Reserva> reservas;
+
+    AniadirCliente *ventanaNuevoCliente = new AniadirCliente(&clientes, this, controladorBD);
+    AniadirHabitacion *ventanaNuevaHabitacion = new AniadirHabitacion(&habitaciones, this, controladorBD);
+    AniadirReserva *ventanaNuevaReserva = new AniadirReserva(&reservas, this, controladorBD);
 };
 #endif // VENTANAPRINCIPAL_H

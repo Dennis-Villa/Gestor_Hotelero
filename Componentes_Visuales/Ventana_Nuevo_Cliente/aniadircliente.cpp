@@ -1,12 +1,13 @@
 #include "aniadircliente.h"
 #include "ui_aniadircliente.h"
 
-AniadirCliente::AniadirCliente(QWidget *parent, ControladorBD *controladorBD)
+AniadirCliente::AniadirCliente(vector<Cliente> *clientes, QWidget *parent, ControladorBD *controladorBD)
     : QDialog(parent)
     , ui(new Ui::AniadirCliente)
 {
     ui->setupUi(this);
 
+    this->clientes = clientes;
     this->controladorBD = controladorBD;
     this->ventanaAbierta = false;
 
@@ -53,6 +54,7 @@ void AniadirCliente::aniadirCliente()
     if (nuevoCliente != nullptr)
     {
         this->limpiarVentana();
+        this->clientes->push_back(*nuevoCliente);
         QMessageBox::information(this, "Exito", "Nuevo cliente añadido.");
     }
 }

@@ -1,12 +1,13 @@
 #include "aniadirhabitacion.h"
 #include "ui_aniadirhabitacion.h"
 
-AniadirHabitacion::AniadirHabitacion(QWidget *parent, ControladorBD *controladorBD)
+AniadirHabitacion::AniadirHabitacion(vector<Habitacion> *habitaciones, QWidget *parent, ControladorBD *controladorBD)
     : QDialog(parent)
     , ui(new Ui::AniadirHabitacion)
 {
     ui->setupUi(this);
 
+    this->habitaciones = habitaciones;
     this->controladorBD = controladorBD;
     this->ventanaAbierta = false;
 
@@ -60,6 +61,7 @@ void AniadirHabitacion::aniadirHabitacion()
     if (nuevaHabitacion != nullptr)
     {
         this->limpiarVentana();
+        this->habitaciones->push_back(*nuevaHabitacion);
         QMessageBox::information(this, "Exito", "Nueva Habitación añadida.");
     }
 }

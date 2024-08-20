@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QMessageBox>
+#include <vector>
 
 #include "Clases/ControladorBD/controladorbd.h"
 
@@ -15,7 +16,7 @@ class AniadirReserva : public QDialog
     Q_OBJECT
 
 public:
-    explicit AniadirReserva(QWidget *parent = nullptr, ControladorBD *controladorBD = nullptr);
+    explicit AniadirReserva(vector<Reserva> *reservas, QWidget *parent = nullptr, ControladorBD *controladorBD = nullptr);
     ~AniadirReserva();
 
     void abrirVentana();
@@ -29,9 +30,12 @@ private slots:
 
     void on_pushButtonAniadir_clicked();
 
+    void on_checkBoxHabitacion_stateChanged(int arg1);
+
 private:
     Ui::AniadirReserva *ui;
 
+    vector<Reserva> *reservas;
     ControladorBD *controladorBD;
     bool ventanaAbierta;
 };

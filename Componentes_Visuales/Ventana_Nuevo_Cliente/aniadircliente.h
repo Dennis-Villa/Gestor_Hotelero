@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QString>
+#include <vector>
 
 #include <QMessageBox>
 #include "Clases/Cliente/cliente.h"
@@ -17,7 +18,7 @@ class AniadirCliente : public QDialog
     Q_OBJECT
 
 public:
-    explicit AniadirCliente(QWidget *parent = nullptr, ControladorBD *controladorBD = nullptr);
+    explicit AniadirCliente(vector<Cliente> *clientes, QWidget *parent = nullptr, ControladorBD *controladorBD = nullptr);
     ~AniadirCliente();
 
     void abrirVentana();
@@ -34,6 +35,7 @@ private slots:
 private:
     Ui::AniadirCliente *ui;
 
+    vector<Cliente> *clientes;
     ControladorBD *controladorBD;
     bool ventanaAbierta;
 };

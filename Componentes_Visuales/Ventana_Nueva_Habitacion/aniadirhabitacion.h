@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QString>
+#include <vector>
 
 #include <QMessageBox>
 #include "Clases/Habitacion/habitacion.h"
@@ -17,7 +18,7 @@ class AniadirHabitacion : public QDialog
     Q_OBJECT
 
 public:
-    explicit AniadirHabitacion(QWidget *parent = nullptr, ControladorBD  *controladorBD = nullptr);
+    explicit AniadirHabitacion(vector<Habitacion> *habitaciones, QWidget *parent = nullptr, ControladorBD  *controladorBD = nullptr);
     ~AniadirHabitacion();
 
     void abrirVentana();
@@ -34,6 +35,7 @@ private slots:
 private:
     Ui::AniadirHabitacion *ui;
 
+    vector<Habitacion> *habitaciones;
     ControladorBD *controladorBD;
     bool ventanaAbierta;
 };

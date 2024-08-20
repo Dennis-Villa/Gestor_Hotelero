@@ -27,6 +27,8 @@ public:
     int getNumeroConfirmacion(){return this->numeroConfirmacion;}
     int getFechaInicio(){return this->fechaInicio;}
     int getFechaFin(){return this->fechaFin;}
+    int getClienteID(){return this->cliente->getIdentificador();}
+    int getNumeroHabitacion(){return this->habitacion->getNumeroHabitacion();}
     float getImporte();
     vector <pair <QString, float> > getDesgloseGastos(){return this->desgloseGastos;}
 

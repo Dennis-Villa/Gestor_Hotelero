@@ -121,7 +121,7 @@ vector<Cliente> ControladorBD::getClientes()
 
             if (query.first())
             {
-                while(query.next())
+                do
                 {
                     int id = query.value("id").toInt();
                     QString nombre = query.value("nombre").toString();
@@ -133,6 +133,7 @@ vector<Cliente> ControladorBD::getClientes()
                     clientes.push_back(Cliente(id, nombre, email, nacionalidad,
                                                estancias, telefono));
                 }
+                while(query.next());
             }
             else
             {
@@ -316,7 +317,7 @@ vector<Habitacion> ControladorBD::getHabitaciones()
 
             if (query.first())
             {
-                while(query.next())
+                do
                 {
                     int numero = query.value("numero_habitacion").toInt();
                     QString tipo = query.value("tipo_habitacion").toString();
@@ -329,6 +330,7 @@ vector<Habitacion> ControladorBD::getHabitaciones()
                     habitaciones.push_back(Habitacion(numero, tipo, tamanio, numeroCamas,
                                                       costeNoche, disponible, enArreglos));
                 }
+                while(query.next());
             }
             else
             {
@@ -532,19 +534,15 @@ Reserva *ControladorBD::crearReserva(QString estado, int noches, int cliente, in
 
             int numeroConfirmacion = query.lastInsertId().toInt();
 
-            // Reserva *nuevaReserva = nullptr;
-
             try{
-                // if (habitacionReserva == nullptr)
-                // {
-                //     nuevaReserva = new Reserva(numeroConfirmacion, clienteReserva, noches, estado);
-                // }
-                // else
-                // {
-                //     nuevaReserva = new Reserva(numeroConfirmacion, clienteReserva, noches, habitacionReserva, estado);
-                // }
-                Reserva *nuevaReserva = new Reserva(numeroConfirmacion, clienteReserva, noches, habitacionReserva, estado);
-                qDebug() << (nuevaReserva != nullptr ? nuevaReserva->getNumeroConfirmacion() : 0);
+                if (habitacionReserva == nullptr)
+                {
+                    new Reserva(numeroConfirmacion, clienteReserva, noches, estado);
+                }
+                else
+                {
+                    new Reserva(numeroConfirmacion, clienteReserva, noches, habitacionReserva, estado);
+                }
 
                 return this->cambiarEstadoReserva(numeroConfirmacion, estado);
             }
@@ -560,15 +558,6 @@ Reserva *ControladorBD::crearReserva(QString estado, int noches, int cliente, in
 
                 throw;
             }
-
-            // qDebug() << (nuevaReserva != nullptr ? nuevaReserva->getNumeroConfirmacion() : 0);
-            // if (estado == "En Estadía")
-            // {
-            //     qDebug() << "!!!!!!!!!!!!!Llegue aca exist " << numeroConfirmacion;
-            //     return this->cambiarEstadoReserva(numeroConfirmacion, estado);
-            // }
-
-            // return nuevaReserva;
         }
         else
         {
@@ -631,17 +620,70 @@ Reserva *ControladorBD::buscarReserva(int numeroConfirmacion)
     return nullptr;
 }
 
+vector <Reserva> ControladorBD::getReservas()
+{
+    vector <Reserva> reservas;
+
+    if (this->abreBD())
+    {
+        QSqlQuery query(this->bd);
+
+        query.prepare("SELECT * FROM reservas");
+
+        if (query.exec())
+        {
+            qDebug() << "Exito al obtener las reservas de la base de datos";
+
+            if (query.last())
+            {
+                do
+                {
+                    int numero = query.value("numero_confirmacion").toInt();
+                    QString estado = query.value("estado_reserva").toString();
+                    int noches = query.value("cantidad_noches").toInt();
+                    int inicio = query.value("fecha_inicio").toInt();
+                    int fin = query.value("fecha_fin").toInt();
+                    int clienteID = query.value("cliente_id").toInt();
+                    QVariant numeroHabitacion = query.value("numero_habitacion");
+                    QString gastos = query.value("desglose_gastos").toString();
+                    float importe = query.value("importe").toFloat();
+
+                    Cliente *cliente = this->buscarCliente(clienteID);
+                    Habitacion *habitacion = nullptr;
+
+                    if (!numeroHabitacion.isNull())
+                        habitacion = this->buscarHabitacion(numeroHabitacion.toInt());
+
+                    reservas.push_back(Reserva(numero, cliente, noches, inicio, fin,
+                                               gastos, importe, estado, habitacion));
+                }
+                while(query.previous());
+            }
+            else
+            {
+                qDebug() << "No existen reservas en la base de datos";
+            }
+        }
+        else
+        {
+            throw runtime_error("Fallo al obtener las reservas de la base de datos");
+            qDebug() << "Fallo al obtener las reservas de la base de datos.";
+        }
+    }
+
+    return reservas;
+}
+
 Reserva *ControladorBD::cambiarEstadoReserva(int numeroConfirmacion, QString estado)
 {
     if (this->abreBD())
     {
-        qDebug() << "!!!!!!!!!!!!!Llegue aca " << numeroConfirmacion;
-
         Reserva *reservaACambiar = this->buscarReserva(numeroConfirmacion);
 
-        qDebug() << "!!!!!!!!!!!!!Llegue aca " << reservaACambiar->getNumeroConfirmacion();
-
         reservaACambiar->setEstadoReserva(estado);
+
+        if (estado == "Estancia Finalizada")
+            this->aniadirEstancia(reservaACambiar->getClienteID());
 
         int inicio = reservaACambiar->getFechaInicio();
         int fin = reservaACambiar->getFechaFin();
