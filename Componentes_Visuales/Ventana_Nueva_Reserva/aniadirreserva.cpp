@@ -41,9 +41,18 @@ void AniadirReserva::on_pushButtonAniadir_clicked()
     int piso = ui->spinBoxPiso->value();
     int numero = ui->spinBoxNumero->value();
     int noches = ui->spinBoxNoches->value();
-    QString coste = ui->lineEditCoste->text();
 
+    int clienteID = cliente.toInt();
+    int habitacion = piso * 100 + numero;
 
-    // this->controladorBD->crearReserva(estado, noches);
+    try{
+        this->controladorBD->crearReserva(estado, noches, clienteID, habitacion);
+
+        QMessageBox::information(this, "Exito", "Reserva añadida a la base de datos");
+    }
+    catch(exception &ex)
+    {
+        QMessageBox::critical(this, "Error", ex.what());
+    }
 }
 

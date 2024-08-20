@@ -1,6 +1,6 @@
 #include "reserva.h"
 
-Reserva::Reserva(long long numeroConfirmacion, Cliente *cliente, int cantidadNoches, QString estadoReserva)
+Reserva::Reserva(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, QString estadoReserva)
 {
     this->setNumeroConfiramcion(numeroConfirmacion);
     this->setEstadoReserva(estadoReserva);
@@ -12,7 +12,7 @@ Reserva::Reserva(long long numeroConfirmacion, Cliente *cliente, int cantidadNoc
     this->fechaFin = 0;
 }
 
-Reserva::Reserva(long long numeroConfirmacion, Cliente *cliente, int cantidadNoches, Habitacion *habitacion, QString estadoReserva)
+Reserva::Reserva(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, Habitacion *habitacion, QString estadoReserva)
 {
     this->setNumeroConfiramcion(numeroConfirmacion);
     this->setEstadoReserva(estadoReserva);
@@ -24,7 +24,7 @@ Reserva::Reserva(long long numeroConfirmacion, Cliente *cliente, int cantidadNoc
     this->fechaFin = 0;
 }
 
-Reserva::Reserva(long long numeroConfirmacion, Cliente *cliente, int cantidadNoches, int fechaInicio, int fechaFin, QString desgloseGastos, float importe, QString estadoReserva, Habitacion *habitacion)
+Reserva::Reserva(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, int fechaInicio, int fechaFin, QString desgloseGastos, float importe, QString estadoReserva, Habitacion *habitacion)
 {
     this->setNumeroConfiramcion(numeroConfirmacion);
     this->setEstadoReserva(estadoReserva);
@@ -39,13 +39,10 @@ Reserva::Reserva(long long numeroConfirmacion, Cliente *cliente, int cantidadNoc
     this->importe = importe;
 }
 
-void Reserva::setNumeroConfiramcion(long long numeroConfirmacion)
+void Reserva::setNumeroConfiramcion(int numeroConfirmacion)
 {
     if (numeroConfirmacion <= 0)
         throw invalid_argument("El número de confirmación debe ser positivo");
-
-    if ((numeroConfirmacion < 10000000000ll) || (numeroConfirmacion > 99999999999ll))
-        throw invalid_argument("El número de confirmación debe ser de 11 cifras");
 
     this->numeroConfirmacion = numeroConfirmacion;
 }
@@ -66,13 +63,16 @@ void Reserva::setEstadoReserva(QString estadoReserva)
     if (!estadoReservaValido(estadoReserva))
         throw invalid_argument("El estado de la reserva no es un estado válido");
 
-    if (estadoReserva == "En Estadía")
-        this->registarEntrada();
+    if (this->estadoReserva != estadoReserva)
+    {
+        if (estadoReserva == "En Estadía")
+            this->registarEntrada();
 
-    if (estadoReserva == "Estancia Finalizada")
-        this->registarSalida();
+        if (estadoReserva == "Estancia Finalizada")
+            this->registarSalida();
 
-    this->estadoReserva = estadoReserva;
+        this->estadoReserva = estadoReserva;
+    }
 }
 
 void Reserva::setCliente(Cliente *cliente)

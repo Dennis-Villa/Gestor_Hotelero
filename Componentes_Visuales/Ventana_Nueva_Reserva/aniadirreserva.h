@@ -2,6 +2,7 @@
 #define ANIADIRRESERVA_H
 
 #include <QDialog>
+#include <QMessageBox>
 
 #include "Clases/ControladorBD/controladorbd.h"
 

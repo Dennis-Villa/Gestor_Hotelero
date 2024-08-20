@@ -503,48 +503,50 @@ Reserva *ControladorBD::crearReserva(QString estado, int noches, int cliente, in
         Cliente *clienteReserva = this->buscarCliente(cliente);
         Habitacion *habitacionReserva = nullptr;
 
-        if (habitacion != NULL)
-        {
-            habitacionReserva = this->buscarHabitacion(cliente);
-
-            // if (habitacionReserva == nullptr)
-            //     throw invalid_argument("La habitación no existe.");
-        }
-
-        // if (clienteReserva == nullptr)
-        //     throw invalid_argument("El cliente no existe.");
-
         QSqlQuery query(this->bd);
 
-        query.prepare("INSERT INTO reservas (estado_reserva, cantidad_noches,"
-                      "cliente_id, numero_habitacion) VALUES "
-                      "(:estado, :noches, :cliente, :habitacion)");
-        query.bindValue(":estado", estado);
-        query.bindValue(":noches", noches);
-        query.bindValue(":cliente", cliente);
-        query.bindValue(":habitacion", habitacion);
+        if (habitacion != -1)
+        {
+            habitacionReserva = this->buscarHabitacion(habitacion);
+
+            query.prepare("INSERT INTO reservas (estado_reserva, cantidad_noches,"
+                          "cliente_id, numero_habitacion) VALUES "
+                          "(:estado, :noches, :cliente, :habitacion)");
+            query.bindValue(":estado", estado);
+            query.bindValue(":noches", noches);
+            query.bindValue(":cliente", cliente);
+            query.bindValue(":habitacion", habitacion);
+        }
+        else
+        {
+            query.prepare("INSERT INTO reservas (estado_reserva, cantidad_noches,"
+                          "cliente_id) VALUES (:estado, :noches, :cliente)");
+            query.bindValue(":estado", estado);
+            query.bindValue(":noches", noches);
+            query.bindValue(":cliente", cliente);
+        }
 
         if (query.exec())
         {
             qDebug() << "Exito al guardar la reserva en la base de datos";
 
-            long long numeroConfirmacion = query.lastInsertId().toLongLong();
+            int numeroConfirmacion = query.lastInsertId().toInt();
+
+            // Reserva *nuevaReserva = nullptr;
 
             try{
-                Reserva *nuevaReserva = nullptr;
+                // if (habitacionReserva == nullptr)
+                // {
+                //     nuevaReserva = new Reserva(numeroConfirmacion, clienteReserva, noches, estado);
+                // }
+                // else
+                // {
+                //     nuevaReserva = new Reserva(numeroConfirmacion, clienteReserva, noches, habitacionReserva, estado);
+                // }
+                Reserva *nuevaReserva = new Reserva(numeroConfirmacion, clienteReserva, noches, habitacionReserva, estado);
+                qDebug() << (nuevaReserva != nullptr ? nuevaReserva->getNumeroConfirmacion() : 0);
 
-                if (habitacionReserva == nullptr)
-                    nuevaReserva = new Reserva(numeroConfirmacion, clienteReserva, noches, estado);
-
-                else
-                    nuevaReserva = new Reserva(numeroConfirmacion, clienteReserva, noches, habitacionReserva, estado);
-
-                /*
-                 * Terminar
-                 *
-                 */
-
-                return nuevaReserva;
+                return this->cambiarEstadoReserva(numeroConfirmacion, estado);
             }
             catch(invalid_argument &ex)
             {
@@ -558,6 +560,15 @@ Reserva *ControladorBD::crearReserva(QString estado, int noches, int cliente, in
 
                 throw;
             }
+
+            // qDebug() << (nuevaReserva != nullptr ? nuevaReserva->getNumeroConfirmacion() : 0);
+            // if (estado == "En Estadía")
+            // {
+            //     qDebug() << "!!!!!!!!!!!!!Llegue aca exist " << numeroConfirmacion;
+            //     return this->cambiarEstadoReserva(numeroConfirmacion, estado);
+            // }
+
+            // return nuevaReserva;
         }
         else
         {
@@ -569,7 +580,7 @@ Reserva *ControladorBD::crearReserva(QString estado, int noches, int cliente, in
     return nullptr;
 }
 
-Reserva *ControladorBD::buscarReserva(long long numeroConfirmacion)
+Reserva *ControladorBD::buscarReserva(int numeroConfirmacion)
 {
     if (this->abreBD())
     {
@@ -591,15 +602,15 @@ Reserva *ControladorBD::buscarReserva(long long numeroConfirmacion)
                 int inicio = query.value("fecha_inicio").toInt();
                 int fin = query.value("fecha_fin").toInt();
                 int cliente = query.value("cliente_id").toInt();
-                int habitacion = query.value("numero_habitacion").toInt();
+                QVariant habitacion = query.value("numero_habitacion");
                 QString gastos = query.value("desglose_gastos").toString();
                 int importe = query.value("importe").toFloat();
 
                 Cliente *clienteReserva = this->buscarCliente(cliente);
                 Habitacion *habitacionReserva = nullptr;
 
-                if (habitacion != NULL)
-                    habitacionReserva = this->buscarHabitacion(habitacion);
+                if (!habitacion.isNull())
+                    habitacionReserva = this->buscarHabitacion(habitacion.toInt());
 
                 return new Reserva(numeroConfirmacion, clienteReserva, noches, inicio,
                                    fin, gastos, importe, estado, habitacionReserva);
@@ -620,11 +631,16 @@ Reserva *ControladorBD::buscarReserva(long long numeroConfirmacion)
     return nullptr;
 }
 
-Reserva *ControladorBD::cambiarEstadoReserva(long long numeroConfirmacion, QString estado)
+Reserva *ControladorBD::cambiarEstadoReserva(int numeroConfirmacion, QString estado)
 {
     if (this->abreBD())
     {
+        qDebug() << "!!!!!!!!!!!!!Llegue aca " << numeroConfirmacion;
+
         Reserva *reservaACambiar = this->buscarReserva(numeroConfirmacion);
+
+        qDebug() << "!!!!!!!!!!!!!Llegue aca " << reservaACambiar->getNumeroConfirmacion();
+
         reservaACambiar->setEstadoReserva(estado);
 
         int inicio = reservaACambiar->getFechaInicio();
@@ -653,7 +669,7 @@ Reserva *ControladorBD::cambiarEstadoReserva(long long numeroConfirmacion, QStri
     return nullptr;
 }
 
-void ControladorBD::eliminarReserva(long long numeroConfirmacion)
+void ControladorBD::eliminarReserva(int numeroConfirmacion)
 {
     if (this->abreBD())
     {

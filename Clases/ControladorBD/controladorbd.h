@@ -35,11 +35,11 @@ public:
 
 
     Reserva* crearReserva(QString estado, int noches, int cliente,
-                                int habitacion = NULL);
-    Reserva* buscarReserva(long long numeroConfirmacion);
+                                int habitacion = -1);
+    Reserva* buscarReserva(int numeroConfirmacion);
     vector <Reserva> getReservas();
-    Reserva* cambiarEstadoReserva(long long numeroConfirmacion, QString estado);
-    void eliminarReserva(long long numeroConfirmacion);
+    Reserva* cambiarEstadoReserva(int numeroConfirmacion, QString estado);
+    void eliminarReserva(int numeroConfirmacion);
 
 private:
     QSqlDatabase bd;
