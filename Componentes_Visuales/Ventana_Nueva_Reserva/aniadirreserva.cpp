@@ -1,12 +1,15 @@
 #include "aniadirreserva.h"
 #include "ui_aniadirreserva.h"
 
-AniadirReserva::AniadirReserva(vector<Reserva> *reservas, QWidget *parent, ControladorBD *controladorBD)
+AniadirReserva::AniadirReserva(vector<Cliente> *clientes, vector<Habitacion> *habitaciones,
+                               vector<Reserva> *reservas, QWidget *parent, ControladorBD *controladorBD)
     : QDialog(parent)
     , ui(new Ui::AniadirReserva)
 {
     ui->setupUi(this);
 
+    this->clientes = clientes;
+    this->habitaciones = habitaciones;
     this->reservas = reservas;
     this->controladorBD = controladorBD;
     this->ventanaAbierta = false;
@@ -22,6 +25,7 @@ AniadirReserva::~AniadirReserva()
 
 void AniadirReserva::abrirVentana()
 {
+    this->rellenarComboBoxClientes();
     this->ventanaAbierta = true;
 }
 
@@ -90,5 +94,78 @@ void AniadirReserva::on_checkBoxHabitacion_stateChanged(int arg1)
 
     else
         ui->frameHabitacion->setEnabled(false);
+}
+
+void AniadirReserva::rellenarComboBoxClientes()
+{
+    int sizeComboBox = ui->comboBoxCliente->count();
+
+    for (int i = 0; i < (int)this->clientes->size(); i++)
+    {
+        Cliente cliente = this->clientes->at(i);
+
+        int clienteID = cliente.getIdentificador();
+        QString clienteNombre = cliente.getNombre();
+
+        QString mensaje = QString::number(clienteID) + " - " + clienteNombre;
+
+        if (i < sizeComboBox)
+        {
+            if (ui->comboBoxCliente->itemText(i) != mensaje)
+                ui->comboBoxCliente->setItemText(i, mensaje);
+        }
+        else
+            ui->comboBoxCliente->insertItem(i, mensaje);
+    }
+}
+
+void AniadirReserva::rellenarComboBoxClientes(set<int> *clientesID)
+{
+    ui->comboBoxCliente->clear();
+
+    for (Cliente cliente: *this->clientes)
+    {
+        int id = cliente.getIdentificador();
+
+        if(clientesID->count(id) == 1)
+        {
+            QString clienteNombre = cliente.getNombre();
+
+            QString mensaje = QString::number(id) + " - " + clienteNombre;
+
+            ui->comboBoxCliente->addItem(mensaje);
+        }
+    }
+}
+
+
+void AniadirReserva::on_lineEditCliente_textChanged(const QString &arg1)
+{
+    QString busquedaClientes = arg1.trimmed();
+
+    if (busquedaClientes.isEmpty())
+        this->rellenarComboBoxClientes();
+
+    else
+    {
+        set <int> clientesID;
+
+        bool esEntero;
+        int numeroCliente = busquedaClientes.toInt(&esEntero);
+        QString numeroString = QString::number(numeroCliente);
+
+        if (esEntero)
+        {
+            for (Cliente cliente: *this->clientes)
+            {
+                QString clienteStringID = QString::number(cliente.getIdentificador());
+
+                if (clienteStringID.startsWith(numeroString))
+                    clientesID.insert(cliente.getIdentificador());
+            }
+        }
+
+        this->rellenarComboBoxClientes(&clientesID);
+    }
 }
 

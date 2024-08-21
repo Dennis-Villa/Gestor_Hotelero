@@ -13,6 +13,11 @@ VentanaPrincipal::VentanaPrincipal(QWidget *parent)
     this->habitaciones = this->controladorBD->getHabitaciones();
     this->reservas = this->controladorBD->getReservas();
 
+    this->ventanaNuevoCliente = new AniadirCliente(&this->clientes, this, this->controladorBD);
+    this->ventanaNuevaHabitacion = new AniadirHabitacion(&this->habitaciones, this, this->controladorBD);
+    this->ventanaNuevaReserva = new AniadirReserva(&this->clientes, &this->habitaciones,
+                                                   &this->reservas, this, this->controladorBD);
+
     connect(this->ventanaNuevoCliente, &AniadirCliente::cerrarVentana, this, &VentanaPrincipal::cerrarNuevoCliente);
     connect(this->ventanaNuevaHabitacion, &AniadirHabitacion::cerrarVentana, this, &VentanaPrincipal::cerrarNuevaHabitacion);
     connect(this->ventanaNuevaReserva, SIGNAL(cerrarVentana(bool)), this, SLOT(cerrarNuevaReserva(bool)));
@@ -78,8 +83,13 @@ void VentanaPrincipal::crearNuevaReserva()
 void VentanaPrincipal::on_pushButtonDebug_clicked()
 {
     QString mensaje = "Cantidad de clientes: ";
-
     mensaje += QString::number(this->clientes.size());
+
+    mensaje += "\nCantidad de habitaciones: ";
+    mensaje += QString::number(this->habitaciones.size());
+
+    mensaje += "\nCantidad de reservas: ";
+    mensaje += QString::number(this->reservas.size());
 
     QMessageBox::information(this, "Conteo", mensaje);
 }

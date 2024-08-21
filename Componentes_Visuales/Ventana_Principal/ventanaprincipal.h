@@ -50,8 +50,8 @@ private:
     vector<Habitacion> habitaciones;
     vector<Reserva> reservas;
 
-    AniadirCliente *ventanaNuevoCliente = new AniadirCliente(&clientes, this, controladorBD);
-    AniadirHabitacion *ventanaNuevaHabitacion = new AniadirHabitacion(&habitaciones, this, controladorBD);
-    AniadirReserva *ventanaNuevaReserva = new AniadirReserva(&reservas, this, controladorBD);
+    AniadirCliente *ventanaNuevoCliente = nullptr;
+    AniadirHabitacion *ventanaNuevaHabitacion = nullptr;
+    AniadirReserva *ventanaNuevaReserva = nullptr;
 };
 #endif // VENTANAPRINCIPAL_H
