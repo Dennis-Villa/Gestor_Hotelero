@@ -498,7 +498,7 @@ void ControladorBD::eliminarHabitacion(int numero)
 
 
 
-Reserva *ControladorBD::crearReserva(QString estado, int noches, int cliente, int habitacion)
+Reserva *ControladorBD::crearReserva(QString estado, QDate inicio, QDate fin, int noches, int cliente, float importe, int habitacion)
 {
     if (this->abreBD())
     {
@@ -511,21 +511,28 @@ Reserva *ControladorBD::crearReserva(QString estado, int noches, int cliente, in
         {
             habitacionReserva = this->buscarHabitacion(habitacion);
 
-            query.prepare("INSERT INTO reservas (estado_reserva, cantidad_noches,"
-                          "cliente_id, numero_habitacion) VALUES "
-                          "(:estado, :noches, :cliente, :habitacion)");
+            query.prepare("INSERT INTO reservas (estado_reserva,fecha_inicio,fecha_fin,"
+                          "cantidad_noches,cliente_id,importe,numero_habitacion) "
+                          "VALUES (:estado,:inicio,:fin,:noches,:cliente,:importe,:habitacion)");
             query.bindValue(":estado", estado);
+            query.bindValue(":inicio", inicio.toString());
+            query.bindValue(":fin", fin.toString());
             query.bindValue(":noches", noches);
             query.bindValue(":cliente", cliente);
+            query.bindValue(":importe", importe);
             query.bindValue(":habitacion", habitacion);
         }
         else
         {
-            query.prepare("INSERT INTO reservas (estado_reserva, cantidad_noches,"
-                          "cliente_id) VALUES (:estado, :noches, :cliente)");
+            query.prepare("INSERT INTO reservas (estado_reserva,fecha_inicio,fecha_fin,"
+                          "cantidad_noches,cliente_id,importe)"
+                          "VALUES (:estado,:inicio,:fin,:noches,:cliente,:importe)");
             query.bindValue(":estado", estado);
+            query.bindValue(":inicio", inicio.toString());
+            query.bindValue(":fin", fin.toString());
             query.bindValue(":noches", noches);
             query.bindValue(":cliente", cliente);
+            query.bindValue(":importe", importe);
         }
 
         if (query.exec())
@@ -588,8 +595,8 @@ Reserva *ControladorBD::buscarReserva(int numeroConfirmacion)
 
                 QString estado = query.value("estado_reserva").toString();
                 int noches = query.value("cantidad_noches").toInt();
-                int inicio = query.value("fecha_inicio").toInt();
-                int fin = query.value("fecha_fin").toInt();
+                QString inicioString = query.value("fecha_inicio").toString();
+                QString finString = query.value("fecha_fin").toString();
                 int cliente = query.value("cliente_id").toInt();
                 QVariant habitacion = query.value("numero_habitacion");
                 QString gastos = query.value("desglose_gastos").toString();
@@ -600,6 +607,9 @@ Reserva *ControladorBD::buscarReserva(int numeroConfirmacion)
 
                 if (!habitacion.isNull())
                     habitacionReserva = this->buscarHabitacion(habitacion.toInt());
+
+                QDate inicio = QDate::fromString(inicioString);
+                QDate fin = QDate::fromString(finString);
 
                 return new Reserva(numeroConfirmacion, clienteReserva, noches, inicio,
                                    fin, gastos, importe, estado, habitacionReserva);
@@ -641,8 +651,8 @@ vector <Reserva> ControladorBD::getReservas()
                     int numero = query.value("numero_confirmacion").toInt();
                     QString estado = query.value("estado_reserva").toString();
                     int noches = query.value("cantidad_noches").toInt();
-                    int inicio = query.value("fecha_inicio").toInt();
-                    int fin = query.value("fecha_fin").toInt();
+                    QString inicioString = query.value("fecha_inicio").toString();
+                    QString finString = query.value("fecha_fin").toString();
                     int clienteID = query.value("cliente_id").toInt();
                     QVariant numeroHabitacion = query.value("numero_habitacion");
                     QString gastos = query.value("desglose_gastos").toString();
@@ -653,6 +663,9 @@ vector <Reserva> ControladorBD::getReservas()
 
                     if (!numeroHabitacion.isNull())
                         habitacion = this->buscarHabitacion(numeroHabitacion.toInt());
+
+                    QDate inicio = QDate::fromString(inicioString);
+                    QDate fin = QDate::fromString(finString);
 
                     reservas.push_back(Reserva(numero, cliente, noches, inicio, fin,
                                                gastos, importe, estado, habitacion));
@@ -685,15 +698,15 @@ Reserva *ControladorBD::cambiarEstadoReserva(int numeroConfirmacion, QString est
         if (estado == "Estancia Finalizada")
             this->aniadirEstancia(reservaACambiar->getClienteID());
 
-        int inicio = reservaACambiar->getFechaInicio();
-        int fin = reservaACambiar->getFechaFin();
+        QDate inicio = reservaACambiar->getFechaInicio();
+        QDate fin = reservaACambiar->getFechaFin();
 
         QSqlQuery query(this->bd);
         query.prepare("UPDATE reservas SET estado_reserva = :estado, fecha_inicio = :inicio, fecha_fin = :fin WHERE numero_confirmacion = :numeroConfirmacion");
         query.bindValue(":numeroConfirmacion", numeroConfirmacion);
         query.bindValue(":estado", estado);
-        query.bindValue(":inicio", inicio);
-        query.bindValue(":fin", fin);
+        query.bindValue(":inicio", inicio.toString());
+        query.bindValue(":fin", fin.toString());
 
         if (query.exec())
         {

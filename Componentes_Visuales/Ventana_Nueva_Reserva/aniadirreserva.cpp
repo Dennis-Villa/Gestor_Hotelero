@@ -57,7 +57,7 @@ bool AniadirReserva::verificarDisponibilidadHabitacion(int numeroHabitacion, QDa
 {
     for (Reserva reserva: *this->reservas)
     {
-        if (reserva.getNumeroHabitacion() == numeroHabitacion)
+        if (reserva.tieneHabitacion() && reserva.getNumeroHabitacion() == numeroHabitacion)
         {
             if(reserva.getEstadoReserva() == "En Estadía")
             {
@@ -116,6 +116,21 @@ void AniadirReserva::on_pushButtonAniadir_clicked()
 {
     QString estado = ui->comboBoxEstado->currentText();
     int noches = ui->spinBoxNoches->value();
+    int coste = ui->lineEditCoste->text().split(" ")[0].toFloat();
+
+    QDate inicio;
+    if (ui->comboBoxEstado->currentText() == "Confirmado")
+        inicio = ui->dateEditInicio->date();
+    else if (ui->comboBoxEstado->currentText() == "En Estadía")
+        inicio = QDate::currentDate();
+    else
+        inicio.setDate(1970, 1, 1);
+
+    QDate fin;
+    if (inicio.year() != 1970)
+        fin = inicio.addYears(noches);
+    else
+        fin.setDate(1970, 1, 1);
 
     QString cliente = ui->comboBoxCliente->currentText();
     int clienteID = cliente.split(' ')[0].toInt();
@@ -126,16 +141,8 @@ void AniadirReserva::on_pushButtonAniadir_clicked()
 
     Reserva *nuevaReserva = nullptr;
 
-    // Aniadir el coste
-    // if(ui->lineEditCoste->text() != "0,00 €")
-    // {
-    //     int coste = ui->lineEditCoste->text().split(" ")[0].toFloat();
-
-    //     nuevaReserva->AniadirGasto("Coste Habitación", coste);
-    // }
-
     try{
-        nuevaReserva = this->controladorBD->crearReserva(estado, noches, clienteID, habitacion);
+        nuevaReserva = this->controladorBD->crearReserva(estado, inicio, fin, noches, clienteID, coste, habitacion);
     }
     catch(exception &ex)
     {
@@ -275,9 +282,9 @@ void AniadirReserva::actualizarNumerosHabitaciones()
         {
             if (ui->comboBoxEstado->currentText() == "En Estadía")
             {
-                if (!this->verificarDisponibilidadHabitacion(habitacion.getNumeroHabitacion(), QDate::currentDate(),
-                                                            ui->spinBoxNoches->value()))
-                    continue;
+                    if (!this->verificarDisponibilidadHabitacion(habitacion.getNumeroHabitacion(), QDate::currentDate(),
+                                                                ui->spinBoxNoches->value()))
+                        continue;
             }
 
             else if (ui->comboBoxEstado->currentText() == "Confirmado")

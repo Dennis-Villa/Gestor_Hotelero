@@ -38,6 +38,8 @@ public:
     float getImporte();
     vector <pair <QString, float> > getDesgloseGastos(){return this->desgloseGastos;}
 
+    bool tieneHabitacion(){return (this->habitacion == nullptr ? false : true);}
+
     void registarEntrada();
     void registarSalida();
 

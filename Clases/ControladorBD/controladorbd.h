@@ -4,6 +4,7 @@
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
 #include <QString>
+#include <QDate>
 #include <vector>
 
 #include "Clases/Cliente/cliente.h"
@@ -34,8 +35,8 @@ public:
     void eliminarHabitacion(int numero);
 
 
-    Reserva* crearReserva(QString estado, int noches, int cliente,
-                                int habitacion = -1);
+    Reserva* crearReserva(QString estado, QDate inicio, QDate fin, int noches, int cliente,
+                          float importe, int habitacion = -1);
     Reserva* buscarReserva(int numeroConfirmacion);
     vector <Reserva> getReservas();
     Reserva* cambiarEstadoReserva(int numeroConfirmacion, QString estado);
