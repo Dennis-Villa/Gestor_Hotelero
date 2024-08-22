@@ -33,6 +33,7 @@ signals:
 
 private slots:
     void cerrar();
+    void actualizarCoste();
 
     void on_pushButtonAniadir_clicked();
 
@@ -40,9 +41,12 @@ private slots:
 
     void on_lineEditCliente_textChanged(const QString &arg1);
 
+    void on_comboBoxPiso_currentTextChanged(const QString &arg1);
+
 private:
     void rellenarComboBoxClientes();
     void rellenarComboBoxClientes(set<int> *clientesID);
+    void rellenarPisosHabitaciones();
 
     Ui::AniadirReserva *ui;
 

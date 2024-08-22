@@ -26,6 +26,7 @@ public:
     int getNumeroHabitacion(){return this->numeroHabitacion;}
     QString getTipoHabitacion(){return this->tipoHabitacion;}
     int getPiso(){return this->piso;}
+    int getNumero(){return this->numero;}
     int getTamanioM2(){return this->tamanioM2;}
     int getNumeroCamas(){return this->numeroCamas;}
     float getCostePorNoche(){return this->costePorNoche;}
@@ -36,6 +37,7 @@ private:
     int numeroHabitacion;
     QString tipoHabitacion;
     int piso;
+    int numero;
     int tamanioM2;
     int numeroCamas;
     float costePorNoche;

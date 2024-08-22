@@ -16,6 +16,9 @@ AniadirReserva::AniadirReserva(vector<Cliente> *clientes, vector<Habitacion> *ha
 
     connect(ui->pushButtonCerrar, SIGNAL(clicked(bool)), this, SLOT(cerrar()));
     connect(this, SIGNAL(rejected()), this, SLOT(cerrar()));
+    connect(ui->checkBoxHabitacion, SIGNAL(stateChanged(int)), this, SLOT(actualizarCoste()));
+    connect(ui->comboBoxNumero, SIGNAL(currentTextChanged(QString)), this, SLOT(actualizarCoste()));
+    connect(ui->spinBoxNoches, SIGNAL(valueChanged(int)), this, SLOT(actualizarCoste()));
 }
 
 AniadirReserva::~AniadirReserva()
@@ -26,6 +29,7 @@ AniadirReserva::~AniadirReserva()
 void AniadirReserva::abrirVentana()
 {
     this->rellenarComboBoxClientes();
+    this->rellenarPisosHabitaciones();
     this->ventanaAbierta = true;
 }
 
@@ -34,11 +38,11 @@ void AniadirReserva::limpiarVentana()
     ui->comboBoxEstado->setCurrentIndex(0);
     ui->lineEditCliente->clear();
     ui->comboBoxCliente->setCurrentIndex(0);
-    ui->spinBoxPiso->setValue(ui->spinBoxPiso->minimum());
-    ui->spinBoxNumero->setValue(ui->spinBoxNumero->minimum());
     ui->checkBoxHabitacion->setChecked(false);
     ui->spinBoxNoches->setValue(ui->spinBoxNoches->minimum());
     ui->lineEditCoste->setText("0,00 €");
+
+    this->rellenarPisosHabitaciones();
 }
 
 void AniadirReserva::cerrar()
@@ -51,23 +55,50 @@ void AniadirReserva::cerrar()
     }
 }
 
+void AniadirReserva::actualizarCoste()
+{
+    QString valor = "0,00";
+
+    if (ui->checkBoxHabitacion->isChecked())
+    {
+        int numeroHabitacion = ui->comboBoxNumero->currentText().toInt();
+        int cantidadNoches = ui->spinBoxNoches->value();
+
+        for (Habitacion habitacion: *this->habitaciones)
+        {
+            if (habitacion.getNumeroHabitacion() == numeroHabitacion)
+            {
+                int costePorNoche = habitacion.getCostePorNoche();
+
+                valor = QString::number((costePorNoche * cantidadNoches));
+            }
+        }
+    }
+
+    ui->lineEditCoste->setText((valor+" €"));
+}
+
 void AniadirReserva::on_pushButtonAniadir_clicked()
 {
     QString estado = ui->comboBoxEstado->currentText();
     int noches = ui->spinBoxNoches->value();
 
-    QString cliente = ui->lineEditCliente->text();
-    int clienteID = cliente.toInt();
+    QString cliente = ui->comboBoxCliente->currentText();
+    int clienteID = cliente.split(' ')[0].toInt();
 
     int habitacion = -1;
     if (ui->checkBoxHabitacion->isChecked())
-    {
-        int piso = ui->spinBoxPiso->value();
-        int numero = ui->spinBoxNumero->value();
-        habitacion = piso * 100 + numero;
-    }
+        habitacion = ui->comboBoxNumero->currentText().toInt();
 
     Reserva *nuevaReserva = nullptr;
+
+    // Aniadir el coste
+    // if(ui->lineEditCoste->text() != "0,00 €")
+    // {
+    //     int coste = ui->lineEditCoste->text().split(" ")[0].toFloat();
+
+    //     nuevaReserva->AniadirGasto("Coste Habitación", coste);
+    // }
 
     try{
         nuevaReserva = this->controladorBD->crearReserva(estado, noches, clienteID, habitacion);
@@ -138,6 +169,23 @@ void AniadirReserva::rellenarComboBoxClientes(set<int> *clientesID)
     }
 }
 
+void AniadirReserva::rellenarPisosHabitaciones()
+{
+    ui->comboBoxPiso->clear();
+
+    set <int> pisos;
+
+    for (Habitacion habitacion: *this->habitaciones)
+    {
+        int pisoHabitacion = habitacion.getPiso();
+
+        if(pisos.count(pisoHabitacion) == 0)
+            ui->comboBoxPiso->addItem(QString::number(pisoHabitacion));
+
+        pisos.insert(pisoHabitacion);
+    }
+}
+
 
 void AniadirReserva::on_lineEditCliente_textChanged(const QString &arg1)
 {
@@ -152,10 +200,11 @@ void AniadirReserva::on_lineEditCliente_textChanged(const QString &arg1)
 
         bool esEntero;
         int numeroCliente = busquedaClientes.toInt(&esEntero);
-        QString numeroString = QString::number(numeroCliente);
 
         if (esEntero)
         {
+            QString numeroString = QString::number(numeroCliente);
+
             for (Cliente cliente: *this->clientes)
             {
                 QString clienteStringID = QString::number(cliente.getIdentificador());
@@ -165,7 +214,33 @@ void AniadirReserva::on_lineEditCliente_textChanged(const QString &arg1)
             }
         }
 
+        else
+        {
+            for (Cliente cliente: *this->clientes)
+            {
+                QString clienteNombre = cliente.getNombre();
+
+                if (clienteNombre.contains(busquedaClientes))
+                    clientesID.insert(cliente.getIdentificador());
+            }
+        }
+
         this->rellenarComboBoxClientes(&clientesID);
+    }
+}
+
+void AniadirReserva::on_comboBoxPiso_currentTextChanged(const QString &arg1)
+{
+    ui->comboBoxNumero->clear();
+
+    int piso = arg1.toInt();
+
+    for (Habitacion habitacion: *this->habitaciones)
+    {
+        if ((habitacion.getPiso() == piso) && habitacion.getDisponible())
+        {
+            ui->comboBoxNumero->addItem(QString::number(habitacion.getNumeroHabitacion()));
+        }
     }
 }
 

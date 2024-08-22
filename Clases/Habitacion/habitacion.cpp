@@ -11,6 +11,7 @@ Habitacion::Habitacion(int numeroHabitacion, QString tipoHabitacion, int tamanio
     this->setDisponible(true);
 
     this->piso = this->numeroHabitacion / 100;
+    this->numero = this->numeroHabitacion % 100;
 }
 
 Habitacion::Habitacion(int numeroHabitacion, QString tipoHabitacion, int tamanioM2, int numeroCamas, float costePorNoche, bool disponible, bool enArreglos)
@@ -24,6 +25,7 @@ Habitacion::Habitacion(int numeroHabitacion, QString tipoHabitacion, int tamanio
     this->setDisponible(disponible);
 
     this->piso = this->numeroHabitacion / 100;
+    this->numero = this->numeroHabitacion % 100;
 }
 
 void Habitacion::setNumeroHabitacion(int numeroHabitacion)
