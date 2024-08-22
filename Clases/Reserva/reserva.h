@@ -2,7 +2,9 @@
 #define RESERVA_H
 
 #include <QString>
+#include <QDate>
 #include <vector>
+
 #include "stdexcept"
 #include "Archivos_Auxiliares/Funciones_Auxiliares.h"
 #include "Clases/Cliente/cliente.h"
@@ -15,7 +17,9 @@ class Reserva
 public:
     Reserva(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, QString estadoReserva = "Pendiente");
     Reserva(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, Habitacion *habitacion, QString estadoReserva = "Pendiente");
-    Reserva(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, int fechaInicio, int fechaFin,
+    Reserva(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, QDate fechaInicio, QDate fechaFin,
+            QString desgloseGastos, float importe, QString estadoReserva, Habitacion *habitacion = nullptr);
+    Reserva(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, QString fechaInicio, QString fechaFin,
             QString desgloseGastos, float importe, QString estadoReserva, Habitacion *habitacion = nullptr);
 
     void setNumeroConfiramcion(int numeroConfirmacion);
@@ -25,8 +29,9 @@ public:
     void setHabitacion(Habitacion *habitacion);
 
     int getNumeroConfirmacion(){return this->numeroConfirmacion;}
-    int getFechaInicio(){return this->fechaInicio;}
-    int getFechaFin(){return this->fechaFin;}
+    QString getEstadoReserva(){return this->estadoReserva;}
+    QDate getFechaInicio(){return this->fechaInicio;}
+    QDate getFechaFin(){return this->fechaFin;}
     int getClienteID(){return this->cliente->getIdentificador();}
     QString getClienteNombre(){return this->cliente->getNombre();}
     int getNumeroHabitacion(){return this->habitacion->getNumeroHabitacion();}
@@ -44,8 +49,8 @@ private:
     vector < pair <QString, float> > desgloseGastos;
     float importe;
     int cantidadNoches;
-    time_t fechaInicio;
-    time_t fechaFin;
+    QDate fechaInicio;
+    QDate fechaFin;
     Cliente *cliente;
     Habitacion *habitacion;
 };

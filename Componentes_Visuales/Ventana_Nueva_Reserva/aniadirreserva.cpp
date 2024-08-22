@@ -19,6 +19,11 @@ AniadirReserva::AniadirReserva(vector<Cliente> *clientes, vector<Habitacion> *ha
     connect(ui->checkBoxHabitacion, SIGNAL(stateChanged(int)), this, SLOT(actualizarCoste()));
     connect(ui->comboBoxNumero, SIGNAL(currentTextChanged(QString)), this, SLOT(actualizarCoste()));
     connect(ui->spinBoxNoches, SIGNAL(valueChanged(int)), this, SLOT(actualizarCoste()));
+    connect(ui->comboBoxPiso, SIGNAL(currentTextChanged(QString)), this, SLOT(actualizarNumerosHabitaciones()));
+    connect(ui->comboBoxEstado, SIGNAL(currentTextChanged(QString)), this, SLOT(actualizarNumerosHabitaciones()));
+    connect(ui->dateEditInicio, SIGNAL(dateChanged(QDate)), this, SLOT(actualizarNumerosHabitaciones()));
+    connect(ui->spinBoxNoches, SIGNAL(valueChanged(int)), this, SLOT(actualizarNumerosHabitaciones()));
+    connect(ui->comboBoxEstado, SIGNAL(currentTextChanged(QString)), this, SLOT(activarSeleccionFecha()));
 }
 
 AniadirReserva::~AniadirReserva()
@@ -30,6 +35,9 @@ void AniadirReserva::abrirVentana()
 {
     this->rellenarComboBoxClientes();
     this->rellenarPisosHabitaciones();
+
+    ui->dateEditInicio->setDate(QDate::currentDate());
+
     this->ventanaAbierta = true;
 }
 
@@ -43,6 +51,32 @@ void AniadirReserva::limpiarVentana()
     ui->lineEditCoste->setText("0,00 €");
 
     this->rellenarPisosHabitaciones();
+}
+
+bool AniadirReserva::verificarDisponibilidadHabitacion(int numeroHabitacion, QDate inicio, int dias)
+{
+    for (Reserva reserva: *this->reservas)
+    {
+        if (reserva.getNumeroHabitacion() == numeroHabitacion)
+        {
+            if(reserva.getEstadoReserva() == "En Estadía")
+            {
+                if (reserva.getFechaFin() > inicio)
+                    return false;
+            }
+
+            else if (reserva.getEstadoReserva() == "Confirmado")
+            {
+                if (reserva.getFechaInicio() <= inicio && reserva.getFechaFin() > inicio)
+                    return false;
+
+                if (reserva.getFechaInicio() >= inicio && reserva.getFechaInicio() < inicio.addDays(dias))
+                    return false;
+            }
+        }
+    }
+
+    return true;
 }
 
 void AniadirReserva::cerrar()
@@ -229,18 +263,41 @@ void AniadirReserva::on_lineEditCliente_textChanged(const QString &arg1)
     }
 }
 
-void AniadirReserva::on_comboBoxPiso_currentTextChanged(const QString &arg1)
+void AniadirReserva::actualizarNumerosHabitaciones()
 {
     ui->comboBoxNumero->clear();
 
-    int piso = arg1.toInt();
+    int piso = ui->comboBoxPiso->currentText().toInt();
 
     for (Habitacion habitacion: *this->habitaciones)
     {
-        if ((habitacion.getPiso() == piso) && habitacion.getDisponible())
+        if ((habitacion.getPiso() == piso) && !habitacion.getEnArreglos())
         {
+            if (ui->comboBoxEstado->currentText() == "En Estadía")
+            {
+                if (!this->verificarDisponibilidadHabitacion(habitacion.getNumeroHabitacion(), QDate::currentDate(),
+                                                            ui->spinBoxNoches->value()))
+                    continue;
+            }
+
+            else if (ui->comboBoxEstado->currentText() == "Confirmado")
+            {
+                if (!this->verificarDisponibilidadHabitacion(habitacion.getNumeroHabitacion(), ui->dateEditInicio->date(),
+                                                             ui->spinBoxNoches->value()))
+                    continue;
+            }
+
             ui->comboBoxNumero->addItem(QString::number(habitacion.getNumeroHabitacion()));
         }
     }
+}
+
+void AniadirReserva::activarSeleccionFecha()
+{
+    if (ui->comboBoxEstado->currentText() == "Confirmado")
+        ui->dateEditInicio->setEnabled(true);
+
+    else
+        ui->dateEditInicio->setEnabled(false);
 }
 

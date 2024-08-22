@@ -6,8 +6,8 @@ Reserva::Reserva(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, Q
     this->setCliente(cliente);
     this->setCantidadNoches(cantidadNoches);
 
-    this->fechaInicio = 0;
-    this->fechaFin = 0;
+    this->fechaInicio.setDate(1970, 1, 1);
+    this->fechaFin.setDate(1970, 1, 1);
 
     this->setEstadoReserva(estadoReserva);
     this->setHabitacion(nullptr);
@@ -19,14 +19,14 @@ Reserva::Reserva(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, H
     this->setCliente(cliente);
     this->setCantidadNoches(cantidadNoches);
 
-    this->fechaInicio = 0;
-    this->fechaFin = 0;
+    this->fechaInicio.setDate(1970, 1, 1);
+    this->fechaFin.setDate(1970, 1, 1);
 
     this->setEstadoReserva(estadoReserva);
     this->setHabitacion(habitacion);
 }
 
-Reserva::Reserva(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, int fechaInicio, int fechaFin, QString desgloseGastos, float importe, QString estadoReserva, Habitacion *habitacion)
+Reserva::Reserva(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, QDate fechaInicio, QDate fechaFin, QString desgloseGastos, float importe, QString estadoReserva, Habitacion *habitacion)
 {
     this->setNumeroConfiramcion(numeroConfirmacion);
     this->setCliente(cliente);
@@ -36,6 +36,21 @@ Reserva::Reserva(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, i
 
     this->fechaInicio = fechaInicio;
     this->fechaFin = fechaFin;
+
+    this->desgloseGastos = stringGastosToVector(desgloseGastos);
+    this->importe = importe;
+}
+
+Reserva::Reserva(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, QString fechaInicio, QString fechaFin, QString desgloseGastos, float importe, QString estadoReserva, Habitacion *habitacion)
+{
+    this->setNumeroConfiramcion(numeroConfirmacion);
+    this->setCliente(cliente);
+    this->setCantidadNoches(cantidadNoches);
+    this->setEstadoReserva(estadoReserva);
+    this->setHabitacion(habitacion);
+
+    this->fechaInicio = QDate::fromString(fechaInicio);
+    this->fechaFin = QDate::fromString(fechaFin);
 
     this->desgloseGastos = stringGastosToVector(desgloseGastos);
     this->importe = importe;
@@ -60,10 +75,19 @@ void Reserva::setCantidadNoches(int cantidadNoches)
 void Reserva::setEstadoReserva(QString estadoReserva)
 {
     if (estadoReserva.isEmpty())
-        throw invalid_argument("El estado de la reserva no puede estar vacío");
+        throw invalid_argument("El estado de la reserva no puede estar vacío.");
 
     if (!estadoReservaValido(estadoReserva))
-        throw invalid_argument("El estado de la reserva no es un estado válido");
+        throw invalid_argument("El estado de la reserva no es un estado válido.");
+
+    if (estadoReserva == "Confirmado")
+    {
+        if(this->fechaInicio.year() == 1970)
+            throw invalid_argument("La reserva confirmada debe tener una fecha de inicio.");
+
+        if(this->fechaInicio < QDate::currentDate())
+            throw invalid_argument("La reserva confirmada no puede tener una fecha de inicio pasada.");
+    }
 
     if (estadoReserva == "En Estadía")
         this->registarEntrada();
@@ -93,7 +117,7 @@ void Reserva::setHabitacion(Habitacion *habitacion)
 
     else if (habitacion != nullptr)
     {
-        if (!habitacion->getDisponible())
+        if (this->estadoReserva == "En estadía" && !habitacion->getDisponible())
             throw logic_error("La habitación no está disponible.");
 
         this->habitacion = habitacion;
@@ -121,14 +145,13 @@ float Reserva::getImporte()
 
 void Reserva::registarEntrada()
 {
-    this->fechaInicio = time(0);
+    this->fechaInicio = QDate::currentDate();
+    this->fechaFin = this->fechaInicio.addDays(this->cantidadNoches);
 }
 
 void Reserva::registarSalida()
 {
     this->cliente->aniadirEstancia();
-
-    this->fechaFin = time(0);
 }
 
 void Reserva::AniadirGasto(QString nombreServicio, float coste)

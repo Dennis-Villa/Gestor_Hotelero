@@ -2,6 +2,7 @@
 #define ANIADIRRESERVA_H
 
 #include <QDialog>
+#include <QDate>
 #include <QMessageBox>
 #include <vector>
 #include <set>
@@ -27,6 +28,7 @@ public:
 
     void abrirVentana();
     void limpiarVentana();
+    bool verificarDisponibilidadHabitacion(int numeroHabitacion, QDate inicio, int dias);
 
 signals:
     void cerrarVentana(bool cerrar = false);
@@ -34,14 +36,14 @@ signals:
 private slots:
     void cerrar();
     void actualizarCoste();
+    void actualizarNumerosHabitaciones();
+    void activarSeleccionFecha();
 
     void on_pushButtonAniadir_clicked();
 
     void on_checkBoxHabitacion_stateChanged(int arg1);
 
     void on_lineEditCliente_textChanged(const QString &arg1);
-
-    void on_comboBoxPiso_currentTextChanged(const QString &arg1);
 
 private:
     void rellenarComboBoxClientes();

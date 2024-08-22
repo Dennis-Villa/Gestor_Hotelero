@@ -9,9 +9,15 @@ VentanaPrincipal::VentanaPrincipal(QWidget *parent)
 
     ui->dateEditActual->setDate(this->fechaActual);
 
-    this->clientes = this->controladorBD->getClientes();
-    this->habitaciones = this->controladorBD->getHabitaciones();
-    this->reservas = this->controladorBD->getReservas();
+    try{
+        this->clientes = this->controladorBD->getClientes();
+        this->habitaciones = this->controladorBD->getHabitaciones();
+        this->reservas = this->controladorBD->getReservas();
+    }
+    catch(exception &ex)
+    {
+        QMessageBox::critical(this, "Error", ex.what());
+    }
 
     this->ventanaNuevoCliente = new AniadirCliente(&this->clientes, this, this->controladorBD);
     this->ventanaNuevaHabitacion = new AniadirHabitacion(&this->habitaciones, this, this->controladorBD);
