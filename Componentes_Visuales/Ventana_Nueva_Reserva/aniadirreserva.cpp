@@ -128,7 +128,7 @@ void AniadirReserva::on_pushButtonAniadir_clicked()
 
     QDate fin;
     if (inicio.year() != 1970)
-        fin = inicio.addYears(noches);
+        fin = inicio.addDays(noches);
     else
         fin.setDate(1970, 1, 1);
 

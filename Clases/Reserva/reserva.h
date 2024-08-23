@@ -17,6 +17,8 @@ class Reserva
 public:
     Reserva(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, QString estadoReserva = "Pendiente");
     Reserva(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, Habitacion *habitacion, QString estadoReserva = "Pendiente");
+    Reserva(int numeroConfirmacion, Cliente *cliente, QDate fechaInicio, QDate fechaFin, int cantidadNoches,
+            float importe, QString estadoReserva, Habitacion *habitacion = nullptr);
     Reserva(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, QDate fechaInicio, QDate fechaFin,
             QString desgloseGastos, float importe, QString estadoReserva, Habitacion *habitacion = nullptr);
     Reserva(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, QString fechaInicio, QString fechaFin,
@@ -44,6 +46,7 @@ public:
     void registarSalida();
 
     void AniadirGasto(QString nombreServicio, float coste);
+    QString convertirGastosAString();
 
 private:
     int numeroConfirmacion;

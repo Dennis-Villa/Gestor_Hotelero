@@ -26,16 +26,32 @@ Reserva::Reserva(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, H
     this->setHabitacion(habitacion);
 }
 
+Reserva::Reserva(int numeroConfirmacion, Cliente *cliente, QDate fechaInicio, QDate fechaFin, int cantidadNoches, float importe, QString estadoReserva, Habitacion *habitacion)
+{
+    this->setNumeroConfiramcion(numeroConfirmacion);
+    this->setCliente(cliente);
+    this->setCantidadNoches(cantidadNoches);
+
+    this->fechaInicio = fechaInicio;
+    this->fechaFin = fechaFin;
+
+    this->setEstadoReserva(estadoReserva);
+    this->setHabitacion(habitacion);
+
+    this->AniadirGasto("Reserva",importe);
+}
+
 Reserva::Reserva(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, QDate fechaInicio, QDate fechaFin, QString desgloseGastos, float importe, QString estadoReserva, Habitacion *habitacion)
 {
     this->setNumeroConfiramcion(numeroConfirmacion);
     this->setCliente(cliente);
     this->setCantidadNoches(cantidadNoches);
-    this->setEstadoReserva(estadoReserva);
-    this->setHabitacion(habitacion);
 
     this->fechaInicio = fechaInicio;
     this->fechaFin = fechaFin;
+
+    this->setEstadoReserva(estadoReserva);
+    this->setHabitacion(habitacion);
 
     this->desgloseGastos = stringGastosToVector(desgloseGastos);
     this->importe = importe;
@@ -46,11 +62,12 @@ Reserva::Reserva(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, Q
     this->setNumeroConfiramcion(numeroConfirmacion);
     this->setCliente(cliente);
     this->setCantidadNoches(cantidadNoches);
-    this->setEstadoReserva(estadoReserva);
-    this->setHabitacion(habitacion);
 
     this->fechaInicio = QDate::fromString(fechaInicio);
     this->fechaFin = QDate::fromString(fechaFin);
+
+    this->setEstadoReserva(estadoReserva);
+    this->setHabitacion(habitacion);
 
     this->desgloseGastos = stringGastosToVector(desgloseGastos);
     this->importe = importe;
@@ -166,4 +183,17 @@ void Reserva::AniadirGasto(QString nombreServicio, float coste)
 
     this->desgloseGastos.push_back({nombreServicio, costeDosDecimales});
     this->importe += costeDosDecimales;
+}
+
+QString Reserva::convertirGastosAString()
+{
+    QString gastosString = "";
+
+    for (pair <QString, float> gasto: this->desgloseGastos)
+    {
+        gastosString += "{" + gasto.first + ",";
+        gastosString += QString::number(gasto.second) + "}" + ",";
+    }
+
+    return gastosString;
 }

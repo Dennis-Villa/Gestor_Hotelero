@@ -544,11 +544,11 @@ Reserva *ControladorBD::crearReserva(QString estado, QDate inicio, QDate fin, in
             try{
                 if (habitacionReserva == nullptr)
                 {
-                    new Reserva(numeroConfirmacion, clienteReserva, noches, estado);
+                    new Reserva(numeroConfirmacion, clienteReserva, inicio, fin, noches, importe, estado);
                 }
                 else
                 {
-                    new Reserva(numeroConfirmacion, clienteReserva, noches, habitacionReserva, estado);
+                    new Reserva(numeroConfirmacion, clienteReserva, inicio, fin, noches, importe, estado, habitacionReserva);
                 }
 
                 return this->cambiarEstadoReserva(numeroConfirmacion, estado);
@@ -608,11 +608,8 @@ Reserva *ControladorBD::buscarReserva(int numeroConfirmacion)
                 if (!habitacion.isNull())
                     habitacionReserva = this->buscarHabitacion(habitacion.toInt());
 
-                QDate inicio = QDate::fromString(inicioString);
-                QDate fin = QDate::fromString(finString);
-
-                return new Reserva(numeroConfirmacion, clienteReserva, noches, inicio,
-                                   fin, gastos, importe, estado, habitacionReserva);
+                return new Reserva(numeroConfirmacion, clienteReserva, noches, inicioString,
+                                   finString, gastos, importe, estado, habitacionReserva);
             }
             else
             {
@@ -700,13 +697,17 @@ Reserva *ControladorBD::cambiarEstadoReserva(int numeroConfirmacion, QString est
 
         QDate inicio = reservaACambiar->getFechaInicio();
         QDate fin = reservaACambiar->getFechaFin();
+        QString gastos = reservaACambiar->convertirGastosAString();
 
         QSqlQuery query(this->bd);
-        query.prepare("UPDATE reservas SET estado_reserva = :estado, fecha_inicio = :inicio, fecha_fin = :fin WHERE numero_confirmacion = :numeroConfirmacion");
+        query.prepare("UPDATE reservas SET estado_reserva = :estado, fecha_inicio = :inicio,"
+                      "fecha_fin = :fin, desglose_gastos = :gastos"
+                      "WHERE numero_confirmacion = :numeroConfirmacion");
         query.bindValue(":numeroConfirmacion", numeroConfirmacion);
         query.bindValue(":estado", estado);
         query.bindValue(":inicio", inicio.toString());
         query.bindValue(":fin", fin.toString());
+        query.bindValue(":gastos", gastos);
 
         if (query.exec())
         {
