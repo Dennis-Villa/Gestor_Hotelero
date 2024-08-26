@@ -7,6 +7,23 @@ VentanaPrincipal::VentanaPrincipal(QWidget *parent)
 {
     ui->setupUi(this);
 
+    this->iniciarVentana();
+
+    connect(this->ventanaNuevoCliente, &AniadirCliente::cerrarVentana, this, &VentanaPrincipal::cerrarNuevoCliente);
+    connect(this->ventanaNuevaHabitacion, &AniadirHabitacion::cerrarVentana, this, &VentanaPrincipal::cerrarNuevaHabitacion);
+    connect(this->ventanaNuevaReserva, SIGNAL(cerrarVentana(bool)), this, SLOT(cerrarNuevaReserva(bool)));
+    connect(ui->pushButtonNuevaReserva, SIGNAL(clicked()), this, SLOT(crearNuevaReserva()));
+    connect(ui->actionReserva, SIGNAL(triggered()), this, SLOT(crearNuevaReserva()));
+    connect(ui->dateEditActual, SIGNAL(userDateChanged(QDate)), this, SLOT(llenarLlegadasHoy()));
+}
+
+VentanaPrincipal::~VentanaPrincipal()
+{
+    delete ui;
+}
+
+void VentanaPrincipal::iniciarVentana()
+{
     ui->dateEditActual->setDate(this->fechaActual);
 
     try{
@@ -24,16 +41,60 @@ VentanaPrincipal::VentanaPrincipal(QWidget *parent)
     this->ventanaNuevaReserva = new AniadirReserva(&this->clientes, &this->habitaciones,
                                                    &this->reservas, this, this->controladorBD);
 
-    connect(this->ventanaNuevoCliente, &AniadirCliente::cerrarVentana, this, &VentanaPrincipal::cerrarNuevoCliente);
-    connect(this->ventanaNuevaHabitacion, &AniadirHabitacion::cerrarVentana, this, &VentanaPrincipal::cerrarNuevaHabitacion);
-    connect(this->ventanaNuevaReserva, SIGNAL(cerrarVentana(bool)), this, SLOT(cerrarNuevaReserva(bool)));
-    connect(ui->pushButtonNuevaReserva, SIGNAL(clicked()), this, SLOT(crearNuevaReserva()));
-    connect(ui->actionReserva, SIGNAL(triggered()), this, SLOT(crearNuevaReserva()));
+    this->llenarLlegadasHoy();
 }
 
-VentanaPrincipal::~VentanaPrincipal()
+void VentanaPrincipal::llenarTablaReserva(QDate fechaComparacion, QTableWidget *tableWidget)
 {
-    delete ui;
+    tableWidget->setRowCount(0);
+    int fila = 0;
+
+    for (Reserva reserva: this->reservas)
+    {
+        if(reserva.getFechaInicio() == fechaComparacion)
+        {
+            tableWidget->insertRow(fila);
+
+            QTableWidgetItem *clienteItem = new QTableWidgetItem(tr("%1").arg(reserva.getClienteNombre()));
+            QTableWidgetItem *confirmacionItem = new QTableWidgetItem(tr("%1").arg(reserva.getNumeroConfirmacion()));
+            QTableWidgetItem *habitacionItem = new QTableWidgetItem(tr("%1").arg(reserva.getNumeroHabitacion()));
+
+            tableWidget->setItem(fila, 0, clienteItem);
+            tableWidget->setItem(fila, 1, confirmacionItem);
+            tableWidget->setItem(fila, 2, habitacionItem);
+
+            fila++;
+        }
+    }
+}
+
+void VentanaPrincipal::llenarLlegadasHoy()
+{
+    this->llenarTablaReserva(ui->dateEditActual->date(), ui->tableWidgetLlegadasHoy);
+
+    // ui->tableWidgetLlegadasHoy->setRowCount(0);
+    // int fila = 0;
+
+    // for (Reserva reserva: this->reservas)
+    // {
+    //     if(reserva.getFechaInicio() == ui->dateEditActual->date())
+    //     {
+    //         ui->tableWidgetLlegadasHoy->insertRow(fila);
+
+    //         // int numeroConfirmacion = reserva.getNumeroConfirmacion();
+    //         // int habitacion = reserva.getNumeroHabitacion();
+
+    //         QTableWidgetItem *clienteItem = new QTableWidgetItem(tr("%1").arg(reserva.getClienteNombre()));
+    //         QTableWidgetItem *confirmacionItem = new QTableWidgetItem(tr("%1").arg(reserva.getNumeroConfirmacion()));
+    //         QTableWidgetItem *habitacionItem = new QTableWidgetItem(tr("%1").arg(reserva.getNumeroHabitacion()));
+
+    //         ui->tableWidgetLlegadasHoy->setItem(fila, 0, clienteItem);
+    //         ui->tableWidgetLlegadasHoy->setItem(fila, 1, confirmacionItem);
+    //         ui->tableWidgetLlegadasHoy->setItem(fila, 2, habitacionItem);
+
+    //         fila++;
+    //     }
+    // }
 }
 
 void VentanaPrincipal::cerrarNuevoCliente(bool cerrar)

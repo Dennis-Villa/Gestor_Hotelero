@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QDateTime>
+#include <QTableWidget>
 #include <vector>
 
 #include "Clases/ControladorBD/controladorbd.h"
@@ -27,6 +28,9 @@ public:
     VentanaPrincipal(QWidget *parent = nullptr);
     ~VentanaPrincipal();
 
+    void iniciarVentana();
+    void llenarTablaReserva(QDate fechaComparacion, QTableWidget *tableWidget);
+
 private slots:
     void on_actionCliente_triggered();
 
@@ -39,6 +43,9 @@ private slots:
     void cerrarNuevaReserva(bool cerrar = false);
 
     void on_pushButtonDebug_clicked();
+
+public slots:
+    void llenarLlegadasHoy();
 
 private:
     Ui::VentanaPrincipal *ui;

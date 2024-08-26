@@ -99,7 +99,7 @@
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QTabWidget" name="tabWidget">
+         <widget class="QTabWidget" name="tabWidgetReservas">
           <property name="focusPolicy">
            <enum>Qt::FocusPolicy::TabFocus</enum>
           </property>
@@ -130,9 +130,9 @@
            </attribute>
            <layout class="QVBoxLayout" name="verticalLayout_3">
             <item>
-             <widget class="QTabWidget" name="tabWidget_3">
+             <widget class="QTabWidget" name="tabWidgetLlegadas">
               <property name="currentIndex">
-               <number>1</number>
+               <number>0</number>
               </property>
               <widget class="QWidget" name="tabLlegadasHoy">
                <attribute name="title">
@@ -140,39 +140,41 @@
                </attribute>
                <layout class="QVBoxLayout" name="verticalLayout_5">
                 <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_2">
-                  <item>
-                   <widget class="QLabel" name="label_3">
-                    <property name="text">
-                     <string>Cliente</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLabel" name="label_4">
-                    <property name="text">
-                     <string># Confirmación</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLabel" name="label_5">
-                    <property name="text">
-                     <string>Habitación</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLabel" name="label_6">
-                    <property name="text">
-                     <string>Estado</string>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </item>
-                <item>
-                 <widget class="QTableView" name="tableView"/>
+                 <widget class="QTableWidget" name="tableWidgetLlegadasHoy">
+                  <property name="rowCount">
+                   <number>0</number>
+                  </property>
+                  <property name="columnCount">
+                   <number>3</number>
+                  </property>
+                  <attribute name="horizontalHeaderCascadingSectionResizes">
+                   <bool>false</bool>
+                  </attribute>
+                  <attribute name="horizontalHeaderDefaultSectionSize">
+                   <number>110</number>
+                  </attribute>
+                  <attribute name="verticalHeaderShowSortIndicator" stdset="0">
+                   <bool>false</bool>
+                  </attribute>
+                  <attribute name="verticalHeaderStretchLastSection">
+                   <bool>false</bool>
+                  </attribute>
+                  <column>
+                   <property name="text">
+                    <string>Cliente</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string># Confirmación</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>Habitación</string>
+                   </property>
+                  </column>
+                 </widget>
                 </item>
                </layout>
               </widget>
@@ -182,39 +184,41 @@
                </attribute>
                <layout class="QVBoxLayout" name="verticalLayout_6">
                 <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_3">
-                  <item>
-                   <widget class="QLabel" name="label_7">
-                    <property name="text">
-                     <string>Cliente</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLabel" name="label_8">
-                    <property name="text">
-                     <string># Confirmación</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLabel" name="label_9">
-                    <property name="text">
-                     <string>Habitación</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLabel" name="label_10">
-                    <property name="text">
-                     <string>Estado</string>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </item>
-                <item>
-                 <widget class="QTableView" name="tableView_2"/>
+                 <widget class="QTableWidget" name="tableWidgetLlegadasManiana">
+                  <property name="rowCount">
+                   <number>0</number>
+                  </property>
+                  <property name="columnCount">
+                   <number>3</number>
+                  </property>
+                  <attribute name="horizontalHeaderCascadingSectionResizes">
+                   <bool>false</bool>
+                  </attribute>
+                  <attribute name="horizontalHeaderDefaultSectionSize">
+                   <number>110</number>
+                  </attribute>
+                  <attribute name="verticalHeaderShowSortIndicator" stdset="0">
+                   <bool>false</bool>
+                  </attribute>
+                  <attribute name="verticalHeaderStretchLastSection">
+                   <bool>false</bool>
+                  </attribute>
+                  <column>
+                   <property name="text">
+                    <string>Cliente</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string># Confirmación</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>Habitación</string>
+                   </property>
+                  </column>
+                 </widget>
                 </item>
                </layout>
               </widget>

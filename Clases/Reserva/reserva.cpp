@@ -130,6 +130,9 @@ void Reserva::setHabitacion(Habitacion *habitacion)
     {
         if (habitacion == nullptr)
             throw invalid_argument("La habitación no puede ser un puntero nulo.");
+
+        this->habitacion = habitacion;
+        this->habitacion->setDisponible(false);
     }
 
     else if (habitacion != nullptr)
