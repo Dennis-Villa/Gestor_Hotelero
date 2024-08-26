@@ -5,6 +5,7 @@
 #include <QtSql/QSqlQuery>
 #include <QString>
 #include <QDate>
+#include <QSqlError>
 #include <vector>
 
 #include "Clases/Cliente/cliente.h"
@@ -40,6 +41,7 @@ public:
     Reserva* buscarReserva(int numeroConfirmacion);
     vector <Reserva> getReservas();
     Reserva* cambiarEstadoReserva(int numeroConfirmacion, QString estado);
+    Reserva* aniadirGasto(int numeroConfirmacion, QString gasto, float importe);
     void eliminarReserva(int numeroConfirmacion);
 
 private:

@@ -551,7 +551,8 @@ Reserva *ControladorBD::crearReserva(QString estado, QDate inicio, QDate fin, in
                     new Reserva(numeroConfirmacion, clienteReserva, inicio, fin, noches, importe, estado, habitacionReserva);
                 }
 
-                return this->cambiarEstadoReserva(numeroConfirmacion, estado);
+                this->cambiarEstadoReserva(numeroConfirmacion, estado);
+                return this->aniadirGasto(numeroConfirmacion, "Reserva Habitación", importe);
             }
             catch(invalid_argument &ex)
             {
@@ -695,19 +696,15 @@ Reserva *ControladorBD::cambiarEstadoReserva(int numeroConfirmacion, QString est
         if (estado == "Estancia Finalizada")
             this->aniadirEstancia(reservaACambiar->getClienteID());
 
-        QDate inicio = reservaACambiar->getFechaInicio();
-        QDate fin = reservaACambiar->getFechaFin();
-        QString gastos = reservaACambiar->convertirGastosAString();
+        QString inicio = reservaACambiar->getFechaInicio().toString();
+        QString fin = reservaACambiar->getFechaFin().toString();
 
         QSqlQuery query(this->bd);
-        query.prepare("UPDATE reservas SET estado_reserva = :estado, fecha_inicio = :inicio,"
-                      "fecha_fin = :fin, desglose_gastos = :gastos"
-                      "WHERE numero_confirmacion = :numeroConfirmacion");
+        query.prepare("UPDATE reservas SET estado_reserva = :estado, fecha_inicio = :inicio, fecha_fin = :fin WHERE numero_confirmacion = :numeroConfirmacion");
         query.bindValue(":numeroConfirmacion", numeroConfirmacion);
         query.bindValue(":estado", estado);
-        query.bindValue(":inicio", inicio.toString());
-        query.bindValue(":fin", fin.toString());
-        query.bindValue(":gastos", gastos);
+        query.bindValue(":inicio", inicio);
+        query.bindValue(":fin", fin);
 
         if (query.exec())
         {
@@ -717,8 +714,42 @@ Reserva *ControladorBD::cambiarEstadoReserva(int numeroConfirmacion, QString est
         }
         else
         {
-            throw runtime_error("Fallo al modificar el estado de la reserva.");
-            qDebug() << "Fallo al modificar el estado de la reserva.";
+            QSqlError error = query.lastError();
+            QString errorText = "Fallo al modificar el estado de la reserva: " + error.text();
+            qDebug() << errorText;
+            throw runtime_error("Fallo al modificar el estado de la reserva");
+        }
+    }
+
+    return nullptr;
+}
+
+Reserva *ControladorBD::aniadirGasto(int numeroConfirmacion, QString gasto, float importe)
+{
+    if (this->abreBD())
+    {
+        Reserva *reservaACambiar = this->buscarReserva(numeroConfirmacion);
+        reservaACambiar->AniadirGasto(gasto, importe);
+
+        QString gastos = reservaACambiar->convertirGastosAString();
+
+        QSqlQuery query(this->bd);
+        query.prepare("UPDATE reservas SET desglose_gastos = :gastos WHERE numero_confirmacion = :numeroConfirmacion");
+        query.bindValue(":numeroConfirmacion", numeroConfirmacion);
+        query.bindValue(":gastos", gastos);
+
+        if (query.exec())
+        {
+            qDebug() << "Exito al modificar los gastos de la reserva.";
+
+            return reservaACambiar;
+        }
+        else
+        {
+            QSqlError error = query.lastError();
+            QString errorText = "Fallo al modificar los gastos de la reserva: " + error.text();
+            qDebug() << errorText;
+            throw runtime_error("Fallo al modificar los gastos de la reserva");
         }
     }
 
