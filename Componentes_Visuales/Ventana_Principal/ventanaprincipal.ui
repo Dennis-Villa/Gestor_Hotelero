@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>1217</width>
     <height>600</height>
    </rect>
   </property>
@@ -110,7 +110,7 @@
            <enum>QTabWidget::TabShape::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>0</number>
           </property>
           <property name="elideMode">
            <enum>Qt::TextElideMode::ElideNone</enum>
@@ -407,8 +407,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
-     <height>17</height>
+     <width>1217</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuA_adir">
@@ -419,7 +419,15 @@
     <addaction name="actionHabitacion"/>
     <addaction name="actionReserva"/>
    </widget>
+   <widget class="QMenu" name="menuRegistrar">
+    <property name="title">
+     <string>Registrar</string>
+    </property>
+    <addaction name="actionEntrada"/>
+    <addaction name="actionSalida"/>
+   </widget>
    <addaction name="menuA_adir"/>
+   <addaction name="menuRegistrar"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionCliente">
@@ -435,6 +443,16 @@
   <action name="actionReserva">
    <property name="text">
     <string>Reserva</string>
+   </property>
+  </action>
+  <action name="actionEntrada">
+   <property name="text">
+    <string>Entrada</string>
+   </property>
+  </action>
+  <action name="actionSalida">
+   <property name="text">
+    <string>Salida</string>
    </property>
   </action>
  </widget>

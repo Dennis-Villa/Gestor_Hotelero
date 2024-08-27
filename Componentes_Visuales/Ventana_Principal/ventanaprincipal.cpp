@@ -12,9 +12,14 @@ VentanaPrincipal::VentanaPrincipal(QWidget *parent)
     connect(this->ventanaNuevoCliente, &AniadirCliente::cerrarVentana, this, &VentanaPrincipal::cerrarNuevoCliente);
     connect(this->ventanaNuevaHabitacion, &AniadirHabitacion::cerrarVentana, this, &VentanaPrincipal::cerrarNuevaHabitacion);
     connect(this->ventanaNuevaReserva, SIGNAL(cerrarVentana(bool)), this, SLOT(cerrarNuevaReserva(bool)));
-    connect(ui->pushButtonNuevaReserva, SIGNAL(clicked()), this, SLOT(crearNuevaReserva()));
+    connect(this->ventanaRegistrarEntrada, SIGNAL(cerrarVentana(bool)), this, SLOT(cerrarRegistrarEntrada(bool)));
+
     connect(ui->actionReserva, SIGNAL(triggered()), this, SLOT(crearNuevaReserva()));
+    connect(ui->actionEntrada, SIGNAL(triggered()), this, SLOT(registrarNuevaEntrada()));
+
+    connect(ui->pushButtonNuevaReserva, SIGNAL(clicked()), this, SLOT(crearNuevaReserva()));
     connect(ui->dateEditActual, SIGNAL(userDateChanged(QDate)), this, SLOT(llenarInfoReservas()));
+    connect(ui->tableWidgetLlegadasHoy, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(registrarNuevaEntrada(int,int)));
 }
 
 VentanaPrincipal::~VentanaPrincipal()
@@ -40,6 +45,7 @@ void VentanaPrincipal::iniciarVentana()
     this->ventanaNuevaHabitacion = new AniadirHabitacion(&this->habitaciones, this, this->controladorBD);
     this->ventanaNuevaReserva = new AniadirReserva(&this->clientes, &this->habitaciones,
                                                    &this->reservas, this, this->controladorBD);
+    this->ventanaRegistrarEntrada = new RegistrarEntrada(&this->reservas, this->controladorBD, this);
 
     this->llenarInfoReservas();
 }
@@ -142,6 +148,29 @@ void VentanaPrincipal::cerrarNuevaReserva(bool cerrar)
         this->ventanaNuevaReserva->close();
         ui->centralwidget->setDisabled(false);
     }
+}
+
+void VentanaPrincipal::cerrarRegistrarEntrada(bool cerrar)
+{
+    if (cerrar)
+    {
+        this->ventanaRegistrarEntrada->close();
+        ui->centralwidget->setDisabled(false);
+    }
+}
+
+void VentanaPrincipal::registrarNuevaEntrada(int fila, int columna)
+{
+    if((ui->dateEditActual->date() == QDate::currentDate()) && (fila != -1) && (columna != -1))
+    {
+        QString cliente = ui->tableWidgetLlegadasHoy->item(fila, 0)->text();
+
+        this->ventanaRegistrarEntrada->establecerCliente(cliente);
+    }
+
+    ui->centralwidget->setDisabled(true);
+    this->ventanaRegistrarEntrada->show();
+    this->ventanaRegistrarEntrada->abrirVentana();
 }
 
 void VentanaPrincipal::on_actionCliente_triggered()

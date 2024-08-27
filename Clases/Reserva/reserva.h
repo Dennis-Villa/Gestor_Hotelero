@@ -34,6 +34,7 @@ public:
     QString getEstadoReserva(){return this->estadoReserva;}
     QDate getFechaInicio(){return this->fechaInicio;}
     QDate getFechaFin(){return this->fechaFin;}
+    int getCantidadNoches(){return this->cantidadNoches;}
     int getClienteID(){return this->cliente->getIdentificador();}
     QString getClienteNombre(){return this->cliente->getNombre();}
     int getNumeroHabitacion(){return this->habitacion->getNumeroHabitacion();}
