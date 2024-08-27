@@ -14,7 +14,7 @@
    <string>VentanaPrincipal</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <layout class="QVBoxLayout" name="verticalLayout_7">
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
@@ -110,7 +110,7 @@
            <enum>QTabWidget::TabShape::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <property name="elideMode">
            <enum>Qt::TextElideMode::ElideNone</enum>
@@ -151,7 +151,7 @@
                    <bool>false</bool>
                   </attribute>
                   <attribute name="horizontalHeaderDefaultSectionSize">
-                   <number>110</number>
+                   <number>200</number>
                   </attribute>
                   <attribute name="verticalHeaderShowSortIndicator" stdset="0">
                    <bool>false</bool>
@@ -195,7 +195,7 @@
                    <bool>false</bool>
                   </attribute>
                   <attribute name="horizontalHeaderDefaultSectionSize">
-                   <number>110</number>
+                   <number>200</number>
                   </attribute>
                   <attribute name="verticalHeaderShowSortIndicator" stdset="0">
                    <bool>false</bool>
@@ -232,7 +232,7 @@
            </attribute>
            <layout class="QVBoxLayout" name="verticalLayout_4">
             <item>
-             <widget class="QTabWidget" name="tabWidget_4">
+             <widget class="QTabWidget" name="tabWidgetSalidas">
               <property name="currentIndex">
                <number>0</number>
               </property>
@@ -240,11 +240,89 @@
                <attribute name="title">
                 <string>Hoy</string>
                </attribute>
+               <layout class="QVBoxLayout" name="verticalLayout_2">
+                <item>
+                 <widget class="QTableWidget" name="tableWidgetSalidasHoy">
+                  <property name="rowCount">
+                   <number>0</number>
+                  </property>
+                  <property name="columnCount">
+                   <number>3</number>
+                  </property>
+                  <attribute name="horizontalHeaderCascadingSectionResizes">
+                   <bool>false</bool>
+                  </attribute>
+                  <attribute name="horizontalHeaderDefaultSectionSize">
+                   <number>200</number>
+                  </attribute>
+                  <attribute name="verticalHeaderShowSortIndicator" stdset="0">
+                   <bool>false</bool>
+                  </attribute>
+                  <attribute name="verticalHeaderStretchLastSection">
+                   <bool>false</bool>
+                  </attribute>
+                  <column>
+                   <property name="text">
+                    <string>Cliente</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string># Confirmación</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>Habitación</string>
+                   </property>
+                  </column>
+                 </widget>
+                </item>
+               </layout>
               </widget>
               <widget class="QWidget" name="tabSalidasManiana">
                <attribute name="title">
                 <string>Mañana</string>
                </attribute>
+               <layout class="QVBoxLayout" name="verticalLayout_8">
+                <item>
+                 <widget class="QTableWidget" name="tableWidgetSalidasManiana">
+                  <property name="rowCount">
+                   <number>0</number>
+                  </property>
+                  <property name="columnCount">
+                   <number>3</number>
+                  </property>
+                  <attribute name="horizontalHeaderCascadingSectionResizes">
+                   <bool>false</bool>
+                  </attribute>
+                  <attribute name="horizontalHeaderDefaultSectionSize">
+                   <number>200</number>
+                  </attribute>
+                  <attribute name="verticalHeaderShowSortIndicator" stdset="0">
+                   <bool>false</bool>
+                  </attribute>
+                  <attribute name="verticalHeaderStretchLastSection">
+                   <bool>false</bool>
+                  </attribute>
+                  <column>
+                   <property name="text">
+                    <string>Cliente</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string># Confirmación</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>Habitación</string>
+                   </property>
+                  </column>
+                 </widget>
+                </item>
+               </layout>
               </widget>
              </widget>
             </item>
@@ -254,6 +332,50 @@
            <attribute name="title">
             <string>Ocupación Actual</string>
            </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_9">
+            <item>
+             <widget class="QTableWidget" name="tableWidgetOcupacion">
+              <property name="rowCount">
+               <number>0</number>
+              </property>
+              <property name="columnCount">
+               <number>4</number>
+              </property>
+              <attribute name="horizontalHeaderCascadingSectionResizes">
+               <bool>false</bool>
+              </attribute>
+              <attribute name="horizontalHeaderDefaultSectionSize">
+               <number>150</number>
+              </attribute>
+              <attribute name="verticalHeaderShowSortIndicator" stdset="0">
+               <bool>false</bool>
+              </attribute>
+              <attribute name="verticalHeaderStretchLastSection">
+               <bool>false</bool>
+              </attribute>
+              <column>
+               <property name="text">
+                <string>Habitación</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Cliente</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Fecha Salida</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Importe</string>
+               </property>
+              </column>
+             </widget>
+            </item>
+           </layout>
           </widget>
          </widget>
         </item>
@@ -286,7 +408,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>17</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuA_adir">

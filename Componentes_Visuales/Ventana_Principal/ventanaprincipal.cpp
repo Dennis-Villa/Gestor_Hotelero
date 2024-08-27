@@ -14,7 +14,7 @@ VentanaPrincipal::VentanaPrincipal(QWidget *parent)
     connect(this->ventanaNuevaReserva, SIGNAL(cerrarVentana(bool)), this, SLOT(cerrarNuevaReserva(bool)));
     connect(ui->pushButtonNuevaReserva, SIGNAL(clicked()), this, SLOT(crearNuevaReserva()));
     connect(ui->actionReserva, SIGNAL(triggered()), this, SLOT(crearNuevaReserva()));
-    connect(ui->dateEditActual, SIGNAL(userDateChanged(QDate)), this, SLOT(llenarLlegadasHoy()));
+    connect(ui->dateEditActual, SIGNAL(userDateChanged(QDate)), this, SLOT(llenarInfoReservas()));
 }
 
 VentanaPrincipal::~VentanaPrincipal()
@@ -41,60 +41,80 @@ void VentanaPrincipal::iniciarVentana()
     this->ventanaNuevaReserva = new AniadirReserva(&this->clientes, &this->habitaciones,
                                                    &this->reservas, this, this->controladorBD);
 
-    this->llenarLlegadasHoy();
+    this->llenarInfoReservas();
 }
 
-void VentanaPrincipal::llenarTablaReserva(QDate fechaComparacion, QTableWidget *tableWidget)
+void VentanaPrincipal::llenarTablaReserva(QDate fechaComparacion, QDate fechaActual, Reserva reserva, QTableWidget *tableWidget, int *fila)
 {
-    tableWidget->setRowCount(0);
-    int fila = 0;
-
-    for (Reserva reserva: this->reservas)
+    if(fechaActual == fechaComparacion)
     {
-        if(reserva.getFechaInicio() == fechaComparacion)
-        {
-            tableWidget->insertRow(fila);
+        tableWidget->insertRow(*fila);
 
-            QTableWidgetItem *clienteItem = new QTableWidgetItem(tr("%1").arg(reserva.getClienteNombre()));
-            QTableWidgetItem *confirmacionItem = new QTableWidgetItem(tr("%1").arg(reserva.getNumeroConfirmacion()));
-            QTableWidgetItem *habitacionItem = new QTableWidgetItem(tr("%1").arg(reserva.getNumeroHabitacion()));
+        QTableWidgetItem *clienteItem = new QTableWidgetItem(tr("%1").arg(reserva.getClienteNombre()));
+        QTableWidgetItem *confirmacionItem = new QTableWidgetItem(tr("%1").arg(reserva.getNumeroConfirmacion()));
+        QTableWidgetItem *habitacionItem = new QTableWidgetItem(tr("%1").arg(reserva.getNumeroHabitacion()));
 
-            tableWidget->setItem(fila, 0, clienteItem);
-            tableWidget->setItem(fila, 1, confirmacionItem);
-            tableWidget->setItem(fila, 2, habitacionItem);
+        tableWidget->setItem(*fila, 0, clienteItem);
+        tableWidget->setItem(*fila, 1, confirmacionItem);
+        tableWidget->setItem(*fila, 2, habitacionItem);
 
-            fila++;
-        }
+        *fila += 1;
     }
 }
 
-void VentanaPrincipal::llenarLlegadasHoy()
+void VentanaPrincipal::llenarTablaOcupacion(Reserva reserva, QDate fechaActual, int *fila)
 {
-    this->llenarTablaReserva(ui->dateEditActual->date(), ui->tableWidgetLlegadasHoy);
+    if((fechaActual >= reserva.getFechaInicio()) && (fechaActual < reserva.getFechaFin()))
+    {
+        ui->tableWidgetOcupacion->insertRow(*fila);
 
-    // ui->tableWidgetLlegadasHoy->setRowCount(0);
-    // int fila = 0;
+        QTableWidgetItem *habitacionItem = new QTableWidgetItem(tr("%1").arg(reserva.getNumeroHabitacion()));
+        QTableWidgetItem *clienteItem = new QTableWidgetItem(tr("%1").arg(reserva.getClienteNombre()));
+        QTableWidgetItem *fechaFinItem = new QTableWidgetItem(tr("%1").arg(reserva.getFechaFin().toString()));
+        QTableWidgetItem *importeItem = new QTableWidgetItem(tr("%1").arg(reserva.getImporte()));
 
-    // for (Reserva reserva: this->reservas)
-    // {
-    //     if(reserva.getFechaInicio() == ui->dateEditActual->date())
-    //     {
-    //         ui->tableWidgetLlegadasHoy->insertRow(fila);
+        ui->tableWidgetOcupacion->setItem(*fila, 0, habitacionItem);
+        ui->tableWidgetOcupacion->setItem(*fila, 1, clienteItem);
+        ui->tableWidgetOcupacion->setItem(*fila, 2, fechaFinItem);
+        ui->tableWidgetOcupacion->setItem(*fila, 3, importeItem);
 
-    //         // int numeroConfirmacion = reserva.getNumeroConfirmacion();
-    //         // int habitacion = reserva.getNumeroHabitacion();
+        ui->tableWidgetOcupacion->sortItems(0);
 
-    //         QTableWidgetItem *clienteItem = new QTableWidgetItem(tr("%1").arg(reserva.getClienteNombre()));
-    //         QTableWidgetItem *confirmacionItem = new QTableWidgetItem(tr("%1").arg(reserva.getNumeroConfirmacion()));
-    //         QTableWidgetItem *habitacionItem = new QTableWidgetItem(tr("%1").arg(reserva.getNumeroHabitacion()));
+        *fila += 1;
+    }
+}
 
-    //         ui->tableWidgetLlegadasHoy->setItem(fila, 0, clienteItem);
-    //         ui->tableWidgetLlegadasHoy->setItem(fila, 1, confirmacionItem);
-    //         ui->tableWidgetLlegadasHoy->setItem(fila, 2, habitacionItem);
+void VentanaPrincipal::llenarInfoReservas()
+{
+    QDate fechaHoy = ui->dateEditActual->date();
+    QDate fechaManiana = fechaHoy.addDays(1);
 
-    //         fila++;
-    //     }
-    // }
+    QTableWidget *llegadasHoy = ui->tableWidgetLlegadasHoy;
+    QTableWidget *llegadasManiana = ui->tableWidgetLlegadasManiana;
+    QTableWidget *salidasHoy = ui->tableWidgetSalidasHoy;
+    QTableWidget *salidasManiana = ui->tableWidgetSalidasManiana;
+
+    llegadasHoy->setRowCount(0);
+    llegadasManiana->setRowCount(0);
+    salidasHoy->setRowCount(0);
+    salidasManiana->setRowCount(0);
+    ui->tableWidgetOcupacion->setRowCount(0);
+
+    int filasLlegadasHoy = 0;
+    int filasLlegadasManiana = 0;
+    int filasSalidasHoy = 0;
+    int filasSalidasManiana = 0;
+    int filasOcupacion = 0;
+
+    for (Reserva reserva: this->reservas)
+    {
+        this->llenarTablaReserva(reserva.getFechaInicio(), fechaHoy, reserva, llegadasHoy, &filasLlegadasHoy);
+        this->llenarTablaReserva(reserva.getFechaInicio(), fechaManiana, reserva, llegadasManiana, &filasLlegadasManiana);
+        this->llenarTablaReserva(reserva.getFechaFin(), fechaHoy, reserva, salidasHoy, &filasSalidasHoy);
+        this->llenarTablaReserva(reserva.getFechaFin(), fechaManiana, reserva, salidasManiana, &filasSalidasManiana);
+
+        this->llenarTablaOcupacion(reserva, fechaHoy, &filasOcupacion);
+    }
 }
 
 void VentanaPrincipal::cerrarNuevoCliente(bool cerrar)

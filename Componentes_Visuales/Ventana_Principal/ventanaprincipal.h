@@ -29,7 +29,9 @@ public:
     ~VentanaPrincipal();
 
     void iniciarVentana();
-    void llenarTablaReserva(QDate fechaComparacion, QTableWidget *tableWidget);
+    void llenarTablaReserva(QDate fechaComparacion, QDate fechaActual, Reserva reserva,
+                            QTableWidget *tableWidget, int *fila);
+    void llenarTablaOcupacion(Reserva reserva, QDate fechaActual, int *fila);
 
 private slots:
     void on_actionCliente_triggered();
@@ -45,7 +47,7 @@ private slots:
     void on_pushButtonDebug_clicked();
 
 public slots:
-    void llenarLlegadasHoy();
+    void llenarInfoReservas();
 
 private:
     Ui::VentanaPrincipal *ui;
