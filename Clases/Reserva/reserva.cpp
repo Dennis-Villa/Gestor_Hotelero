@@ -109,9 +109,6 @@ void Reserva::setEstadoReserva(QString estadoReserva)
     if (estadoReserva == "En Estadía")
         this->registarEntrada();
 
-    if (estadoReserva == "Estancia Finalizada")
-        this->registarSalida();
-
     this->estadoReserva = estadoReserva;
 
 }
@@ -165,8 +162,11 @@ float Reserva::getImporte()
 
 void Reserva::registarEntrada()
 {
-    this->fechaInicio = QDate::currentDate();
-    this->fechaFin = this->fechaInicio.addDays(this->cantidadNoches);
+    if (this->fechaInicio.year() == 1970)
+    {
+        this->fechaInicio = QDate::currentDate();
+        this->fechaFin = this->fechaInicio.addDays(this->cantidadNoches);
+    }
 }
 
 void Reserva::registarSalida()

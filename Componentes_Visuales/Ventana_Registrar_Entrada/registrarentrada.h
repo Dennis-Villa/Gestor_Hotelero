@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QDate>
+#include <QMessageBox>
 #include <set>
 
 #include "Clases/ControladorBD/controladorbd.h"
@@ -33,6 +34,7 @@ private slots:
     void rellenarComboBoxClientes(set<int> *clientesID);
     void buscarClientes(QString cliente = "");
     void rellenarInformacionReserva();
+    void registrar();
 
 private:
     Ui::RegistrarEntrada *ui;

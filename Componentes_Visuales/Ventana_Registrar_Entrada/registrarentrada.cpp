@@ -13,6 +13,7 @@ RegistrarEntrada::RegistrarEntrada(vector<Reserva> *reservas, ControladorBD *con
     this->buscarClientes();
     this->rellenarInformacionReserva();
 
+    connect(ui->pushButtonRegistrar, SIGNAL(clicked(bool)), this, SLOT(registrar()));
     connect(ui->pushButtonCerrar, SIGNAL(clicked(bool)), this, SLOT(cerrar()));
     connect(this, SIGNAL(rejected()), this, SLOT(cerrar()));
     connect(ui->lineEditCliente, SIGNAL(textChanged(QString)), this, SLOT(buscarClientes(QString)));
@@ -32,7 +33,6 @@ void RegistrarEntrada::abrirVentana()
 void RegistrarEntrada::limpiarVentana()
 {
     ui->lineEditCliente->clear();
-    ui->textEditInformacion->clear();
     ui->comboBoxCliente->setCurrentIndex(0);
 }
 
@@ -167,4 +167,33 @@ void RegistrarEntrada::rellenarInformacionReserva()
     }
 
     ui->textEditInformacion->setText(informacion);
+}
+
+void RegistrarEntrada::registrar()
+{
+    if (ui->comboBoxCliente->currentText().trimmed() == "")
+        QMessageBox::warning(this, "Error", "Es necesario seleccionar un cliente correcto.");
+
+    QString primeraLineaText = ui->textEditInformacion->toPlainText().split('\n')[0];
+    int numeroConfirmacion = primeraLineaText.split(": ")[1].toInt();
+
+    Reserva *reserva = nullptr;
+    for (int i = 0; i < (int)this->reservas->size(); i++)
+    {
+        if (this->reservas->at(i).getNumeroConfirmacion() == numeroConfirmacion)
+            reserva = &this->reservas->at(i);
+    }
+
+    try{
+        *reserva = *this->controladorBD->cambiarEstadoReserva(
+            numeroConfirmacion,
+            "En Estadía"
+        );
+
+        QMessageBox::information(this, "Exito", "Entrada registrada.");
+    }
+    catch (exception &ex)
+    {
+        QMessageBox::critical(this, "Error", ex.what());
+    }
 }
