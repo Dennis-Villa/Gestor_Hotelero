@@ -23,7 +23,7 @@ public:
     Cliente* crearCliente(QString nombre, QString email, QString telefono, QString nacionalidad);
     Cliente* buscarCliente(int identificadorCliente);
     vector <Cliente> getClientes();
-    Cliente* aniadirEstancia(int identificadorCliente);
+    Cliente* aniadirEstancia(Cliente *clienteAAniadir);
     void eliminarCliente(int identificadorCliente);
 
 

@@ -14,6 +14,7 @@
 #include "Componentes_Visuales/Ventana_Nueva_Habitacion/aniadirhabitacion.h"
 #include "Componentes_Visuales/Ventana_Nueva_Reserva/aniadirreserva.h"
 #include "Componentes_Visuales/Ventana_Registrar_Entrada/registrarentrada.h"
+#include "Componentes_Visuales/Ventana_Registrar_Salida/registrarsalida.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -45,8 +46,10 @@ private slots:
     void cerrarNuevaHabitacion(bool cerrar = false);
     void cerrarNuevaReserva(bool cerrar = false);
     void cerrarRegistrarEntrada(bool cerrar = false);
+    void cerrarRegistrarSalida(bool cerrar = false);
 
     void registrarNuevaEntrada(int fila = -1, int columna = -1);
+    void registrarNuevaSalida(int fila = -1, int columna = -1);
 
     void on_pushButtonDebug_clicked();
 
@@ -67,5 +70,6 @@ private:
     AniadirHabitacion *ventanaNuevaHabitacion = nullptr;
     AniadirReserva *ventanaNuevaReserva = nullptr;
     RegistrarEntrada *ventanaRegistrarEntrada = nullptr;
+    RegistrarSalida *ventanaRegistrarSalida = nullptr;
 };
 #endif // VENTANAPRINCIPAL_H

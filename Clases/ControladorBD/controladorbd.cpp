@@ -150,34 +150,28 @@ vector<Cliente> ControladorBD::getClientes()
     return clientes;
 }
 
-Cliente* ControladorBD::aniadirEstancia(int identificadorCliente)
+Cliente* ControladorBD::aniadirEstancia(Cliente *clienteAAniadir)
 {
     if (this->abreBD())
     {
         QSqlQuery query(this->bd);
 
         query.prepare("UPDATE clientes SET cantidad_estancias = cantidad_estancias + 1 WHERE id = :id");
-        query.bindValue(":id", identificadorCliente);
+        query.bindValue(":id", clienteAAniadir->getIdentificador());
 
         if (query.exec())
         {
             qDebug() << "Exito al modificar el cliente en la base de datos";
 
-            int id = query.value("id").toInt();
-            QString nombre = query.value("nombre").toString();
-            QString email = query.value("email").toString();
-            QString telefono = query.value("telefono").toString();
-            QString nacionalidad = query.value("nacionalidad").toString();
-            int estancias = query.value("cantidad_estancias").toInt();
-
             try{
-                return new Cliente(id, nombre, email, nacionalidad,
-                                   estancias, telefono);
+                clienteAAniadir->aniadirEstancia();
+
+                return clienteAAniadir;
             }
             catch(invalid_argument &ex)
             {
                 query.prepare("UPDATE clientes SET cantidad_estancias = cantidad_estancias - 1 WHERE id = :id");
-                query.bindValue(":id", identificadorCliente);
+                query.bindValue(":id", clienteAAniadir->getIdentificador());
 
                 query.exec();
 
@@ -694,7 +688,7 @@ Reserva *ControladorBD::cambiarEstadoReserva(int numeroConfirmacion, QString est
         reservaACambiar->setEstadoReserva(estado);
 
         if (estado == "Estancia Finalizada")
-            this->aniadirEstancia(reservaACambiar->getClienteID());
+            this->aniadirEstancia(reservaACambiar->getCliente());
 
         QString inicio = reservaACambiar->getFechaInicio().toString();
         QString fin = reservaACambiar->getFechaFin().toString();

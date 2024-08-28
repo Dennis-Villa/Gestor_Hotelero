@@ -37,6 +37,7 @@ public:
     int getCantidadNoches(){return this->cantidadNoches;}
     int getClienteID(){return this->cliente->getIdentificador();}
     QString getClienteNombre(){return this->cliente->getNombre();}
+    Cliente *getCliente(){return this->cliente;}
     int getNumeroHabitacion(){return this->habitacion->getNumeroHabitacion();}
     float getImporte();
     vector <pair <QString, float> > getDesgloseGastos(){return this->desgloseGastos;}

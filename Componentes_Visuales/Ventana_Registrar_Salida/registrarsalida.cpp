@@ -1,9 +1,9 @@
-#include "registrarentrada.h"
-#include "ui_registrarentrada.h"
+#include "registrarsalida.h"
+#include "ui_registrarsalida.h"
 
-RegistrarEntrada::RegistrarEntrada(vector<Reserva> *reservas, ControladorBD *controladorBD, QWidget *parent)
+RegistrarSalida::RegistrarSalida(vector<Reserva> *reservas, ControladorBD *controladorBD, QWidget *parent)
     : QDialog(parent)
-    , ui(new Ui::RegistrarEntrada)
+    , ui(new Ui::RegistrarSalida)
 {
     ui->setupUi(this);
 
@@ -20,28 +20,28 @@ RegistrarEntrada::RegistrarEntrada(vector<Reserva> *reservas, ControladorBD *con
     connect(ui->comboBoxCliente, SIGNAL(currentTextChanged(QString)), this, SLOT(rellenarInformacionReserva()));
 }
 
-RegistrarEntrada::~RegistrarEntrada()
+RegistrarSalida::~RegistrarSalida()
 {
     delete ui;
 }
 
-void RegistrarEntrada::abrirVentana()
+void RegistrarSalida::abrirVentana()
 {
     this->ventanaAbierta = true;
 }
 
-void RegistrarEntrada::limpiarVentana()
+void RegistrarSalida::limpiarVentana()
 {
     ui->lineEditCliente->clear();
     ui->comboBoxCliente->setCurrentIndex(0);
 }
 
-void RegistrarEntrada::establecerCliente(QString cliente)
+void RegistrarSalida::establecerCliente(QString cliente)
 {
     ui->lineEditCliente->setText(cliente);
 }
 
-void RegistrarEntrada::cerrar()
+void RegistrarSalida::cerrar()
 {
     if (this->ventanaAbierta)
     {
@@ -51,13 +51,13 @@ void RegistrarEntrada::cerrar()
     }
 }
 
-void RegistrarEntrada::rellenarComboBoxClientes()
+void RegistrarSalida::rellenarComboBoxClientes()
 {
     ui->comboBoxCliente->clear();
 
     for (Reserva reserva: *this->reservas)
     {
-        if((reserva.getEstadoReserva() == "Confirmado") &&  (reserva.getFechaInicio() == QDate::currentDate()))
+        if((reserva.getEstadoReserva() == "En Estadía") && (reserva.getFechaFin() == QDate::currentDate()))
         {
             int clienteID = reserva.getClienteID();
             QString clienteNombre = reserva.getClienteNombre();
@@ -70,7 +70,7 @@ void RegistrarEntrada::rellenarComboBoxClientes()
     }
 }
 
-void RegistrarEntrada::rellenarComboBoxClientes(set<int> *clientesID)
+void RegistrarSalida::rellenarComboBoxClientes(set<int> *clientesID)
 {
     ui->comboBoxCliente->clear();
 
@@ -89,7 +89,7 @@ void RegistrarEntrada::rellenarComboBoxClientes(set<int> *clientesID)
     }
 }
 
-void RegistrarEntrada::buscarClientes(QString cliente)
+void RegistrarSalida::buscarClientes(QString cliente)
 {
     QString busquedaClientes = cliente.trimmed();
 
@@ -109,7 +109,7 @@ void RegistrarEntrada::buscarClientes(QString cliente)
 
             for (Reserva reserva: *this->reservas)
             {
-                if((reserva.getEstadoReserva() == "Confirmado") &&  (reserva.getFechaInicio() == QDate::currentDate()))
+                if((reserva.getEstadoReserva() == "En Estadía") && (reserva.getFechaFin() == QDate::currentDate()))
                 {
                     QString clienteStringID = QString::number(reserva.getClienteID());
 
@@ -123,7 +123,7 @@ void RegistrarEntrada::buscarClientes(QString cliente)
         {
             for (Reserva reserva: *this->reservas)
             {
-                if((reserva.getEstadoReserva() == "Confirmado") &&  (reserva.getFechaInicio() == QDate::currentDate()))
+                if((reserva.getEstadoReserva() == "En Estadía") && (reserva.getFechaFin() == QDate::currentDate()))
                 {
                     QString clienteNombre = reserva.getClienteNombre();
 
@@ -137,14 +137,14 @@ void RegistrarEntrada::buscarClientes(QString cliente)
     }
 }
 
-void RegistrarEntrada::rellenarInformacionReserva()
+void RegistrarSalida::rellenarInformacionReserva()
 {
     int clienteID = ui->comboBoxCliente->currentText().split(" ")[0].toInt();
     QString informacion = "";
 
     for (Reserva reserva: *this->reservas)
     {
-        if((reserva.getClienteID() == clienteID) && (reserva.getFechaInicio() == QDate::currentDate()))
+        if((reserva.getEstadoReserva() == "En Estadía") && (reserva.getClienteID() == clienteID) && (reserva.getFechaFin() == QDate::currentDate()))
         {
             informacion += "Número de Confirmación: ";
             informacion += QString::number(reserva.getNumeroConfirmacion());
@@ -162,11 +162,22 @@ void RegistrarEntrada::rellenarInformacionReserva()
             informacion += QString::number(reserva.getCantidadNoches());
             informacion += '\n';
 
-            informacion += "Fecha de finalizacion: ";
-            informacion += reserva.getFechaFin().toString();
+            informacion += "Fecha de inicio: ";
+            informacion += reserva.getFechaInicio().toString();
             informacion += '\n';
 
-            informacion += "Costo de Estancia: ";
+            informacion += "\nDesglose de Gastos: \n";
+            for (pair <QString, float> gasto: reserva.getDesgloseGastos())
+            {
+                informacion += "- ";
+                informacion += gasto.first;
+                informacion += ": ";
+                informacion += QString::number(gasto.second);
+                informacion += " € \n";
+            }
+            informacion += '\n';
+
+            informacion += "Costo Total: ";
             informacion += QString::number(reserva.getImporte());
             informacion += '\n';
         }
@@ -175,7 +186,7 @@ void RegistrarEntrada::rellenarInformacionReserva()
     ui->textEditInformacion->setText(informacion);
 }
 
-void RegistrarEntrada::registrar()
+void RegistrarSalida::registrar()
 {
     if (ui->comboBoxCliente->currentText().trimmed() == "")
         QMessageBox::warning(this, "Error", "Es necesario seleccionar un cliente correcto.");
@@ -187,16 +198,19 @@ void RegistrarEntrada::registrar()
     for (int i = 0; i < (int)this->reservas->size(); i++)
     {
         if (this->reservas->at(i).getNumeroConfirmacion() == numeroConfirmacion)
+        {
             reserva = &this->reservas->at(i);
+            break;
+        }
     }
 
     try{
         *reserva = *this->controladorBD->cambiarEstadoReserva(
             numeroConfirmacion,
-            "En Estadía"
-        );
+            "Estancia Finalizada"
+            );
 
-        QMessageBox::information(this, "Exito", "Entrada registrada.");
+        QMessageBox::information(this, "Exito", "Salida registrada.");
     }
     catch (exception &ex)
     {

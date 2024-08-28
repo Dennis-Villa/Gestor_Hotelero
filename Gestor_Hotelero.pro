@@ -19,7 +19,8 @@ SOURCES += \
     main.cpp \
     Componentes_Visuales\Ventana_Principal\ventanaprincipal.cpp \
     Clases\Reserva\reserva.cpp \
-    Componentes_Visuales\Ventana_Registrar_Entrada\registrarentrada.cpp
+    Componentes_Visuales\Ventana_Registrar_Entrada\registrarentrada.cpp \
+    Componentes_Visuales\Ventana_Registrar_Salida\registrarsalida.cpp
 
 HEADERS += \
     Archivos_Auxiliares\Funciones_Auxiliares.h \
@@ -31,14 +32,16 @@ HEADERS += \
     Componentes_Visuales\Ventana_Nuevo_Cliente\aniadircliente.h \
     Componentes_Visuales\Ventana_Nueva_Habitacion\aniadirhabitacion.h \
     Componentes_Visuales\Ventana_Nueva_Reserva\aniadirreserva.h \
-    Componentes_Visuales\Ventana_Registrar_Entrada\registrarentrada.h
+    Componentes_Visuales\Ventana_Registrar_Entrada\registrarentrada.h \
+    Componentes_Visuales\Ventana_Registrar_Salida\registrarsalida.h
 
 FORMS += \
     Componentes_Visuales\Ventana_Principal\ventanaprincipal.ui \
     Componentes_Visuales\Ventana_Nuevo_Cliente\aniadircliente.ui \
     Componentes_Visuales\Ventana_Nueva_Habitacion\aniadirhabitacion.ui \
     Componentes_Visuales\Ventana_Nueva_Reserva\aniadirreserva.ui \
-    Componentes_Visuales\Ventana_Registrar_Entrada\registrarentrada.ui
+    Componentes_Visuales\Ventana_Registrar_Entrada\registrarentrada.ui \
+    Componentes_Visuales\Ventana_Registrar_Salida\registrarsalida.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
