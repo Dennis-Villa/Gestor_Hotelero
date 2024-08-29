@@ -659,8 +659,19 @@ vector <Reserva> ControladorBD::getReservas()
                     QDate inicio = QDate::fromString(inicioString);
                     QDate fin = QDate::fromString(finString);
 
-                    reservas.push_back(Reserva(numero, cliente, noches, inicio, fin,
-                                               gastos, importe, estado, habitacion));
+                    try{
+                        reservas.push_back(Reserva(numero, cliente, noches, inicio, fin,
+                                                   gastos, importe, estado, habitacion));
+                    }
+                    catch(exception_reserva_vencida &ex)
+                    {
+                        Reserva *nuevaReserva = new Reserva(numero, cliente, noches, inicio, fin,
+                                                            gastos, importe, "Vencida", habitacion);
+
+                        this->cambiarEstadoReserva(nuevaReserva, "Vencida");
+
+                        reservas.push_back(*nuevaReserva);
+                    }
                 }
                 while(query.previous());
             }
@@ -696,6 +707,43 @@ Reserva *ControladorBD::cambiarEstadoReserva(int numeroConfirmacion, QString est
         QSqlQuery query(this->bd);
         query.prepare("UPDATE reservas SET estado_reserva = :estado, fecha_inicio = :inicio, fecha_fin = :fin WHERE numero_confirmacion = :numeroConfirmacion");
         query.bindValue(":numeroConfirmacion", numeroConfirmacion);
+        query.bindValue(":estado", estado);
+        query.bindValue(":inicio", inicio);
+        query.bindValue(":fin", fin);
+
+        if (query.exec())
+        {
+            qDebug() << "Exito al modificar el estado de la reserva.";
+
+            return reservaACambiar;
+        }
+        else
+        {
+            QSqlError error = query.lastError();
+            QString errorText = "Fallo al modificar el estado de la reserva: " + error.text();
+            qDebug() << errorText;
+            throw runtime_error("Fallo al modificar el estado de la reserva");
+        }
+    }
+
+    return nullptr;
+}
+
+Reserva *ControladorBD::cambiarEstadoReserva(Reserva *reservaACambiar, QString estado)
+{
+    if (this->abreBD())
+    {
+        reservaACambiar->setEstadoReserva(estado);
+
+        if (estado == "Estancia Finalizada")
+            this->aniadirEstancia(reservaACambiar->getCliente());
+
+        QString inicio = reservaACambiar->getFechaInicio().toString();
+        QString fin = reservaACambiar->getFechaFin().toString();
+
+        QSqlQuery query(this->bd);
+        query.prepare("UPDATE reservas SET estado_reserva = :estado, fecha_inicio = :inicio, fecha_fin = :fin WHERE numero_confirmacion = :numeroConfirmacion");
+        query.bindValue(":numeroConfirmacion", reservaACambiar->getNumeroConfirmacion());
         query.bindValue(":estado", estado);
         query.bindValue(":inicio", inicio);
         query.bindValue(":fin", fin);

@@ -51,7 +51,7 @@ void VentanaPrincipal::iniciarVentana()
     this->ventanaRegistrarEntrada = new RegistrarEntrada(&this->reservas, this->controladorBD, this);
     this->ventanaRegistrarSalida = new RegistrarSalida(&this->reservas, this->controladorBD, this);
 
-    this->llenarInfoReservas();
+    this->actualizarVectores();
 }
 
 void VentanaPrincipal::llenarTablaReserva(QDate fechaComparacion, QDate fechaActual, Reserva reserva, QTableWidget *tableWidget, int *fila)
@@ -92,6 +92,79 @@ void VentanaPrincipal::llenarTablaOcupacion(Reserva reserva, QDate fechaActual, 
 
         *fila += 1;
     }
+}
+
+void VentanaPrincipal::actualizarVectores()
+{
+    this->llenarInfoDatos();
+    this->llenarInfoReservas();
+}
+
+void VentanaPrincipal::llenarInfoDatos()
+{
+    for (Cliente cliente: this->clientes)
+    {
+        this->aniadirLineaInfoCliente(cliente);
+    }
+
+    for (Reserva reserva: this->reservas)
+    {
+        this->aniadirLineaInfoReserva(reserva);
+    }
+
+    QSpacerItem *spacer = new QSpacerItem(12, 1024);
+    ui->verticalLayoutInfoClientes->addSpacerItem(spacer);
+    ui->verticalLayoutInfoReservas->addSpacerItem(spacer);
+}
+
+void VentanaPrincipal::aniadirLineaInfoCliente(Cliente cliente)
+{
+    QHBoxLayout *layoutInfoCliente = new QHBoxLayout(ui->tabInformacionClientes);
+
+    int clienteID = cliente.getIdentificador();
+
+    QLabel *labelID = new QLabel(QString::number(clienteID));
+    QLabel *labelNombre = new QLabel(cliente.getNombre());
+    QLabel *labelEmail = new QLabel(cliente.getEmail());
+    QLabel *labelTelefono = new QLabel(cliente.getTelefono());
+    QLabel *labelNacionalidad = new QLabel(cliente.getNacionalidad());
+    QLabel *labelCantidadEstancias = new QLabel(QString::number(cliente.getCanidadEstancias()));
+
+    BotonEliminarFila *eliminar = new BotonEliminarFila("Eliminar", clienteID);
+
+    layoutInfoCliente->addWidget(labelID);
+    layoutInfoCliente->addWidget(labelNombre);
+    layoutInfoCliente->addWidget(labelEmail);
+    layoutInfoCliente->addWidget(labelTelefono);
+    layoutInfoCliente->addWidget(labelNacionalidad);
+    layoutInfoCliente->addWidget(labelCantidadEstancias);
+
+    layoutInfoCliente->addWidget(eliminar);
+
+    ui->verticalLayoutInfoClientes->addLayout(layoutInfoCliente);
+
+    connect(eliminar, SIGNAL(clicked(int)), this, SLOT(eliminarCliente(int)));
+}
+
+void VentanaPrincipal::aniadirLineaInfoReserva(Reserva reserva)
+{
+    QHBoxLayout *layoutInfoReserva = new QHBoxLayout(ui->tabInformacionReservas);
+
+    int numeroConfirmacion = reserva.getNumeroConfirmacion();
+
+    QLabel *labelID = new QLabel(QString::number(numeroConfirmacion));
+    QLabel *labelCliente = new QLabel(reserva.getClienteNombre());
+
+    // BotonEliminarFila *eliminar = new BotonEliminarFila("Eliminar", clienteID);
+
+    layoutInfoReserva->addWidget(labelID);
+    layoutInfoReserva->addWidget(labelCliente);
+
+    // layoutInfoReserva->addWidget(eliminar);
+
+    ui->verticalLayoutInfoReservas->addLayout(layoutInfoReserva);
+
+    // connect(eliminar, SIGNAL(clicked(int)), this, SLOT(eliminarCliente(int)));
 }
 
 void VentanaPrincipal::llenarInfoReservas()
@@ -198,6 +271,45 @@ void VentanaPrincipal::registrarNuevaSalida(int fila, int columna)
     ui->centralwidget->setDisabled(true);
     this->ventanaRegistrarSalida->show();
     this->ventanaRegistrarSalida->abrirVentana();
+}
+
+void VentanaPrincipal::eliminarCliente(int clienteID)
+{
+    if(clienteID != -1)
+    {
+        QString mensaje = "¿Seguro que desea eliminar al cliente con id " + QString::number(clienteID) + "?";
+
+        int respuesta = QMessageBox::warning(this, "Eliminación de cliente", mensaje, (QMessageBox::Yes | QMessageBox::No));
+
+        if (respuesta == QMessageBox::Yes)
+        {
+            this->controladorBD->eliminarCliente(clienteID);
+
+            for (int i = 0; i < (int)this->clientes.size(); i++)
+            {
+                if(this->clientes.at(i).getIdentificador() == clienteID)
+                {
+                    this->clientes.erase(this->clientes.begin() + i);
+                }
+            }
+
+            for (int i = 0; i < (int)this->reservas.size(); i++)
+            {
+                Reserva reserva = this->reservas.at(i);
+
+                if(reserva.getClienteID() == clienteID)
+                {
+                    this->controladorBD->eliminarReserva(reserva.getNumeroConfirmacion());
+
+                    this->reservas.erase(this->reservas.begin() + i);
+                }
+            }
+
+            QMessageBox::information(this, "Exito", "Cliente eliminado de la base de datos");
+
+            this->actualizarVectores();
+        }
+    }
 }
 
 void VentanaPrincipal::on_actionCliente_triggered()

@@ -44,7 +44,7 @@ bool soloLetras(QString cadena)
 bool estadoReservaValido(QString estadoReserva)
 {
     QString estadosValidos[] = {"Pendiente", "Confirmado",
-                               "En Estadía", "Estancia Finalizada"};
+                               "En Estadía", "Estancia Finalizada", "Vencida"};
 
     for (QString estado: estadosValidos)
     {

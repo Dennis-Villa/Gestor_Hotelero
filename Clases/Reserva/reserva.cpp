@@ -103,11 +103,16 @@ void Reserva::setEstadoReserva(QString estadoReserva)
             throw invalid_argument("La reserva confirmada debe tener una fecha de inicio.");
 
         if(this->fechaInicio < QDate::currentDate())
-            throw invalid_argument("La reserva confirmada no puede tener una fecha de inicio pasada.");
+            throw exception_reserva_vencida("La reserva confirmada no puede tener una fecha de inicio pasada.");
     }
 
     if (estadoReserva == "En Estadía")
+    {
         this->registarEntrada();
+
+        // if (this->fechaFin < QDate::currentDate())
+            // La reserva debe terminar
+    }
 
     this->estadoReserva = estadoReserva;
 

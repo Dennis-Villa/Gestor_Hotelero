@@ -6,6 +6,7 @@
 #include <QTableWidget>
 #include <vector>
 
+#include "Archivos_Auxiliares/Boton_Eliminar_Fila/botoneliminarfila.h"
 #include "Clases/ControladorBD/controladorbd.h"
 #include "Clases/Cliente/cliente.h"
 #include "Clases/Habitacion/habitacion.h"
@@ -35,6 +36,14 @@ public:
                             QTableWidget *tableWidget, int *fila);
     void llenarTablaOcupacion(Reserva reserva, QDate fechaActual, int *fila);
 
+    // Funciones para actualizar los componentes con datos cuando cambian los vectores
+    void actualizarVectores();
+
+    // Funciones para llenar la informacion de todos los clientes
+    void llenarInfoDatos();
+    void aniadirLineaInfoCliente(Cliente cliente);
+    void aniadirLineaInfoReserva(Reserva reserva);
+
 private slots:
     void on_actionCliente_triggered();
 
@@ -50,6 +59,8 @@ private slots:
 
     void registrarNuevaEntrada(int fila = -1, int columna = -1);
     void registrarNuevaSalida(int fila = -1, int columna = -1);
+
+    void eliminarCliente(int clienteID = -1);
 
     void on_pushButtonDebug_clicked();
 

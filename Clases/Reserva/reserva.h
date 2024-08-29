@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "stdexcept"
+#include "Archivos_Auxiliares/exception_reserva_vencida.h"
 #include "Archivos_Auxiliares/Funciones_Auxiliares.h"
 #include "Clases/Cliente/cliente.h"
 #include "Clases/Habitacion/habitacion.h"

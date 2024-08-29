@@ -41,6 +41,7 @@ public:
     Reserva* buscarReserva(int numeroConfirmacion);
     vector <Reserva> getReservas();
     Reserva* cambiarEstadoReserva(int numeroConfirmacion, QString estado);
+    Reserva* cambiarEstadoReserva(Reserva *reservaACambiar, QString estado);
     Reserva* aniadirGasto(int numeroConfirmacion, QString gasto, float importe);
     void eliminarReserva(int numeroConfirmacion);
 
