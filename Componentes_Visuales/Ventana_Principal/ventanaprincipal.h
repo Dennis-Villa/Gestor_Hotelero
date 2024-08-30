@@ -6,7 +6,7 @@
 #include <QTableWidget>
 #include <vector>
 
-#include "Archivos_Auxiliares/Boton_Eliminar_Fila/botoneliminarfila.h"
+#include "Archivos_Auxiliares/Boton_Posicion_Fila/botonposicionfila.h"
 #include "Clases/ControladorBD/controladorbd.h"
 #include "Clases/Cliente/cliente.h"
 #include "Clases/Habitacion/habitacion.h"
@@ -16,6 +16,7 @@
 #include "Componentes_Visuales/Ventana_Nueva_Reserva/aniadirreserva.h"
 #include "Componentes_Visuales/Ventana_Registrar_Entrada/registrarentrada.h"
 #include "Componentes_Visuales/Ventana_Registrar_Salida/registrarsalida.h"
+#include "Componentes_Visuales/Ventana_Info_Reserva/inforeserva.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -61,6 +62,7 @@ private slots:
     void registrarNuevaSalida(int fila = -1, int columna = -1);
 
     void eliminarCliente(int clienteID = -1);
+    void mostrarInfoReserva(int numeroReserva = -1);
 
     void on_pushButtonDebug_clicked();
 
@@ -82,5 +84,6 @@ private:
     AniadirReserva *ventanaNuevaReserva = nullptr;
     RegistrarEntrada *ventanaRegistrarEntrada = nullptr;
     RegistrarSalida *ventanaRegistrarSalida = nullptr;
+    InfoReserva *ventanaInfoReserva = nullptr;
 };
 #endif // VENTANAPRINCIPAL_H

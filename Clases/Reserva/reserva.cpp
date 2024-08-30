@@ -150,6 +150,33 @@ void Reserva::setHabitacion(Habitacion *habitacion)
         this->habitacion = nullptr;
 }
 
+QString Reserva::getFechaInicioString()
+{
+    if (this->fechaInicio.year() == 1970)
+        return "";
+
+    else
+        return this->fechaInicio.toString();
+}
+
+QString Reserva::getFechaFinString()
+{
+    if (this->fechaFin.year() == 1970)
+        return "";
+
+    else
+        return this->fechaFin.toString();
+}
+
+int Reserva::getNumeroHabitacion()
+{
+    if (this->habitacion == nullptr)
+        return -1;
+
+    else
+        return this->habitacion->getNumeroHabitacion();
+}
+
 float Reserva::getImporte()
 {
     float gastoTotal = 0;

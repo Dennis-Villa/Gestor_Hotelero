@@ -34,12 +34,14 @@ public:
     int getNumeroConfirmacion(){return this->numeroConfirmacion;}
     QString getEstadoReserva(){return this->estadoReserva;}
     QDate getFechaInicio(){return this->fechaInicio;}
+    QString getFechaInicioString();
+    QString getFechaFinString();
     QDate getFechaFin(){return this->fechaFin;}
     int getCantidadNoches(){return this->cantidadNoches;}
     int getClienteID(){return this->cliente->getIdentificador();}
     QString getClienteNombre(){return this->cliente->getNombre();}
     Cliente *getCliente(){return this->cliente;}
-    int getNumeroHabitacion(){return this->habitacion->getNumeroHabitacion();}
+    int getNumeroHabitacion();
     float getImporte();
     vector <pair <QString, float> > getDesgloseGastos(){return this->desgloseGastos;}
 

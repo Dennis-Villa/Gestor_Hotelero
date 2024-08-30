@@ -50,6 +50,7 @@ void VentanaPrincipal::iniciarVentana()
                                                    &this->reservas, this, this->controladorBD);
     this->ventanaRegistrarEntrada = new RegistrarEntrada(&this->reservas, this->controladorBD, this);
     this->ventanaRegistrarSalida = new RegistrarSalida(&this->reservas, this->controladorBD, this);
+    this->ventanaInfoReserva = new InfoReserva(this);
 
     this->actualizarVectores();
 }
@@ -130,7 +131,7 @@ void VentanaPrincipal::aniadirLineaInfoCliente(Cliente cliente)
     QLabel *labelNacionalidad = new QLabel(cliente.getNacionalidad());
     QLabel *labelCantidadEstancias = new QLabel(QString::number(cliente.getCanidadEstancias()));
 
-    BotonEliminarFila *eliminar = new BotonEliminarFila("Eliminar", clienteID);
+    BotonPosicionFila *eliminar = new BotonPosicionFila("Eliminar", clienteID);
 
     layoutInfoCliente->addWidget(labelID);
     layoutInfoCliente->addWidget(labelNombre);
@@ -151,20 +152,29 @@ void VentanaPrincipal::aniadirLineaInfoReserva(Reserva reserva)
     QHBoxLayout *layoutInfoReserva = new QHBoxLayout(ui->tabInformacionReservas);
 
     int numeroConfirmacion = reserva.getNumeroConfirmacion();
+    QString habitacion = (reserva.getNumeroHabitacion() == -1
+                            ? ""
+                            : QString::number(reserva.getNumeroHabitacion()));
 
     QLabel *labelID = new QLabel(QString::number(numeroConfirmacion));
     QLabel *labelCliente = new QLabel(reserva.getClienteNombre());
+    QLabel *labelHabitacion = new QLabel(habitacion);
+    QLabel *labelEstado = new QLabel(reserva.getEstadoReserva());
+    QLabel *labelInicio = new QLabel(reserva.getFechaInicioString());
 
-    // BotonEliminarFila *eliminar = new BotonEliminarFila("Eliminar", clienteID);
+    BotonPosicionFila *info = new BotonPosicionFila("Información", numeroConfirmacion);
 
     layoutInfoReserva->addWidget(labelID);
     layoutInfoReserva->addWidget(labelCliente);
+    layoutInfoReserva->addWidget(labelHabitacion);
+    layoutInfoReserva->addWidget(labelEstado);
+    layoutInfoReserva->addWidget(labelInicio);
 
-    // layoutInfoReserva->addWidget(eliminar);
+    layoutInfoReserva->addWidget(info);
 
     ui->verticalLayoutInfoReservas->addLayout(layoutInfoReserva);
 
-    // connect(eliminar, SIGNAL(clicked(int)), this, SLOT(eliminarCliente(int)));
+    connect(info, SIGNAL(clicked(int)), this, SLOT(mostrarInfoReserva(int)));
 }
 
 void VentanaPrincipal::llenarInfoReservas()
@@ -308,6 +318,21 @@ void VentanaPrincipal::eliminarCliente(int clienteID)
             QMessageBox::information(this, "Exito", "Cliente eliminado de la base de datos");
 
             this->actualizarVectores();
+        }
+    }
+}
+
+void VentanaPrincipal::mostrarInfoReserva(int numeroReserva)
+{
+    if (numeroReserva != -1)
+    {
+        for (Reserva reserva: this->reservas)
+        {
+            if (reserva.getNumeroConfirmacion() == numeroReserva)
+            {
+                this->ventanaInfoReserva->setReserva(&reserva);
+                this->ventanaInfoReserva->mostrar();
+            }
         }
     }
 }

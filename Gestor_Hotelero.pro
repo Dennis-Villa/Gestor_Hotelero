@@ -9,11 +9,12 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    Archivos_Auxiliares\Boton_Eliminar_Fila\botoneliminarfila.cpp \
+    Archivos_Auxiliares\Boton_Posicion_Fila\botonposicionfila.cpp \
     Archivos_Auxiliares\Funciones_Auxiliares.cpp \
     Clases\Cliente\cliente.cpp \
     Clases\Habitacion\habitacion.cpp \
     Clases\ControladorBD\controladorbd.cpp \
+    Componentes_Visuales/Ventana_Info_Reserva/inforeserva.cpp \
     Componentes_Visuales\Ventana_Nuevo_Cliente\aniadircliente.cpp \
     Componentes_Visuales\Ventana_Nueva_Habitacion\aniadirhabitacion.cpp \
     Componentes_Visuales\Ventana_Nueva_Reserva\aniadirreserva.cpp \
@@ -24,8 +25,9 @@ SOURCES += \
     Componentes_Visuales\Ventana_Registrar_Salida\registrarsalida.cpp
 
 HEADERS += \
-    Archivos_Auxiliares\Boton_Eliminar_Fila\botoneliminarfila.h \
+    Archivos_Auxiliares\Boton_Posicion_Fila\botonposicionfila.h \
     Archivos_Auxiliares\Funciones_Auxiliares.h \
+    Componentes_Visuales/Ventana_Info_Reserva/inforeserva.h \
     Componentes_Visuales\Ventana_Principal\ventanaprincipal.h \
     Clases\Cliente\cliente.h \
     Clases\Habitacion\habitacion.h \
@@ -39,6 +41,7 @@ HEADERS += \
     Archivos_Auxiliares\exception_reserva_vencida.h
 
 FORMS += \
+    Componentes_Visuales/Ventana_Info_Reserva/inforeserva.ui \
     Componentes_Visuales\Ventana_Principal\ventanaprincipal.ui \
     Componentes_Visuales\Ventana_Nuevo_Cliente\aniadircliente.ui \
     Componentes_Visuales\Ventana_Nueva_Habitacion\aniadirhabitacion.ui \
