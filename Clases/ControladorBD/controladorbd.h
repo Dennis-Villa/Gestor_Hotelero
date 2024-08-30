@@ -31,6 +31,7 @@ public:
                                 int numeroCamas, float costeNoche);
     Habitacion* buscarHabitacion(int numero);
     vector <Habitacion> getHabitaciones();
+    Habitacion* cambiarEstadoHabitacion(Habitacion *habitacion);
     Habitacion* cambiarDisponibilidadHabitacion(int numero, bool disponible);
     Habitacion* cambiarEnArreglosHabitacion(int numero, bool enArreglos);
     void eliminarHabitacion(int numero);

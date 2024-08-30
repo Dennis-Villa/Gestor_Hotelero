@@ -14,6 +14,7 @@ SOURCES += \
     Clases\Cliente\cliente.cpp \
     Clases\Habitacion\habitacion.cpp \
     Clases\ControladorBD\controladorbd.cpp \
+    Componentes_Visuales/Ventana_Estado_Habitacion/estadohabitacion.cpp \
     Componentes_Visuales/Ventana_Info_Reserva/inforeserva.cpp \
     Componentes_Visuales\Ventana_Nuevo_Cliente\aniadircliente.cpp \
     Componentes_Visuales\Ventana_Nueva_Habitacion\aniadirhabitacion.cpp \
@@ -27,6 +28,7 @@ SOURCES += \
 HEADERS += \
     Archivos_Auxiliares\Boton_Posicion_Fila\botonposicionfila.h \
     Archivos_Auxiliares\Funciones_Auxiliares.h \
+    Componentes_Visuales/Ventana_Estado_Habitacion/estadohabitacion.h \
     Componentes_Visuales/Ventana_Info_Reserva/inforeserva.h \
     Componentes_Visuales\Ventana_Principal\ventanaprincipal.h \
     Clases\Cliente\cliente.h \
@@ -41,6 +43,7 @@ HEADERS += \
     Archivos_Auxiliares\exception_reserva_vencida.h
 
 FORMS += \
+    Componentes_Visuales/Ventana_Estado_Habitacion/estadohabitacion.ui \
     Componentes_Visuales/Ventana_Info_Reserva/inforeserva.ui \
     Componentes_Visuales\Ventana_Principal\ventanaprincipal.ui \
     Componentes_Visuales\Ventana_Nuevo_Cliente\aniadircliente.ui \

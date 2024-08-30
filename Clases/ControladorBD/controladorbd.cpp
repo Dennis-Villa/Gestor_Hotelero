@@ -341,6 +341,65 @@ vector<Habitacion> ControladorBD::getHabitaciones()
     return habitaciones;
 }
 
+Habitacion *ControladorBD::cambiarEstadoHabitacion(Habitacion *habitacion)
+{
+    if (this->abreBD())
+    {
+        int numero = habitacion->getNumeroHabitacion();
+
+        Habitacion *habitacionAntigua = this->buscarHabitacion(numero);
+
+        QString tipo = habitacion->getTipoHabitacion();
+        int camas = habitacion->getNumeroCamas();
+        float coste = habitacion->getCostePorNoche();
+        bool enArreglos = habitacion->getEnArreglos();
+        bool disponible = habitacion->getDisponible();
+
+        QSqlQuery query(this->bd);
+        query.prepare("UPDATE habitaciones SET tipo_habitacion=:tipo, numero_camas=:camas, coste_noche=:coste, en_arreglos=:enArreglos, disponible=:disponible WHERE numero_habitacion = :numero");
+        query.bindValue(":numero", numero);
+        query.bindValue(":tipo", tipo);
+        query.bindValue(":camas", camas);
+        query.bindValue(":coste", coste);
+        query.bindValue(":enArreglos", enArreglos);
+        query.bindValue(":disponible", disponible);
+
+        if (query.exec())
+        {
+            qDebug() << "Exito al modificar la habitación en la base de datos";
+
+            int tamanio = habitacion->getTamanioM2();
+
+            try{
+                return new Habitacion(numero, tipo, tamanio, camas, coste, disponible, enArreglos);
+            }
+            catch(invalid_argument &ex)
+            {
+                query.prepare("UPDATE habitaciones SET tipo_habitacion=:tipo, numero_camas=:camas, coste_noche=:coste, en_arreglos=:enArreglos, disponible=:disponible WHERE numero_habitacion = :numero");
+                query.bindValue(":tipo", habitacionAntigua->getTipoHabitacion());
+                query.bindValue(":camas", habitacionAntigua->getNumeroCamas());
+                query.bindValue(":coste", habitacionAntigua->getCostePorNoche());
+                query.bindValue(":enArreglos", habitacionAntigua->getEnArreglos());
+                query.bindValue(":disponible", habitacionAntigua->getDisponible());
+                query.bindValue(":numero", habitacionAntigua->getNumeroHabitacion());
+
+                query.exec();
+
+                throw;
+            }
+        }
+        else
+        {
+            QSqlError error = query.lastError();
+            QString errorText = "Fallo al modificar la habitación en la base de datos: " + error.text();
+            qDebug() << errorText;
+            throw runtime_error(errorText.toStdString());
+        }
+    }
+
+    return nullptr;
+}
+
 Habitacion *ControladorBD::cambiarDisponibilidadHabitacion(int numero, bool disponible)
 {
     if (this->abreBD())

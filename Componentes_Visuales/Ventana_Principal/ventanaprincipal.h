@@ -17,6 +17,7 @@
 #include "Componentes_Visuales/Ventana_Registrar_Entrada/registrarentrada.h"
 #include "Componentes_Visuales/Ventana_Registrar_Salida/registrarsalida.h"
 #include "Componentes_Visuales/Ventana_Info_Reserva/inforeserva.h"
+#include "Componentes_Visuales/Ventana_Estado_Habitacion/estadohabitacion.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -43,6 +44,7 @@ public:
     // Funciones para llenar la informacion de todos los clientes
     void llenarInfoDatos();
     void aniadirLineaInfoCliente(Cliente cliente);
+    void aniadirLineaInfoHabitacion(Habitacion habitacion);
     void aniadirLineaInfoReserva(Reserva reserva);
 
 private slots:
@@ -62,6 +64,7 @@ private slots:
     void registrarNuevaSalida(int fila = -1, int columna = -1);
 
     void eliminarCliente(int clienteID = -1);
+    void modificarEstadoHabitacion(int numeroHabitacion = -1);
     void mostrarInfoReserva(int numeroReserva = -1);
 
     void on_pushButtonDebug_clicked();
@@ -85,5 +88,6 @@ private:
     RegistrarEntrada *ventanaRegistrarEntrada = nullptr;
     RegistrarSalida *ventanaRegistrarSalida = nullptr;
     InfoReserva *ventanaInfoReserva = nullptr;
+    EstadoHabitacion *ventanaEstadoHabitacion = nullptr;
 };
 #endif // VENTANAPRINCIPAL_H

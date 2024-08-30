@@ -339,7 +339,7 @@
                <number>0</number>
               </property>
               <property name="columnCount">
-               <number>5</number>
+               <number>4</number>
               </property>
               <attribute name="horizontalHeaderCascadingSectionResizes">
                <bool>false</bool>
@@ -373,11 +373,6 @@
                 <string>Importe</string>
                </property>
               </column>
-              <column>
-               <property name="text">
-                <string/>
-               </property>
-              </column>
              </widget>
             </item>
            </layout>
@@ -387,7 +382,7 @@
         <item row="1" column="1">
          <widget class="QTabWidget" name="tabWidgetInformacion">
           <property name="currentIndex">
-           <number>2</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tabInformacionClientes">
            <attribute name="title">
@@ -457,6 +452,72 @@
            <attribute name="title">
             <string>Habitaciones</string>
            </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_11">
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayoutInfoHabitaciones">
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_4">
+                <item>
+                 <widget class="QLabel" name="label_20">
+                  <property name="text">
+                   <string>Número:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_16">
+                  <property name="text">
+                   <string>Tipo:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_22">
+                  <property name="text">
+                   <string>Tamaño en m2:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_21">
+                  <property name="text">
+                   <string># de Camas:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_17">
+                  <property name="text">
+                   <string>Coste por noche:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_18">
+                  <property name="text">
+                   <string>Disponible:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_19">
+                  <property name="text">
+                   <string>En Arreglos:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_23">
+                  <property name="text">
+                   <string> </string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+           </layout>
           </widget>
           <widget class="QWidget" name="tabInformacionReservas">
            <attribute name="title">
@@ -529,7 +590,7 @@
      <x>0</x>
      <y>0</y>
      <width>1217</width>
-     <height>17</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuA_adir">

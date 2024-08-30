@@ -20,11 +20,28 @@ void InfoReserva::mostrar()
     ui->lineEditNumeroConfirmacion->setText(QString::number(this->reserva->getNumeroConfirmacion()));
     ui->lineEditEstado->setText(this->reserva->getEstadoReserva());
     ui->lineEditCliente->setText(this->reserva->getClienteNombre());
-    ui->lineEditHabitacion->setText(QString::number(this->reserva->getNumeroHabitacion()));
     ui->lineEditInicio->setText(this->reserva->getFechaInicioString());
     ui->lineEditFin->setText(this->reserva->getFechaFinString());
     ui->lineEditNoches->setText(QString::number(this->reserva->getCantidadNoches()));
-    ui->lineEditImporte->setText(QString::number(this->reserva->getImporte()));
+    ui->lineEditImporte->setText(QString::number(this->reserva->getImporte()) + " €");
+
+    int numeroHabitacion = this->reserva->getNumeroHabitacion();
+
+    if (numeroHabitacion == -1)
+        ui->lineEditHabitacion->setText("");
+    else
+        ui->lineEditHabitacion->setText(QString::number(numeroHabitacion));
+
+    QString gastosStr = "";
+    for (pair<QString, float> gasto: this->reserva->getDesgloseGastos())
+    {
+        gastosStr += "- ";
+        gastosStr += gasto.first;
+        gastosStr += ": ";
+        gastosStr += QString::number(gasto.second);
+        gastosStr += " €\n";
+    }
+    ui->textEditGastos->setText(gastosStr);
 
     this->show();
 }

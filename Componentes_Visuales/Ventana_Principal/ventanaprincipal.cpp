@@ -51,6 +51,7 @@ void VentanaPrincipal::iniciarVentana()
     this->ventanaRegistrarEntrada = new RegistrarEntrada(&this->reservas, this->controladorBD, this);
     this->ventanaRegistrarSalida = new RegistrarSalida(&this->reservas, this->controladorBD, this);
     this->ventanaInfoReserva = new InfoReserva(this);
+    this->ventanaEstadoHabitacion = new EstadoHabitacion(&this->habitaciones, this->controladorBD, this);
 
     this->actualizarVectores();
 }
@@ -113,8 +114,14 @@ void VentanaPrincipal::llenarInfoDatos()
         this->aniadirLineaInfoReserva(reserva);
     }
 
+    for (Habitacion habitacion: this->habitaciones)
+    {
+        this->aniadirLineaInfoHabitacion(habitacion);
+    }
+
     QSpacerItem *spacer = new QSpacerItem(12, 1024);
     ui->verticalLayoutInfoClientes->addSpacerItem(spacer);
+    ui->verticalLayoutInfoHabitaciones->addSpacerItem(spacer);
     ui->verticalLayoutInfoReservas->addSpacerItem(spacer);
 }
 
@@ -145,6 +152,37 @@ void VentanaPrincipal::aniadirLineaInfoCliente(Cliente cliente)
     ui->verticalLayoutInfoClientes->addLayout(layoutInfoCliente);
 
     connect(eliminar, SIGNAL(clicked(int)), this, SLOT(eliminarCliente(int)));
+}
+
+void VentanaPrincipal::aniadirLineaInfoHabitacion(Habitacion habitacion)
+{
+    QHBoxLayout *layoutInfoHabitacion = new QHBoxLayout(ui->tabInformacionHabitaciones);
+
+    int numeroHabitacion = habitacion.getNumeroHabitacion();
+
+    QLabel *labelNumero = new QLabel(QString::number(numeroHabitacion));
+    QLabel *labelTipo = new QLabel(habitacion.getTipoHabitacion());
+    QLabel *labelTamanio = new QLabel(QString::number(habitacion.getTamanioM2()));
+    QLabel *labelCamas = new QLabel(QString::number(habitacion.getNumeroCamas()));
+    QLabel *labelCoste = new QLabel(QString::number(habitacion.getCostePorNoche()));
+    QLabel *labelDisponible = new QLabel(QString::number(habitacion.getDisponible()));
+    QLabel *labelEnArreglos = new QLabel(QString::number(habitacion.getEnArreglos()));
+
+    BotonPosicionFila *info = new BotonPosicionFila("Información", numeroHabitacion);
+
+    layoutInfoHabitacion->addWidget(labelNumero);
+    layoutInfoHabitacion->addWidget(labelTipo);
+    layoutInfoHabitacion->addWidget(labelTamanio);
+    layoutInfoHabitacion->addWidget(labelCamas);
+    layoutInfoHabitacion->addWidget(labelCoste);
+    layoutInfoHabitacion->addWidget(labelDisponible);
+    layoutInfoHabitacion->addWidget(labelEnArreglos);
+
+    layoutInfoHabitacion->addWidget(info);
+
+    ui->verticalLayoutInfoHabitaciones->addLayout(layoutInfoHabitacion);
+
+    connect(info, SIGNAL(clicked(int)), this, SLOT(modificarEstadoHabitacion(int)));
 }
 
 void VentanaPrincipal::aniadirLineaInfoReserva(Reserva reserva)
@@ -318,6 +356,23 @@ void VentanaPrincipal::eliminarCliente(int clienteID)
             QMessageBox::information(this, "Exito", "Cliente eliminado de la base de datos");
 
             this->actualizarVectores();
+        }
+    }
+}
+
+void VentanaPrincipal::modificarEstadoHabitacion(int numeroHabitacion)
+{
+    if (numeroHabitacion != -1)
+    {
+        for (Habitacion habitacion: this->habitaciones)
+        {
+            if (habitacion.getNumeroHabitacion() == numeroHabitacion)
+            {
+                this->ventanaEstadoHabitacion->setHabitacion(habitacion.getNumeroHabitacion());
+                this->ventanaEstadoHabitacion->mostrar();
+
+                break;
+            }
         }
     }
 }
