@@ -382,7 +382,7 @@
         <item row="1" column="1">
          <widget class="QTabWidget" name="tabWidgetInformacion">
           <property name="currentIndex">
-           <number>1</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="tabInformacionClientes">
            <attribute name="title">
@@ -390,59 +390,74 @@
            </attribute>
            <layout class="QVBoxLayout" name="verticalLayout_10">
             <item>
-             <layout class="QVBoxLayout" name="verticalLayoutInfoClientes">
+             <widget class="QTableWidget" name="tableWidgetClientes">
+              <property name="columnCount">
+               <number>7</number>
+              </property>
+              <attribute name="horizontalHeaderDefaultSectionSize">
+               <number>82</number>
+              </attribute>
+              <attribute name="horizontalHeaderStretchLastSection">
+               <bool>true</bool>
+              </attribute>
+              <column>
+               <property name="text">
+                <string>ID:</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Nombre:</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Email:</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Teléfono:</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Nacionalidad:</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string># Estancias:</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string/>
+               </property>
+              </column>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_3">
               <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_2">
-                <item>
-                 <widget class="QLabel" name="label_3">
-                  <property name="text">
-                   <string>ID</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_4">
-                  <property name="text">
-                   <string>Nombre</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_5">
-                  <property name="text">
-                   <string>Email</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_6">
-                  <property name="text">
-                   <string>Telefono</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_7">
-                  <property name="text">
-                   <string>Nacionalidad</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_8">
-                  <property name="text">
-                   <string># Estancias</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_9">
-                  <property name="text">
-                   <string/>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
+               <spacer name="horizontalSpacer_4">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButtonNuevoCliente">
+                <property name="text">
+                 <string>Nuevo Cliente</string>
+                </property>
+               </widget>
               </item>
              </layout>
             </item>
@@ -454,66 +469,79 @@
            </attribute>
            <layout class="QVBoxLayout" name="verticalLayout_11">
             <item>
-             <layout class="QVBoxLayout" name="verticalLayoutInfoHabitaciones">
+             <widget class="QTableWidget" name="tableWidgetHabitaciones">
+              <property name="columnCount">
+               <number>8</number>
+              </property>
+              <attribute name="horizontalHeaderDefaultSectionSize">
+               <number>70</number>
+              </attribute>
+              <attribute name="horizontalHeaderStretchLastSection">
+               <bool>true</bool>
+              </attribute>
+              <column>
+               <property name="text">
+                <string>Número:</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Tipo:</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Tamaño:</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Camas:</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Coste:</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Disponible:</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>En Arreglos:</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string/>
+               </property>
+              </column>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_4">
               <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_4">
-                <item>
-                 <widget class="QLabel" name="label_20">
-                  <property name="text">
-                   <string>Número:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_16">
-                  <property name="text">
-                   <string>Tipo:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_22">
-                  <property name="text">
-                   <string>Tamaño en m2:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_21">
-                  <property name="text">
-                   <string># de Camas:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_17">
-                  <property name="text">
-                   <string>Coste por noche:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_18">
-                  <property name="text">
-                   <string>Disponible:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_19">
-                  <property name="text">
-                   <string>En Arreglos:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_23">
-                  <property name="text">
-                   <string> </string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
+               <spacer name="horizontalSpacer_2">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButtonNuevaHabitacion">
+                <property name="text">
+                 <string>Nueva Habitación</string>
+                </property>
+               </widget>
               </item>
              </layout>
             </item>
@@ -525,54 +553,50 @@
            </attribute>
            <layout class="QVBoxLayout" name="verticalLayout_12">
             <item>
-             <layout class="QVBoxLayout" name="verticalLayoutInfoReservas">
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_3">
-                <item>
-                 <widget class="QLabel" name="label_15">
-                  <property name="text">
-                   <string># Reserva</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_14">
-                  <property name="text">
-                   <string>Cliente</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_13">
-                  <property name="text">
-                   <string>Habitación</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_12">
-                  <property name="text">
-                   <string>Estado</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_11">
-                  <property name="text">
-                   <string>Fecha Inicio</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_10">
-                  <property name="text">
-                   <string/>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-             </layout>
+             <widget class="QTableWidget" name="tableWidgetReservas">
+              <property name="columnCount">
+               <number>6</number>
+              </property>
+              <attribute name="horizontalHeaderDefaultSectionSize">
+               <number>90</number>
+              </attribute>
+              <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+               <bool>false</bool>
+              </attribute>
+              <attribute name="horizontalHeaderStretchLastSection">
+               <bool>true</bool>
+              </attribute>
+              <column>
+               <property name="text">
+                <string># Reserva:</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Cliente:</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Habitación:</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Estado:</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Fecha Inicio:</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string/>
+               </property>
+              </column>
+             </widget>
             </item>
            </layout>
           </widget>
@@ -590,7 +614,7 @@
      <x>0</x>
      <y>0</y>
      <width>1217</width>
-     <height>21</height>
+     <height>17</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuA_adir">

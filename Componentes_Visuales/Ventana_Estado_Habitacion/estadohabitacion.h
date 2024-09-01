@@ -3,7 +3,6 @@
 
 #include <QDialog>
 #include <QMessageBox>
-#include <vector>
 
 #include "Clases/Habitacion/habitacion.h"
 #include "Clases/ControladorBD/controladorbd.h"
@@ -17,13 +16,16 @@ class EstadoHabitacion : public QDialog
     Q_OBJECT
 
 public:
-    explicit EstadoHabitacion(vector<Habitacion> *habitaciones, ControladorBD *controladorBD, QWidget *parent = nullptr);
+    explicit EstadoHabitacion(ControladorBD *controladorBD, QWidget *parent = nullptr);
     ~EstadoHabitacion();
 
-    void setHabitacion(int numeroHabitacion);
+    void setHabitacion(Habitacion *habitacion);
 
     void mostrar();
     void limpiar();
+
+signals:
+    void actualizar(bool = false);
 
 public slots:
     void cerrar();
@@ -32,8 +34,7 @@ public slots:
 private:
     Ui::EstadoHabitacion *ui;
 
-    vector<Habitacion> *habitaciones;
-    int numeroHabitacion;
+    Habitacion *habitacion;
     ControladorBD *controladorBD;
 };
 

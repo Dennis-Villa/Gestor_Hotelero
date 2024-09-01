@@ -9,20 +9,7 @@ VentanaPrincipal::VentanaPrincipal(QWidget *parent)
 
     this->iniciarVentana();
 
-    connect(this->ventanaNuevoCliente, &AniadirCliente::cerrarVentana, this, &VentanaPrincipal::cerrarNuevoCliente);
-    connect(this->ventanaNuevaHabitacion, &AniadirHabitacion::cerrarVentana, this, &VentanaPrincipal::cerrarNuevaHabitacion);
-    connect(this->ventanaNuevaReserva, SIGNAL(cerrarVentana(bool)), this, SLOT(cerrarNuevaReserva(bool)));
-    connect(this->ventanaRegistrarEntrada, SIGNAL(cerrarVentana(bool)), this, SLOT(cerrarRegistrarEntrada(bool)));
-    connect(this->ventanaRegistrarSalida, SIGNAL(cerrarVentana(bool)), this, SLOT(cerrarRegistrarSalida(bool)));
-
-    connect(ui->actionReserva, SIGNAL(triggered()), this, SLOT(crearNuevaReserva()));
-    connect(ui->actionEntrada, SIGNAL(triggered()), this, SLOT(registrarNuevaEntrada()));
-    connect(ui->actionSalida, SIGNAL(triggered()), this, SLOT(registrarNuevaSalida()));
-
-    connect(ui->pushButtonNuevaReserva, SIGNAL(clicked()), this, SLOT(crearNuevaReserva()));
-    connect(ui->dateEditActual, SIGNAL(userDateChanged(QDate)), this, SLOT(llenarInfoReservas()));
-    connect(ui->tableWidgetLlegadasHoy, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(registrarNuevaEntrada(int,int)));
-    connect(ui->tableWidgetSalidasHoy, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(registrarNuevaSalida(int,int)));
+    this->conecciones();
 }
 
 VentanaPrincipal::~VentanaPrincipal()
@@ -51,9 +38,9 @@ void VentanaPrincipal::iniciarVentana()
     this->ventanaRegistrarEntrada = new RegistrarEntrada(&this->reservas, this->controladorBD, this);
     this->ventanaRegistrarSalida = new RegistrarSalida(&this->reservas, this->controladorBD, this);
     this->ventanaInfoReserva = new InfoReserva(this);
-    this->ventanaEstadoHabitacion = new EstadoHabitacion(&this->habitaciones, this->controladorBD, this);
+    this->ventanaEstadoHabitacion = new EstadoHabitacion(this->controladorBD, this);
 
-    this->actualizarVectores();
+    this->actualizarVectores(true);
 }
 
 void VentanaPrincipal::llenarTablaReserva(QDate fechaComparacion, QDate fechaActual, Reserva reserva, QTableWidget *tableWidget, int *fila)
@@ -96,122 +83,118 @@ void VentanaPrincipal::llenarTablaOcupacion(Reserva reserva, QDate fechaActual, 
     }
 }
 
-void VentanaPrincipal::actualizarVectores()
-{
-    this->llenarInfoDatos();
-    this->llenarInfoReservas();
-}
-
 void VentanaPrincipal::llenarInfoDatos()
 {
+    this->limpiarTabla(ui->tableWidgetClientes);
     for (Cliente cliente: this->clientes)
     {
         this->aniadirLineaInfoCliente(cliente);
     }
+    ui->tableWidgetClientes->sortItems(0);
 
-    for (Reserva reserva: this->reservas)
-    {
-        this->aniadirLineaInfoReserva(reserva);
-    }
-
+    this->limpiarTabla(ui->tableWidgetHabitaciones);
     for (Habitacion habitacion: this->habitaciones)
     {
         this->aniadirLineaInfoHabitacion(habitacion);
     }
+    ui->tableWidgetHabitaciones->sortItems(0);
 
-    QSpacerItem *spacer = new QSpacerItem(12, 1024);
-    ui->verticalLayoutInfoClientes->addSpacerItem(spacer);
-    ui->verticalLayoutInfoHabitaciones->addSpacerItem(spacer);
-    ui->verticalLayoutInfoReservas->addSpacerItem(spacer);
+    this->limpiarTabla(ui->tableWidgetReservas);
+    for (Reserva reserva: this->reservas)
+    {
+        this->aniadirLineaInfoReserva(reserva);
+    }
+    ui->tableWidgetReservas->sortItems(0);
+}
+
+void VentanaPrincipal::limpiarTabla(QTableWidget *tabla)
+{
+    tabla->setRowCount(0);
 }
 
 void VentanaPrincipal::aniadirLineaInfoCliente(Cliente cliente)
 {
-    QHBoxLayout *layoutInfoCliente = new QHBoxLayout(ui->tabInformacionClientes);
+    int fila = ui->tableWidgetClientes->rowCount();
+    ui->tableWidgetClientes->insertRow(fila);
 
     int clienteID = cliente.getIdentificador();
 
-    QLabel *labelID = new QLabel(QString::number(clienteID));
-    QLabel *labelNombre = new QLabel(cliente.getNombre());
-    QLabel *labelEmail = new QLabel(cliente.getEmail());
-    QLabel *labelTelefono = new QLabel(cliente.getTelefono());
-    QLabel *labelNacionalidad = new QLabel(cliente.getNacionalidad());
-    QLabel *labelCantidadEstancias = new QLabel(QString::number(cliente.getCanidadEstancias()));
+    QTableWidgetItem *idItem = new QTableWidgetItem(tr("%1").arg(clienteID));
+    QTableWidgetItem *nombreItem = new QTableWidgetItem(tr("%1").arg(cliente.getNombre()));
+    QTableWidgetItem *emailItem = new QTableWidgetItem(tr("%1").arg(cliente.getEmail()));
+    QTableWidgetItem *telefonoItem = new QTableWidgetItem(tr("%1").arg(cliente.getTelefono()));
+    QTableWidgetItem *nacionalidadItem = new QTableWidgetItem(tr("%1").arg(cliente.getNacionalidad()));
+    QTableWidgetItem *cantidadEstanciasItem = new QTableWidgetItem(tr("%1").arg(cliente.getCanidadEstancias()));
 
     BotonPosicionFila *eliminar = new BotonPosicionFila("Eliminar", clienteID);
+    eliminar->setFlat(true);
 
-    layoutInfoCliente->addWidget(labelID);
-    layoutInfoCliente->addWidget(labelNombre);
-    layoutInfoCliente->addWidget(labelEmail);
-    layoutInfoCliente->addWidget(labelTelefono);
-    layoutInfoCliente->addWidget(labelNacionalidad);
-    layoutInfoCliente->addWidget(labelCantidadEstancias);
+    ui->tableWidgetClientes->setItem(fila, 0, idItem);
+    ui->tableWidgetClientes->setItem(fila, 1, nombreItem);
+    ui->tableWidgetClientes->setItem(fila, 2, emailItem);
+    ui->tableWidgetClientes->setItem(fila, 3, telefonoItem);
+    ui->tableWidgetClientes->setItem(fila, 4, nacionalidadItem);
+    ui->tableWidgetClientes->setItem(fila, 5, cantidadEstanciasItem);
 
-    layoutInfoCliente->addWidget(eliminar);
-
-    ui->verticalLayoutInfoClientes->addLayout(layoutInfoCliente);
-
+    ui->tableWidgetClientes->setCellWidget(fila, 6, eliminar);
     connect(eliminar, SIGNAL(clicked(int)), this, SLOT(eliminarCliente(int)));
 }
 
 void VentanaPrincipal::aniadirLineaInfoHabitacion(Habitacion habitacion)
 {
-    QHBoxLayout *layoutInfoHabitacion = new QHBoxLayout(ui->tabInformacionHabitaciones);
+    int fila = ui->tableWidgetHabitaciones->rowCount();
+    ui->tableWidgetHabitaciones->insertRow(fila);
 
     int numeroHabitacion = habitacion.getNumeroHabitacion();
-
-    QLabel *labelNumero = new QLabel(QString::number(numeroHabitacion));
-    QLabel *labelTipo = new QLabel(habitacion.getTipoHabitacion());
-    QLabel *labelTamanio = new QLabel(QString::number(habitacion.getTamanioM2()));
-    QLabel *labelCamas = new QLabel(QString::number(habitacion.getNumeroCamas()));
-    QLabel *labelCoste = new QLabel(QString::number(habitacion.getCostePorNoche()));
-    QLabel *labelDisponible = new QLabel(QString::number(habitacion.getDisponible()));
-    QLabel *labelEnArreglos = new QLabel(QString::number(habitacion.getEnArreglos()));
-
     BotonPosicionFila *info = new BotonPosicionFila("Información", numeroHabitacion);
+    info->setFlat(true);
 
-    layoutInfoHabitacion->addWidget(labelNumero);
-    layoutInfoHabitacion->addWidget(labelTipo);
-    layoutInfoHabitacion->addWidget(labelTamanio);
-    layoutInfoHabitacion->addWidget(labelCamas);
-    layoutInfoHabitacion->addWidget(labelCoste);
-    layoutInfoHabitacion->addWidget(labelDisponible);
-    layoutInfoHabitacion->addWidget(labelEnArreglos);
+    QTableWidgetItem *numeroItem = new QTableWidgetItem(tr("%1").arg(habitacion.getNumeroHabitacion()));
+    QTableWidgetItem *tipoItem = new QTableWidgetItem(tr("%1").arg(habitacion.getTipoHabitacion()));
+    QTableWidgetItem *tamanioFinItem = new QTableWidgetItem(tr("%1").arg(habitacion.getTamanioM2()));
+    QTableWidgetItem *camasItem = new QTableWidgetItem(tr("%1").arg(habitacion.getNumeroCamas()));
+    QTableWidgetItem *costeItem = new QTableWidgetItem(tr("%1").arg(habitacion.getCostePorNoche()));
+    QTableWidgetItem *disponibleItem = new QTableWidgetItem(tr("%1").arg(habitacion.getDisponible()));
+    QTableWidgetItem *arreglosItem = new QTableWidgetItem(tr("%1").arg(habitacion.getEnArreglos()));
 
-    layoutInfoHabitacion->addWidget(info);
+    ui->tableWidgetHabitaciones->setItem(fila, 0, numeroItem);
+    ui->tableWidgetHabitaciones->setItem(fila, 1, tipoItem);
+    ui->tableWidgetHabitaciones->setItem(fila, 2, tamanioFinItem);
+    ui->tableWidgetHabitaciones->setItem(fila, 3, camasItem);
+    ui->tableWidgetHabitaciones->setItem(fila, 4, costeItem);
+    ui->tableWidgetHabitaciones->setItem(fila, 5, disponibleItem);
+    ui->tableWidgetHabitaciones->setItem(fila, 6, arreglosItem);
 
-    ui->verticalLayoutInfoHabitaciones->addLayout(layoutInfoHabitacion);
-
+    ui->tableWidgetHabitaciones->setCellWidget(fila, 7, info);
     connect(info, SIGNAL(clicked(int)), this, SLOT(modificarEstadoHabitacion(int)));
 }
 
 void VentanaPrincipal::aniadirLineaInfoReserva(Reserva reserva)
 {
-    QHBoxLayout *layoutInfoReserva = new QHBoxLayout(ui->tabInformacionReservas);
+    int fila = ui->tableWidgetReservas->rowCount();
+    ui->tableWidgetReservas->insertRow(fila);
 
     int numeroConfirmacion = reserva.getNumeroConfirmacion();
     QString habitacion = (reserva.getNumeroHabitacion() == -1
-                            ? ""
-                            : QString::number(reserva.getNumeroHabitacion()));
-
-    QLabel *labelID = new QLabel(QString::number(numeroConfirmacion));
-    QLabel *labelCliente = new QLabel(reserva.getClienteNombre());
-    QLabel *labelHabitacion = new QLabel(habitacion);
-    QLabel *labelEstado = new QLabel(reserva.getEstadoReserva());
-    QLabel *labelInicio = new QLabel(reserva.getFechaInicioString());
+                              ? ""
+                              : QString::number(reserva.getNumeroHabitacion()));
 
     BotonPosicionFila *info = new BotonPosicionFila("Información", numeroConfirmacion);
+    info->setFlat(true);
 
-    layoutInfoReserva->addWidget(labelID);
-    layoutInfoReserva->addWidget(labelCliente);
-    layoutInfoReserva->addWidget(labelHabitacion);
-    layoutInfoReserva->addWidget(labelEstado);
-    layoutInfoReserva->addWidget(labelInicio);
+    QTableWidgetItem *idItem = new QTableWidgetItem(tr("%1").arg(numeroConfirmacion));
+    QTableWidgetItem *clienteItem = new QTableWidgetItem(tr("%1").arg(reserva.getClienteNombre()));
+    QTableWidgetItem *habitacionFinItem = new QTableWidgetItem(tr("%1").arg(habitacion));
+    QTableWidgetItem *estadoItem = new QTableWidgetItem(tr("%1").arg(reserva.getEstadoReserva()));
+    QTableWidgetItem *inicioItem = new QTableWidgetItem(tr("%1").arg(reserva.getFechaInicioString()));
 
-    layoutInfoReserva->addWidget(info);
+    ui->tableWidgetReservas->setItem(fila, 0, idItem);
+    ui->tableWidgetReservas->setItem(fila, 1, clienteItem);
+    ui->tableWidgetReservas->setItem(fila, 2, habitacionFinItem);
+    ui->tableWidgetReservas->setItem(fila, 3, estadoItem);
+    ui->tableWidgetReservas->setItem(fila, 4, inicioItem);
 
-    ui->verticalLayoutInfoReservas->addLayout(layoutInfoReserva);
-
+    ui->tableWidgetReservas->setCellWidget(fila, 5, info);
     connect(info, SIGNAL(clicked(int)), this, SLOT(mostrarInfoReserva(int)));
 }
 
@@ -246,6 +229,35 @@ void VentanaPrincipal::llenarInfoReservas()
 
         this->llenarTablaOcupacion(reserva, fechaHoy, &filasOcupacion);
     }
+}
+
+void VentanaPrincipal::conecciones()
+{
+    connect(ui->actionCliente, SIGNAL(triggered(bool)), this, SLOT(nuevoCliente()));
+    connect(ui->pushButtonNuevoCliente, SIGNAL(clicked(bool)), this, SLOT(nuevoCliente()));
+    connect(ui->actionHabitacion, SIGNAL(triggered(bool)), this, SLOT(nuevaHabitacion()));
+    connect(ui->pushButtonNuevaHabitacion, SIGNAL(clicked(bool)), this, SLOT(nuevaHabitacion()));
+    connect(ui->actionReserva, SIGNAL(triggered()), this, SLOT(crearNuevaReserva()));
+    connect(ui->pushButtonNuevaReserva, SIGNAL(clicked()), this, SLOT(crearNuevaReserva()));
+    connect(ui->actionEntrada, SIGNAL(triggered()), this, SLOT(registrarNuevaEntrada()));
+    connect(ui->actionSalida, SIGNAL(triggered()), this, SLOT(registrarNuevaSalida()));
+
+    connect(this->ventanaNuevoCliente, SIGNAL(cerrarVentana(bool)), this, SLOT(cerrarNuevoCliente(bool)));
+    connect(this->ventanaNuevaHabitacion, SIGNAL(cerrarVentana(bool)), this, SLOT(cerrarNuevaHabitacion(bool)));
+    connect(this->ventanaNuevaReserva, SIGNAL(cerrarVentana(bool)), this, SLOT(cerrarNuevaReserva(bool)));
+    connect(this->ventanaRegistrarEntrada, SIGNAL(cerrarVentana(bool)), this, SLOT(cerrarRegistrarEntrada(bool)));
+    connect(this->ventanaRegistrarSalida, SIGNAL(cerrarVentana(bool)), this, SLOT(cerrarRegistrarSalida(bool)));
+
+    connect(ui->dateEditActual, SIGNAL(userDateChanged(QDate)), this, SLOT(llenarInfoReservas()));
+    connect(ui->tableWidgetLlegadasHoy, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(registrarNuevaEntrada(int,int)));
+    connect(ui->tableWidgetSalidasHoy, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(registrarNuevaSalida(int,int)));
+
+    connect(this->ventanaEstadoHabitacion, SIGNAL(actualizar(bool)), this, SLOT(actualizarVectores(bool)));
+    connect(this->ventanaNuevoCliente, SIGNAL(aniadido(bool)), this, SLOT(actualizarVectores(bool)));
+    connect(this->ventanaNuevaHabitacion, SIGNAL(aniadido(bool)), this, SLOT(actualizarVectores(bool)));
+    connect(this->ventanaNuevaReserva, SIGNAL(aniadido(bool)), this, SLOT(actualizarVectores(bool)));
+    connect(this->ventanaRegistrarEntrada, SIGNAL(registrado(bool)), this, SLOT(actualizarVectores(bool)));
+    connect(this->ventanaRegistrarSalida, SIGNAL(registrado(bool)), this, SLOT(actualizarVectores(bool)));
 }
 
 void VentanaPrincipal::cerrarNuevoCliente(bool cerrar)
@@ -352,10 +364,9 @@ void VentanaPrincipal::eliminarCliente(int clienteID)
                     this->reservas.erase(this->reservas.begin() + i);
                 }
             }
+            this->actualizarVectores(true);
 
             QMessageBox::information(this, "Exito", "Cliente eliminado de la base de datos");
-
-            this->actualizarVectores();
         }
     }
 }
@@ -364,11 +375,13 @@ void VentanaPrincipal::modificarEstadoHabitacion(int numeroHabitacion)
 {
     if (numeroHabitacion != -1)
     {
-        for (Habitacion habitacion: this->habitaciones)
+        for (int i = 0; i < (int)this->habitaciones.size(); i++)
         {
-            if (habitacion.getNumeroHabitacion() == numeroHabitacion)
+            Habitacion *habitacion = &this->habitaciones.at(i);
+
+            if (habitacion->getNumeroHabitacion() == numeroHabitacion)
             {
-                this->ventanaEstadoHabitacion->setHabitacion(habitacion.getNumeroHabitacion());
+                this->ventanaEstadoHabitacion->setHabitacion(habitacion);
                 this->ventanaEstadoHabitacion->mostrar();
 
                 break;
@@ -381,18 +394,20 @@ void VentanaPrincipal::mostrarInfoReserva(int numeroReserva)
 {
     if (numeroReserva != -1)
     {
-        for (Reserva reserva: this->reservas)
+        for (int i = 0; i < (int)this->reservas.size(); i++)
         {
-            if (reserva.getNumeroConfirmacion() == numeroReserva)
+            Reserva *reserva = &this->reservas.at(i);
+
+            if (reserva->getNumeroConfirmacion() == numeroReserva)
             {
-                this->ventanaInfoReserva->setReserva(&reserva);
+                this->ventanaInfoReserva->setReserva(reserva);
                 this->ventanaInfoReserva->mostrar();
             }
         }
     }
 }
 
-void VentanaPrincipal::on_actionCliente_triggered()
+void VentanaPrincipal::nuevoCliente()
 {
     ui->centralwidget->setDisabled(true);
     this->ventanaNuevoCliente->show();
@@ -400,7 +415,7 @@ void VentanaPrincipal::on_actionCliente_triggered()
 }
 
 
-void VentanaPrincipal::on_actionHabitacion_triggered()
+void VentanaPrincipal::nuevaHabitacion()
 {
     ui->centralwidget->setDisabled(true);
     this->ventanaNuevaHabitacion->show();
@@ -414,6 +429,15 @@ void VentanaPrincipal::crearNuevaReserva()
     this->ventanaNuevaReserva->abrirVentana();
 }
 
+
+void VentanaPrincipal::actualizarVectores(bool actualizar)
+{
+    if (actualizar)
+    {
+        this->llenarInfoDatos();
+        this->llenarInfoReservas();
+    }
+}
 
 void VentanaPrincipal::on_pushButtonDebug_clicked()
 {

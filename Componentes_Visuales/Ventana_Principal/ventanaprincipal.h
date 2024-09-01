@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QDateTime>
 #include <QTableWidget>
+#include <QBoxLayout>
 #include <vector>
 
 #include "Archivos_Auxiliares/Boton_Posicion_Fila/botonposicionfila.h"
@@ -38,20 +39,16 @@ public:
                             QTableWidget *tableWidget, int *fila);
     void llenarTablaOcupacion(Reserva reserva, QDate fechaActual, int *fila);
 
-    // Funciones para actualizar los componentes con datos cuando cambian los vectores
-    void actualizarVectores();
-
     // Funciones para llenar la informacion de todos los clientes
     void llenarInfoDatos();
+    void limpiarTabla(QTableWidget *tabla);
     void aniadirLineaInfoCliente(Cliente cliente);
     void aniadirLineaInfoHabitacion(Habitacion habitacion);
     void aniadirLineaInfoReserva(Reserva reserva);
 
 private slots:
-    void on_actionCliente_triggered();
-
-    void on_actionHabitacion_triggered();
-
+    void nuevoCliente();
+    void nuevaHabitacion();
     void crearNuevaReserva();
 
     void cerrarNuevoCliente(bool cerrar = false);
@@ -67,12 +64,17 @@ private slots:
     void modificarEstadoHabitacion(int numeroHabitacion = -1);
     void mostrarInfoReserva(int numeroReserva = -1);
 
+    // Funciones para actualizar los componentes con datos cuando cambian los vectores
+    void actualizarVectores(bool actualizar = false);
+
     void on_pushButtonDebug_clicked();
 
 public slots:
     void llenarInfoReservas();
 
 private:
+    void conecciones();
+
     Ui::VentanaPrincipal *ui;
     QDate fechaActual = QDate::currentDate();
 

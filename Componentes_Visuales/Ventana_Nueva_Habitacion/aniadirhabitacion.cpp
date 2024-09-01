@@ -62,6 +62,7 @@ void AniadirHabitacion::aniadirHabitacion()
     {
         this->limpiarVentana();
         this->habitaciones->push_back(*nuevaHabitacion);
+        emit aniadido(true);
         QMessageBox::information(this, "Exito", "Nueva Habitación añadida.");
     }
 }

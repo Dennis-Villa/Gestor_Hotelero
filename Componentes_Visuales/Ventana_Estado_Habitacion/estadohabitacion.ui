@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>262</width>
+    <width>252</width>
     <height>193</height>
    </rect>
   </property>
@@ -124,7 +124,7 @@
     </spacer>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
+    <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,8,1">
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_4">
        <item>
@@ -143,7 +143,7 @@
          </item>
          <item>
           <property name="text">
-           <string>Premuim</string>
+           <string>Premium</string>
           </property>
          </item>
          <item>
@@ -156,7 +156,7 @@
       </layout>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_5">
+      <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="1,10">
        <item>
         <widget class="QLabel" name="label_5">
          <property name="text">
@@ -166,6 +166,15 @@
        </item>
        <item>
         <widget class="QSpinBox" name="spinBoxCamas">
+         <property name="wrapping">
+          <bool>true</bool>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
+         </property>
          <property name="minimum">
           <number>1</number>
          </property>

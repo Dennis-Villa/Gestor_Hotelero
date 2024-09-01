@@ -153,6 +153,7 @@ void AniadirReserva::on_pushButtonAniadir_clicked()
     {
         this->limpiarVentana();
         this->reservas->push_back(*nuevaReserva);
+        emit aniadido(true);
         QMessageBox::information(this, "Exito", "Nueva reserva añadida");
     }
 }

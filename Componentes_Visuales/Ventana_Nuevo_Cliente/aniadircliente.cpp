@@ -55,6 +55,7 @@ void AniadirCliente::aniadirCliente()
     {
         this->limpiarVentana();
         this->clientes->push_back(*nuevoCliente);
+        emit aniadido(true);
         QMessageBox::information(this, "Exito", "Nuevo cliente añadido.");
     }
 }

@@ -196,6 +196,7 @@ void RegistrarEntrada::registrar()
             "En Estadía"
         );
 
+        emit registrado(true);
         QMessageBox::information(this, "Exito", "Entrada registrada.");
     }
     catch (exception &ex)

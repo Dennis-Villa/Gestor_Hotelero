@@ -27,6 +27,7 @@ public:
 
 signals:
     void cerrarVentana(bool cerrar = false);
+    void registrado(bool actualizar = false);
 
 private slots:
     void cerrar();

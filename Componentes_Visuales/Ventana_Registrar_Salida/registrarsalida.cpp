@@ -210,6 +210,7 @@ void RegistrarSalida::registrar()
             "Estancia Finalizada"
             );
 
+        emit registrado(true);
         QMessageBox::information(this, "Exito", "Salida registrada.");
     }
     catch (exception &ex)

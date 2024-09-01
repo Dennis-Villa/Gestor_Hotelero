@@ -32,6 +32,7 @@ public:
 
 signals:
     void cerrarVentana(bool cerrar = false);
+    void aniadido(bool actualizar = false);
 
 private slots:
     void cerrar();
