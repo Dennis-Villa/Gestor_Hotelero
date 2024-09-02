@@ -116,9 +116,12 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEditInicio">
+        <widget class="QDateEdit" name="dateEditInicio">
          <property name="readOnly">
           <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
          </property>
         </widget>
        </item>
@@ -134,9 +137,18 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEditFin">
+        <widget class="QDateEdit" name="dateEditFin">
+         <property name="wrapping">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
+         </property>
          <property name="readOnly">
           <bool>true</bool>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
          </property>
         </widget>
        </item>

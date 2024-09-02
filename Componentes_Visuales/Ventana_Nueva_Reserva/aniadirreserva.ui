@@ -76,7 +76,7 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,1,0,0">
+    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,1,1,1">
      <item>
       <widget class="QLabel" name="label_6">
        <property name="text">
@@ -238,7 +238,7 @@
     </spacer>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="2,1,2">
+    <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="2,1,0">
      <item>
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
@@ -260,12 +260,21 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEditCoste">
-       <property name="text">
-        <string>0,00 €</string>
-       </property>
+      <widget class="QDoubleSpinBox" name="doubleSpinBoxCoste">
        <property name="readOnly">
         <bool>true</bool>
+       </property>
+       <property name="buttonSymbols">
+        <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
+       </property>
+       <property name="suffix">
+        <string> €</string>
+       </property>
+       <property name="maximum">
+        <double>999999999999.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>5.000000000000000</double>
        </property>
       </widget>
      </item>
@@ -285,7 +294,7 @@
     </spacer>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="2,1,1">
+    <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="2,0,1,1">
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
@@ -298,6 +307,13 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonModificar">
+       <property name="text">
+        <string>Modificar</string>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="pushButtonAniadir">

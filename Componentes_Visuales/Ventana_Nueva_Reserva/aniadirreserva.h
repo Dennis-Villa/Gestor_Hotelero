@@ -27,6 +27,7 @@ public:
     ~AniadirReserva();
 
     void abrirVentana();
+    void abrirVentana(Reserva *reserva);
     void limpiarVentana();
     bool verificarDisponibilidadHabitacion(int numeroHabitacion, QDate inicio, int dias);
 
@@ -39,6 +40,7 @@ private slots:
     void actualizarCoste();
     void actualizarNumerosHabitaciones();
     void activarSeleccionFecha();
+    void modificarReserva();
 
     void on_pushButtonAniadir_clicked();
 
@@ -56,6 +58,7 @@ private:
     vector<Cliente> *clientes;
     vector<Habitacion> *habitaciones;
     vector<Reserva> *reservas;
+    Reserva *reserva;
     ControladorBD *controladorBD;
     bool ventanaAbierta;
 };

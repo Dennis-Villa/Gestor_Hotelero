@@ -119,12 +119,17 @@ void VentanaPrincipal::aniadirLineaInfoCliente(Cliente cliente)
 
     int clienteID = cliente.getIdentificador();
 
-    QTableWidgetItem *idItem = new QTableWidgetItem(tr("%1").arg(clienteID));
+    QTableWidgetItem *idItem = new QTableWidgetItem();
+    idItem->setData(Qt::DisplayRole, clienteID);
+
     QTableWidgetItem *nombreItem = new QTableWidgetItem(tr("%1").arg(cliente.getNombre()));
     QTableWidgetItem *emailItem = new QTableWidgetItem(tr("%1").arg(cliente.getEmail()));
     QTableWidgetItem *telefonoItem = new QTableWidgetItem(tr("%1").arg(cliente.getTelefono()));
     QTableWidgetItem *nacionalidadItem = new QTableWidgetItem(tr("%1").arg(cliente.getNacionalidad()));
-    QTableWidgetItem *cantidadEstanciasItem = new QTableWidgetItem(tr("%1").arg(cliente.getCanidadEstancias()));
+
+    int estancias = cliente.getCanidadEstancias();
+    QTableWidgetItem *cantidadEstanciasItem = new QTableWidgetItem();
+    cantidadEstanciasItem->setData(Qt::DisplayRole, estancias);
 
     BotonPosicionFila *eliminar = new BotonPosicionFila("Eliminar", clienteID);
     eliminar->setFlat(true);
@@ -149,11 +154,23 @@ void VentanaPrincipal::aniadirLineaInfoHabitacion(Habitacion habitacion)
     BotonPosicionFila *info = new BotonPosicionFila("Información", numeroHabitacion);
     info->setFlat(true);
 
-    QTableWidgetItem *numeroItem = new QTableWidgetItem(tr("%1").arg(habitacion.getNumeroHabitacion()));
+    QTableWidgetItem *numeroItem = new QTableWidgetItem();
+    numeroItem->setData(Qt::DisplayRole, numeroHabitacion);
+
     QTableWidgetItem *tipoItem = new QTableWidgetItem(tr("%1").arg(habitacion.getTipoHabitacion()));
-    QTableWidgetItem *tamanioFinItem = new QTableWidgetItem(tr("%1").arg(habitacion.getTamanioM2()));
-    QTableWidgetItem *camasItem = new QTableWidgetItem(tr("%1").arg(habitacion.getNumeroCamas()));
-    QTableWidgetItem *costeItem = new QTableWidgetItem(tr("%1").arg(habitacion.getCostePorNoche()));
+
+    int tamanio = habitacion.getTamanioM2();
+    QTableWidgetItem *tamanioFinItem = new QTableWidgetItem();
+    tamanioFinItem->setData(Qt::DisplayRole, tamanio);
+
+    int camas = habitacion.getNumeroCamas();
+    QTableWidgetItem *camasItem = new QTableWidgetItem();
+    camasItem->setData(Qt::DisplayRole, camas);
+
+    int coste = habitacion.getCostePorNoche();
+    QTableWidgetItem *costeItem = new QTableWidgetItem();
+    costeItem->setData(Qt::DisplayRole, coste);
+
     QTableWidgetItem *disponibleItem = new QTableWidgetItem(tr("%1").arg(habitacion.getDisponible()));
     QTableWidgetItem *arreglosItem = new QTableWidgetItem(tr("%1").arg(habitacion.getEnArreglos()));
 
@@ -182,11 +199,21 @@ void VentanaPrincipal::aniadirLineaInfoReserva(Reserva reserva)
     BotonPosicionFila *info = new BotonPosicionFila("Información", numeroConfirmacion);
     info->setFlat(true);
 
-    QTableWidgetItem *idItem = new QTableWidgetItem(tr("%1").arg(numeroConfirmacion));
+    BotonPosicionFila *modificar = new BotonPosicionFila("Modificar", numeroConfirmacion);
+    modificar->setFlat(true);
+
+    QTableWidgetItem *idItem = new QTableWidgetItem();
+    idItem->setData(Qt::DisplayRole, numeroConfirmacion);
+
     QTableWidgetItem *clienteItem = new QTableWidgetItem(tr("%1").arg(reserva.getClienteNombre()));
     QTableWidgetItem *habitacionFinItem = new QTableWidgetItem(tr("%1").arg(habitacion));
-    QTableWidgetItem *estadoItem = new QTableWidgetItem(tr("%1").arg(reserva.getEstadoReserva()));
     QTableWidgetItem *inicioItem = new QTableWidgetItem(tr("%1").arg(reserva.getFechaInicioString()));
+
+    QString estado = reserva.getEstadoReserva();
+    QTableWidgetItem *estadoItem = new QTableWidgetItem(tr("%1").arg(estado));
+
+    if (estado == "En Estadía" || estado == "Estancia Finalizada" || estado == "Vencida")
+        modificar->setDisabled(true);
 
     ui->tableWidgetReservas->setItem(fila, 0, idItem);
     ui->tableWidgetReservas->setItem(fila, 1, clienteItem);
@@ -195,7 +222,10 @@ void VentanaPrincipal::aniadirLineaInfoReserva(Reserva reserva)
     ui->tableWidgetReservas->setItem(fila, 4, inicioItem);
 
     ui->tableWidgetReservas->setCellWidget(fila, 5, info);
+    ui->tableWidgetReservas->setCellWidget(fila, 6, modificar);
+
     connect(info, SIGNAL(clicked(int)), this, SLOT(mostrarInfoReserva(int)));
+    connect(modificar, SIGNAL(clicked(int)), this, SLOT(modificarReserva(int)));
 }
 
 void VentanaPrincipal::llenarInfoReservas()
@@ -405,6 +435,23 @@ void VentanaPrincipal::mostrarInfoReserva(int numeroReserva)
             }
         }
     }
+}
+
+void VentanaPrincipal::modificarReserva(int numeroReserva)
+{
+    ui->centralwidget->setDisabled(true);
+
+    for (int i = 0; i < (int)this->reservas.size(); i++)
+    {
+        Reserva *reserva = &this->reservas.at(i);
+        if (reserva->getNumeroConfirmacion() == numeroReserva)
+        {
+            this->ventanaNuevaReserva->abrirVentana(reserva);
+            break;
+        }
+    }
+
+    this->ventanaNuevaReserva->show();
 }
 
 void VentanaPrincipal::nuevoCliente()

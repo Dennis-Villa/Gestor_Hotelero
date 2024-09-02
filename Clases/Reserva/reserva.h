@@ -42,15 +42,19 @@ public:
     QString getClienteNombre(){return this->cliente->getNombre();}
     Cliente *getCliente(){return this->cliente;}
     int getNumeroHabitacion();
+    int getPisoHabitacion();
+    Habitacion *getHabitacion();
     float getImporte();
     vector <pair <QString, float> > getDesgloseGastos(){return this->desgloseGastos;}
+    QString getDesgloseGastosString();
 
     bool tieneHabitacion(){return (this->habitacion == nullptr ? false : true);}
 
     void registarEntrada();
     void registarSalida();
 
-    void AniadirGasto(QString nombreServicio, float coste);
+    void aniadirGasto(QString nombreServicio, float coste);
+    void modificarGastoHabitacion(float gasto);
     QString convertirGastosAString();
 
 private:

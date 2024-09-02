@@ -7,6 +7,8 @@ InfoReserva::InfoReserva(QWidget *parent)
 {
     ui->setupUi(this);
 
+    this->limpiar();
+
     connect(ui->pushButtonCerrar, SIGNAL(clicked(bool)), this, SLOT(cerrar()));
 }
 
@@ -20,10 +22,24 @@ void InfoReserva::mostrar()
     ui->lineEditNumeroConfirmacion->setText(QString::number(this->reserva->getNumeroConfirmacion()));
     ui->lineEditEstado->setText(this->reserva->getEstadoReserva());
     ui->lineEditCliente->setText(this->reserva->getClienteNombre());
-    ui->lineEditInicio->setText(this->reserva->getFechaInicioString());
-    ui->lineEditFin->setText(this->reserva->getFechaFinString());
     ui->lineEditNoches->setText(QString::number(this->reserva->getCantidadNoches()));
     ui->lineEditImporte->setText(QString::number(this->reserva->getImporte()) + " €");
+
+    if (this->reserva->getFechaInicio().year() == 1970)
+        ui->dateEditInicio->setDisabled(true);
+    else
+    {
+        ui->dateEditInicio->setDisabled(false);
+        ui->dateEditInicio->setDate(this->reserva->getFechaInicio());
+    }
+
+    if (this->reserva->getFechaFin().year() == 1970)
+        ui->dateEditFin->setDisabled(true);
+    else
+    {
+        ui->dateEditFin->setDisabled(false);
+        ui->dateEditFin->setDate(this->reserva->getFechaFin());
+    }
 
     int numeroHabitacion = this->reserva->getNumeroHabitacion();
 
@@ -58,8 +74,8 @@ void InfoReserva::limpiar()
     ui->lineEditEstado->clear();
     ui->lineEditCliente->clear();
     ui->lineEditHabitacion->clear();
-    ui->lineEditInicio->clear();
-    ui->lineEditFin->clear();
+    ui->dateEditInicio->setDate(QDate::currentDate());
+    ui->dateEditFin->setDate(QDate::currentDate());
     ui->lineEditImporte->clear();
     ui->lineEditNoches->clear();
     ui->textEditGastos->clear();

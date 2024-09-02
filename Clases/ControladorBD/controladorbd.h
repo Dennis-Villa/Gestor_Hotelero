@@ -44,6 +44,7 @@ public:
     Reserva* cambiarEstadoReserva(int numeroConfirmacion, QString estado);
     Reserva* cambiarEstadoReserva(Reserva *reservaACambiar, QString estado);
     Reserva* aniadirGasto(int numeroConfirmacion, QString gasto, float importe);
+    void modificarReserva(Reserva *reserva);
     void eliminarReserva(int numeroConfirmacion);
 
 private:

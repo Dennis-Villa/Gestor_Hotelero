@@ -830,7 +830,7 @@ Reserva *ControladorBD::aniadirGasto(int numeroConfirmacion, QString gasto, floa
     if (this->abreBD())
     {
         Reserva *reservaACambiar = this->buscarReserva(numeroConfirmacion);
-        reservaACambiar->AniadirGasto(gasto, importe);
+        reservaACambiar->aniadirGasto(gasto, importe);
 
         QString gastos = reservaACambiar->convertirGastosAString();
 
@@ -855,6 +855,65 @@ Reserva *ControladorBD::aniadirGasto(int numeroConfirmacion, QString gasto, floa
     }
 
     return nullptr;
+}
+
+void ControladorBD::modificarReserva(Reserva *reserva)
+{
+    if (this->abreBD())
+    {
+        Cliente *clienteReserva = reserva->getCliente();
+        Habitacion *habitacionReserva = reserva->getHabitacion();
+
+        int numeroConfirmacion = reserva->getNumeroConfirmacion();
+        QString estado = reserva->getEstadoReserva();
+        int noches = reserva->getCantidadNoches();
+        QDate inicio = reserva->getFechaInicio();
+        QDate fin = reserva->getFechaFin();
+        int cliente = clienteReserva->getIdentificador();
+        QString gastos = reserva->getDesgloseGastosString();
+        float importe = reserva->getImporte();
+
+        QSqlQuery query(this->bd);
+
+        if (habitacionReserva != nullptr)
+        {
+            query.prepare("UPDATE reservas SET estado_reserva = :estado, cantidad_noches = :noches, fecha_inicio = :inicio, fecha_fin = :fin, cliente_id = :cliente, numero_habitacion = :habitacion, desglose_gastos = :gastos, importe = :importe WHERE numero_confirmacion = :numero");
+            query.bindValue(":numero", numeroConfirmacion);
+            query.bindValue(":estado", estado);
+            query.bindValue(":noches", noches);
+            query.bindValue(":inicio", inicio.toString());
+            query.bindValue(":fin", fin.toString());
+            query.bindValue(":cliente", cliente);
+            query.bindValue(":habitacion", habitacionReserva->getNumeroHabitacion());
+            query.bindValue(":gastos", gastos);
+            query.bindValue(":importe", importe);
+
+        }
+        else
+        {
+            query.prepare("UPDATE reservas SET estado_reserva = :estado, cantidad_noches = :noches, fecha_inicio = :inicio, fecha_fin = :fin, cliente_id = :cliente, numero_habitacion = NULL, desglose_gastos = :gastos, importe = :importe WHERE numero_confirmacion = :numero");
+            query.bindValue(":numero", numeroConfirmacion);
+            query.bindValue(":estado", estado);
+            query.bindValue(":noches", noches);
+            query.bindValue(":inicio", inicio.toString());
+            query.bindValue(":fin", fin.toString());
+            query.bindValue(":cliente", cliente);
+            query.bindValue(":gastos", gastos);
+            query.bindValue(":importe", importe);
+        }
+
+        if (query.exec())
+        {
+            qDebug() << "Exito al modificar la reserva en la base de datos";
+        }
+        else
+        {
+            QSqlError error = query.lastError();
+            QString errorText = "Fallo al modificar la reserva en la base de datos: " + error.text();
+            qDebug() << errorText;
+            throw runtime_error(errorText.toStdString());
+        }
+    }
 }
 
 void ControladorBD::eliminarReserva(int numeroConfirmacion)

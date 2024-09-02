@@ -8,6 +8,8 @@ AniadirReserva::AniadirReserva(vector<Cliente> *clientes, vector<Habitacion> *ha
 {
     ui->setupUi(this);
 
+    this->reserva = nullptr;
+
     this->clientes = clientes;
     this->habitaciones = habitaciones;
     this->reservas = reservas;
@@ -24,6 +26,8 @@ AniadirReserva::AniadirReserva(vector<Cliente> *clientes, vector<Habitacion> *ha
     connect(ui->dateEditInicio, SIGNAL(dateChanged(QDate)), this, SLOT(actualizarNumerosHabitaciones()));
     connect(ui->spinBoxNoches, SIGNAL(valueChanged(int)), this, SLOT(actualizarNumerosHabitaciones()));
     connect(ui->comboBoxEstado, SIGNAL(currentTextChanged(QString)), this, SLOT(activarSeleccionFecha()));
+
+    connect(ui->pushButtonModificar, SIGNAL(clicked(bool)), this, SLOT(modificarReserva()));
 }
 
 AniadirReserva::~AniadirReserva()
@@ -33,12 +37,55 @@ AniadirReserva::~AniadirReserva()
 
 void AniadirReserva::abrirVentana()
 {
+    ui->pushButtonModificar->hide();
+    ui->pushButtonAniadir->show();
+
     this->rellenarComboBoxClientes();
     this->rellenarPisosHabitaciones();
 
     ui->dateEditInicio->setDate(QDate::currentDate());
 
     this->ventanaAbierta = true;
+}
+
+void AniadirReserva::abrirVentana(Reserva *reserva)
+{
+    this->reserva = reserva;
+
+    if (reserva == nullptr)
+        this->abrirVentana();
+    else
+    {
+        ui->pushButtonAniadir->hide();
+        ui->pushButtonModificar->show();
+
+        this->rellenarComboBoxClientes();
+        this->rellenarPisosHabitaciones();
+
+        ui->dateEditInicio->setDate(QDate::currentDate());
+
+        ui->lineEditCliente->setText(this->reserva->getClienteNombre());
+        ui->lineEditCliente->setReadOnly(true);
+        ui->comboBoxCliente->setDisabled(true);
+
+        ui->comboBoxEstado->setCurrentText(this->reserva->getEstadoReserva());
+
+        QDate fechaInicio = this->reserva->getFechaInicio();
+        if (fechaInicio.year() != 1970)
+            ui->dateEditInicio->setDate(fechaInicio);
+
+        int habitacion = this->reserva->getNumeroHabitacion();
+        if (habitacion != -1)
+        {
+            ui->checkBoxHabitacion->setChecked(true);
+            ui->comboBoxPiso->setCurrentText(QString::number(this->reserva->getPisoHabitacion()));
+            ui->comboBoxNumero->setCurrentText(QString::number(habitacion));
+        }
+
+        ui->spinBoxNoches->setValue(this->reserva->getCantidadNoches());
+
+        this->ventanaAbierta = true;
+    }
 }
 
 void AniadirReserva::limpiarVentana()
@@ -48,9 +95,11 @@ void AniadirReserva::limpiarVentana()
     ui->comboBoxCliente->setCurrentIndex(0);
     ui->checkBoxHabitacion->setChecked(false);
     ui->spinBoxNoches->setValue(ui->spinBoxNoches->minimum());
-    ui->lineEditCoste->setText("0,00 €");
+    ui->doubleSpinBoxCoste->setValue(0.00);
 
     this->rellenarPisosHabitaciones();
+
+    this->reserva = nullptr;
 }
 
 bool AniadirReserva::verificarDisponibilidadHabitacion(int numeroHabitacion, QDate inicio, int dias)
@@ -91,7 +140,7 @@ void AniadirReserva::cerrar()
 
 void AniadirReserva::actualizarCoste()
 {
-    QString valor = "0,00";
+    int valor = 0.00;
 
     if (ui->checkBoxHabitacion->isChecked())
     {
@@ -103,20 +152,20 @@ void AniadirReserva::actualizarCoste()
             if (habitacion.getNumeroHabitacion() == numeroHabitacion)
             {
                 int costePorNoche = habitacion.getCostePorNoche();
+                valor = costePorNoche * cantidadNoches;
+                ui->doubleSpinBoxCoste->setValue(valor);
 
-                valor = QString::number((costePorNoche * cantidadNoches));
+                break;
             }
         }
     }
-
-    ui->lineEditCoste->setText((valor+" €"));
 }
 
 void AniadirReserva::on_pushButtonAniadir_clicked()
 {
     QString estado = ui->comboBoxEstado->currentText();
     int noches = ui->spinBoxNoches->value();
-    int coste = ui->lineEditCoste->text().split(" ")[0].toFloat();
+    int coste = ui->doubleSpinBoxCoste->value();
 
     QDate inicio;
     if (ui->comboBoxEstado->currentText() == "Confirmado")
@@ -307,5 +356,54 @@ void AniadirReserva::activarSeleccionFecha()
 
     else
         ui->dateEditInicio->setEnabled(false);
+}
+
+void AniadirReserva::modificarReserva()
+{
+    QString estado = ui->comboBoxEstado->currentText();
+    int noches = ui->spinBoxNoches->value();
+    int coste = ui->doubleSpinBoxCoste->value();
+
+    QDate inicio;
+    if (ui->comboBoxEstado->currentText() == "Confirmado")
+        inicio = ui->dateEditInicio->date();
+    else if (ui->comboBoxEstado->currentText() == "En Estadía")
+        inicio = QDate::currentDate();
+    else
+        inicio.setDate(1970, 1, 1);
+
+    QDate fin;
+    if (inicio.year() != 1970)
+        fin = inicio.addDays(noches);
+    else
+        fin.setDate(1970, 1, 1);
+
+    int numeroConfirmacion = this->reserva->getNumeroConfirmacion();
+    Cliente *cliente = this->reserva->getCliente();
+
+    Habitacion *habitacion = this->reserva->getHabitacion();
+    if (ui->checkBoxHabitacion->isChecked())
+    {
+        habitacion->setNumeroHabitacion(ui->comboBoxNumero->currentText().toInt());
+    }
+    else
+        habitacion = nullptr;
+
+    this->reserva->modificarGastoHabitacion(coste);
+    QString gastos = this->reserva->getDesgloseGastosString();
+
+    try{
+        Reserva *reservaModificada = new Reserva(numeroConfirmacion, cliente, noches, inicio, fin, gastos, coste, estado, habitacion);
+        this->controladorBD->modificarReserva(reservaModificada);
+
+        *this->reserva = *reservaModificada;
+
+        emit aniadido(true);
+        QMessageBox::information(this, "Exito", "Reserva modificada");
+    }
+    catch(exception &ex)
+    {
+        QMessageBox::critical(this, "Error", ex.what());
+    }
 }
 

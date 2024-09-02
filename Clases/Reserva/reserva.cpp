@@ -38,7 +38,7 @@ Reserva::Reserva(int numeroConfirmacion, Cliente *cliente, QDate fechaInicio, QD
     this->setEstadoReserva(estadoReserva);
     this->setHabitacion(habitacion);
 
-    this->AniadirGasto("Reserva",importe);
+    this->aniadirGasto("Reserva",importe);
 }
 
 Reserva::Reserva(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, QDate fechaInicio, QDate fechaFin, QString desgloseGastos, float importe, QString estadoReserva, Habitacion *habitacion)
@@ -177,6 +177,20 @@ int Reserva::getNumeroHabitacion()
         return this->habitacion->getNumeroHabitacion();
 }
 
+int Reserva::getPisoHabitacion()
+{
+    if (this->habitacion == nullptr)
+        return -1;
+
+    else
+        return this->habitacion->getPiso();
+}
+
+Habitacion *Reserva::getHabitacion()
+{
+    return this->habitacion;
+}
+
 float Reserva::getImporte()
 {
     float gastoTotal = 0;
@@ -190,6 +204,22 @@ float Reserva::getImporte()
         throw logic_error("El importe no coincide con el total de gastos.");
 
     return this->importe;
+}
+
+QString Reserva::getDesgloseGastosString()
+{
+    QString gastos = "";
+
+    for (pair <QString, float> gasto: this->desgloseGastos)
+    {
+        gastos += "{";
+        gastos += gasto.first;
+        gastos += ",";
+        gastos += QString::number(gasto.second);
+        gastos += "},";
+    }
+
+    return gastos;
 }
 
 void Reserva::registarEntrada()
@@ -206,7 +236,7 @@ void Reserva::registarSalida()
     this->cliente->aniadirEstancia();
 }
 
-void Reserva::AniadirGasto(QString nombreServicio, float coste)
+void Reserva::aniadirGasto(QString nombreServicio, float coste)
 {
     if (nombreServicio.isEmpty())
         throw invalid_argument("El nombre del servicio no puede estar vacío");
@@ -218,6 +248,14 @@ void Reserva::AniadirGasto(QString nombreServicio, float coste)
 
     this->desgloseGastos.push_back({nombreServicio, costeDosDecimales});
     this->importe += costeDosDecimales;
+}
+
+void Reserva::modificarGastoHabitacion(float gasto)
+{
+    if (gasto < 0)
+        throw invalid_argument("El importe no puede ser negativo.");
+
+    this->desgloseGastos[0] = {"Reserva Habitación", gasto};
 }
 
 QString Reserva::convertirGastosAString()

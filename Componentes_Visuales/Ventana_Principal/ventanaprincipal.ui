@@ -555,7 +555,7 @@
             <item>
              <widget class="QTableWidget" name="tableWidgetReservas">
               <property name="columnCount">
-               <number>6</number>
+               <number>7</number>
               </property>
               <attribute name="horizontalHeaderDefaultSectionSize">
                <number>90</number>
@@ -596,6 +596,11 @@
                 <string/>
                </property>
               </column>
+              <column>
+               <property name="text">
+                <string/>
+               </property>
+              </column>
              </widget>
             </item>
            </layout>
@@ -614,7 +619,7 @@
      <x>0</x>
      <y>0</y>
      <width>1217</width>
-     <height>17</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuA_adir">

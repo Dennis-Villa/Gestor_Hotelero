@@ -63,6 +63,7 @@ private slots:
     void eliminarCliente(int clienteID = -1);
     void modificarEstadoHabitacion(int numeroHabitacion = -1);
     void mostrarInfoReserva(int numeroReserva = -1);
+    void modificarReserva(int numeroReserva = -1);
 
     // Funciones para actualizar los componentes con datos cuando cambian los vectores
     void actualizarVectores(bool actualizar = false);
