@@ -22,6 +22,8 @@ void VentanaPrincipal::iniciarVentana()
     ui->dateEditActual->setDate(this->fechaActual);
 
     try{
+        this->controladorBD = new ControladorBD();
+
         this->clientes = this->controladorBD->getClientes();
         this->habitaciones = this->controladorBD->getHabitaciones();
         this->reservas = this->controladorBD->getReservas();

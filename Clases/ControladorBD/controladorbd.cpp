@@ -2,8 +2,10 @@
 
 ControladorBD::ControladorBD()
 {
+    QString path = QDir::currentPath() + "/../../db_hotel.db";
+
     this->bd = QSqlDatabase::addDatabase("QSQLITE");
-    this->bd.setDatabaseName("../../db_hotel.db");
+    this->bd.setDatabaseName(path);
 }
 
 ControladorBD::~ControladorBD()
@@ -572,7 +574,7 @@ Reserva *ControladorBD::crearReserva(QString estado, QDate inicio, QDate fin, in
             query.bindValue(":fin", fin.toString());
             query.bindValue(":noches", noches);
             query.bindValue(":cliente", cliente);
-            query.bindValue(":importe", importe);
+            query.bindValue(":importe", 0);
             query.bindValue(":habitacion", habitacion);
         }
         else
@@ -585,7 +587,7 @@ Reserva *ControladorBD::crearReserva(QString estado, QDate inicio, QDate fin, in
             query.bindValue(":fin", fin.toString());
             query.bindValue(":noches", noches);
             query.bindValue(":cliente", cliente);
-            query.bindValue(":importe", importe);
+            query.bindValue(":importe", 0);
         }
 
         if (query.exec())

@@ -81,7 +81,7 @@ private:
     Ui::VentanaPrincipal *ui;
     QDate fechaActual = QDate::currentDate();
 
-    ControladorBD *controladorBD = new ControladorBD();
+    ControladorBD *controladorBD = nullptr;
 
     vector<Cliente> clientes;
     vector<Habitacion> habitaciones;

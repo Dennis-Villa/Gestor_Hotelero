@@ -24,7 +24,7 @@ SOURCES += \
     Componentes_Visuales\Ventana_Principal\ventanaprincipal.cpp \
     Clases\Reserva\reserva.cpp \
     Componentes_Visuales\Ventana_Registrar_Entrada\registrarentrada.cpp \
-    Componentes_Visuales\Ventana_Registrar_Salida\registrarsalida.cpp
+    Componentes_Visuales\Ventana_Registrar_Salida\registrarsalida.cpp \
 
 HEADERS += \
     Archivos_Auxiliares\Boton_Posicion_Fila\botonposicionfila.h \

@@ -6,6 +6,7 @@
 #include <QString>
 #include <QDate>
 #include <QSqlError>
+#include <QDir>
 #include <vector>
 
 #include "Clases/Cliente/cliente.h"
