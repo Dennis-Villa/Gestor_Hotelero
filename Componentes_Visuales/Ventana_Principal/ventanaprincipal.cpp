@@ -39,6 +39,7 @@ void VentanaPrincipal::iniciarVentana()
     this->ventanaRegistrarSalida = new RegistrarSalida(&this->reservas, this->controladorBD, this);
     this->ventanaInfoReserva = new InfoReserva(this);
     this->ventanaEstadoHabitacion = new EstadoHabitacion(this->controladorBD, this);
+    this->ventanaNuevoGasto = new AniadirGasto(this->controladorBD, this);
 
     this->actualizarVectores(true);
 }
@@ -67,20 +68,30 @@ void VentanaPrincipal::llenarTablaOcupacion(Reserva reserva, QDate fechaActual, 
     {
         ui->tableWidgetOcupacion->insertRow(*fila);
 
-        QTableWidgetItem *habitacionItem = new QTableWidgetItem(tr("%1").arg(reserva.getNumeroHabitacion()));
+        QTableWidgetItem *habitacionItem = new QTableWidgetItem();
+        habitacionItem->setData(Qt::DisplayRole, reserva.getNumeroHabitacion());
+
         QTableWidgetItem *clienteItem = new QTableWidgetItem(tr("%1").arg(reserva.getClienteNombre()));
-        QTableWidgetItem *fechaFinItem = new QTableWidgetItem(tr("%1").arg(reserva.getFechaFin().toString()));
-        QTableWidgetItem *importeItem = new QTableWidgetItem(tr("%1").arg(reserva.getImporte()));
+        QTableWidgetItem *fechaFinItem = new QTableWidgetItem(tr("%1").arg(reserva.getFechaFinString()));
+
+        QTableWidgetItem *importeItem = new QTableWidgetItem();
+        importeItem->setData(Qt::DisplayRole, reserva.getImporte());
+
+        BotonPosicionFila *gasto = new BotonPosicionFila("Añadir Gasto", reserva.getNumeroConfirmacion());
+        gasto->setFlat(true);
 
         ui->tableWidgetOcupacion->setItem(*fila, 0, habitacionItem);
         ui->tableWidgetOcupacion->setItem(*fila, 1, clienteItem);
         ui->tableWidgetOcupacion->setItem(*fila, 2, fechaFinItem);
         ui->tableWidgetOcupacion->setItem(*fila, 3, importeItem);
 
-        ui->tableWidgetOcupacion->sortItems(0);
+        ui->tableWidgetOcupacion->setCellWidget(*fila, 4, gasto);
+        connect(gasto, SIGNAL(clicked(int)), this, SLOT(aniadirGasto(int)));
 
         *fila += 1;
     }
+
+    ui->tableWidgetOcupacion->sortItems(0);
 }
 
 void VentanaPrincipal::llenarInfoDatos()
@@ -283,6 +294,7 @@ void VentanaPrincipal::conecciones()
     connect(ui->tableWidgetSalidasHoy, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(registrarNuevaSalida(int,int)));
 
     connect(this->ventanaEstadoHabitacion, SIGNAL(actualizar(bool)), this, SLOT(actualizarVectores(bool)));
+    connect(this->ventanaNuevoGasto, SIGNAL(actualizar(bool)), this, SLOT(actualizarVectores(bool)));
     connect(this->ventanaNuevoCliente, SIGNAL(aniadido(bool)), this, SLOT(actualizarVectores(bool)));
     connect(this->ventanaNuevaHabitacion, SIGNAL(aniadido(bool)), this, SLOT(actualizarVectores(bool)));
     connect(this->ventanaNuevaReserva, SIGNAL(aniadido(bool)), this, SLOT(actualizarVectores(bool)));
@@ -452,6 +464,20 @@ void VentanaPrincipal::modificarReserva(int numeroReserva)
     }
 
     this->ventanaNuevaReserva->show();
+}
+
+void VentanaPrincipal::aniadirGasto(int numeroReserva)
+{
+    for (int i = 0; i < (int)this->reservas.size(); i++)
+    {
+        Reserva *reserva = &this->reservas.at(i);
+        if (reserva->getNumeroConfirmacion() == numeroReserva)
+        {
+            this->ventanaNuevoGasto->setReserva(reserva);
+            this->ventanaNuevoGasto->mostrar();
+            break;
+        }
+    }
 }
 
 void VentanaPrincipal::nuevoCliente()

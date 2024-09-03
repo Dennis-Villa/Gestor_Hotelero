@@ -156,7 +156,7 @@ QString Reserva::getFechaInicioString()
         return "";
 
     else
-        return this->fechaInicio.toString();
+        return this->fechaInicio.toString("d/M/yyyy");
 }
 
 QString Reserva::getFechaFinString()
@@ -165,7 +165,7 @@ QString Reserva::getFechaFinString()
         return "";
 
     else
-        return this->fechaFin.toString();
+        return this->fechaFin.toString("d/M/yyyy");
 }
 
 int Reserva::getNumeroHabitacion()
@@ -258,14 +258,14 @@ void Reserva::modificarGastoHabitacion(float gasto)
     this->desgloseGastos[0] = {"Reserva Habitación", gasto};
 }
 
-QString Reserva::convertirGastosAString()
+QString Reserva::convertirGastosATexto()
 {
-    QString gastosString = "";
+    QString gastosString = "Desglose de gastos:\n";
 
     for (pair <QString, float> gasto: this->desgloseGastos)
     {
-        gastosString += "{" + gasto.first + ",";
-        gastosString += QString::number(gasto.second) + "}" + ",";
+        gastosString += gasto.first + ": ";
+        gastosString += QString::number(gasto.second) + " €" + '\n';
     }
 
     return gastosString;

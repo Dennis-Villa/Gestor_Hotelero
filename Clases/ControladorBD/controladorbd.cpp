@@ -832,11 +832,13 @@ Reserva *ControladorBD::aniadirGasto(int numeroConfirmacion, QString gasto, floa
         Reserva *reservaACambiar = this->buscarReserva(numeroConfirmacion);
         reservaACambiar->aniadirGasto(gasto, importe);
 
-        QString gastos = reservaACambiar->convertirGastosAString();
+        QString gastos = reservaACambiar->getDesgloseGastosString();
+        float importe = reservaACambiar->getImporte();
 
         QSqlQuery query(this->bd);
-        query.prepare("UPDATE reservas SET desglose_gastos = :gastos WHERE numero_confirmacion = :numeroConfirmacion");
+        query.prepare("UPDATE reservas SET desglose_gastos = :gastos, importe = :importe WHERE numero_confirmacion = :numeroConfirmacion");
         query.bindValue(":numeroConfirmacion", numeroConfirmacion);
+        query.bindValue(":importe", importe);
         query.bindValue(":gastos", gastos);
 
         if (query.exec())
@@ -850,7 +852,7 @@ Reserva *ControladorBD::aniadirGasto(int numeroConfirmacion, QString gasto, floa
             QSqlError error = query.lastError();
             QString errorText = "Fallo al modificar los gastos de la reserva: " + error.text();
             qDebug() << errorText;
-            throw runtime_error("Fallo al modificar los gastos de la reserva");
+            throw runtime_error(errorText.toStdString());
         }
     }
 

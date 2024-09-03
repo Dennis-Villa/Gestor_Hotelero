@@ -16,6 +16,7 @@ SOURCES += \
     Clases\ControladorBD\controladorbd.cpp \
     Componentes_Visuales/Ventana_Estado_Habitacion/estadohabitacion.cpp \
     Componentes_Visuales/Ventana_Info_Reserva/inforeserva.cpp \
+    Componentes_Visuales/Ventana_Nuevo_Gasto/aniadirgasto.cpp \
     Componentes_Visuales\Ventana_Nuevo_Cliente\aniadircliente.cpp \
     Componentes_Visuales\Ventana_Nueva_Habitacion\aniadirhabitacion.cpp \
     Componentes_Visuales\Ventana_Nueva_Reserva\aniadirreserva.cpp \
@@ -30,6 +31,7 @@ HEADERS += \
     Archivos_Auxiliares\Funciones_Auxiliares.h \
     Componentes_Visuales/Ventana_Estado_Habitacion/estadohabitacion.h \
     Componentes_Visuales/Ventana_Info_Reserva/inforeserva.h \
+    Componentes_Visuales/Ventana_Nuevo_Gasto/aniadirgasto.h \
     Componentes_Visuales\Ventana_Principal\ventanaprincipal.h \
     Clases\Cliente\cliente.h \
     Clases\Habitacion\habitacion.h \
@@ -45,6 +47,7 @@ HEADERS += \
 FORMS += \
     Componentes_Visuales/Ventana_Estado_Habitacion/estadohabitacion.ui \
     Componentes_Visuales/Ventana_Info_Reserva/inforeserva.ui \
+    Componentes_Visuales/Ventana_Nuevo_Gasto/aniadirgasto.ui \
     Componentes_Visuales\Ventana_Principal\ventanaprincipal.ui \
     Componentes_Visuales\Ventana_Nuevo_Cliente\aniadircliente.ui \
     Componentes_Visuales\Ventana_Nueva_Habitacion\aniadirhabitacion.ui \

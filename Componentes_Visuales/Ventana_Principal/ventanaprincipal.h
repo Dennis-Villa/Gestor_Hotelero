@@ -19,6 +19,7 @@
 #include "Componentes_Visuales/Ventana_Registrar_Salida/registrarsalida.h"
 #include "Componentes_Visuales/Ventana_Info_Reserva/inforeserva.h"
 #include "Componentes_Visuales/Ventana_Estado_Habitacion/estadohabitacion.h"
+#include "Componentes_Visuales/Ventana_Nuevo_Gasto/aniadirgasto.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -64,6 +65,7 @@ private slots:
     void modificarEstadoHabitacion(int numeroHabitacion = -1);
     void mostrarInfoReserva(int numeroReserva = -1);
     void modificarReserva(int numeroReserva = -1);
+    void aniadirGasto(int numeroReserva = -1);
 
     // Funciones para actualizar los componentes con datos cuando cambian los vectores
     void actualizarVectores(bool actualizar = false);
@@ -92,5 +94,6 @@ private:
     RegistrarSalida *ventanaRegistrarSalida = nullptr;
     InfoReserva *ventanaInfoReserva = nullptr;
     EstadoHabitacion *ventanaEstadoHabitacion = nullptr;
+    AniadirGasto *ventanaNuevoGasto = nullptr;
 };
 #endif // VENTANAPRINCIPAL_H

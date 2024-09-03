@@ -55,7 +55,7 @@ public:
 
     void aniadirGasto(QString nombreServicio, float coste);
     void modificarGastoHabitacion(float gasto);
-    QString convertirGastosAString();
+    QString convertirGastosATexto();
 
 private:
     int numeroConfirmacion;
