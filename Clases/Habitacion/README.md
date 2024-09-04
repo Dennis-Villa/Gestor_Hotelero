@@ -2,6 +2,8 @@
 
 Esta clase busca gestionar, utilizando Programación Orientada a Objetos, las propiedades y métodos necesarios para establecer la funcionalidad de gestionar una habitación en un servicio hotelero.
 
+***
+
 ### Atributos de la clase
 
 |||
@@ -15,6 +17,8 @@ Esta clase busca gestionar, utilizando Programación Orientada a Objetos, las pr
 |float|[costePorNoche](#costepornoche-float)|
 |bool|[disponible](#disponible-bool)|
 |bool|[enArreglos](#enarreglos-bool)|
+
+***
 
 ### Métodos Públicos
 
@@ -54,7 +58,7 @@ No puede ser menor a 100.
 |Lectura|getNumeroHabitacion()|int|
 |Escritura|setNumeroHabitacion(int numero)|void|
 
-
+***
 
 ### tipoHabitacion: QString
 
@@ -68,7 +72,7 @@ Este valor es necesario al construir una instancia de la clase.
 |Lectura|getTipoHabitacion()|QString|
 |Escritura|setTipoHabitacion(QString tipo)|void|
 
-
+***
 
 ### piso: int
 
@@ -81,7 +85,7 @@ El valor es calculado a partir del número de la habitación, correspondiendo a 
 |---|---|---|
 |Lectura|getPiso()|int|
 
-
+***
 
 ### numero: int
 
@@ -94,7 +98,7 @@ El valor es calculado a partir del número de la habitación, correspondiendo a 
 |---|---|---|
 |Lectura|getNumero()|int|
 
-
+***
 
 ### tamanioM2: int
 
@@ -109,7 +113,7 @@ Debe ser mayor a 0.
 |Lectura|getTamanioM2()|int|
 |Escritura|setTamanioM2(int tamanio)|void|
 
-
+***
 
 ### numeroCamas: int
 
@@ -124,7 +128,7 @@ Debe ser mayor a 0.
 |Lectura|getNumeroCamas()|int|
 |Escritura|setNumeroCamas(int camas)|void|
 
-
+***
 
 ### costePorNoche: float
 
@@ -139,7 +143,7 @@ No puede ser negativo.
 |Lectura|getCostePorNoche()|float|
 |Escritura|setCostePorNoche(float coste)|void|
 
-
+***
 
 ### disponible: bool
 
@@ -154,7 +158,7 @@ Esta propiedad no puede coincidir como `true` con [enArreglos](#enarreglos-bool)
 |Lectura|getDisponible()|bool|
 |Escritura|setDisponible(bool disponible)|void|
 
-
+***
 
 ### enArreglos: bool
 
@@ -169,12 +173,14 @@ Al establecerce como `true` se establece automáticamente [disponible](#disponib
 |Lectura|getEnArreglos()|bool|
 |Escritura|setEnArreglos(bool enArreglos)|void|
 
-
+***
 
 ### Habitacion(int numeroHabitacion, QString tipoHabitacion, int tamanioM2, int numeroCamas, float costePorNoche)
 
 Construye un objeto de tipo habitacion con los parámetros establecidos, estableciendo el valor de [disponible](#disponible-bool) por defecto en `true` y de [enArreglos](#enarreglos-bool) en `false`.
-  
+
+***
+
 ### Habitacion(int numeroHabitacion, QString tipoHabitacion, int tamanioM2, int numeroCamas, float costePorNoche, bool disponible, bool enArreglos)
 
 Sobrecarga el constructor anterior.  
