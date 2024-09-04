@@ -2,6 +2,8 @@
 
 Un gestor basado en Qt y C++ para funciones de hostelería.
 
+![Imagen de muestra](./Imagenes/Captura_Pantalla_Principal.PNG)
+
 ## Capacidades de Gestión:
 
 - Habitaciones del Hotel.
@@ -48,31 +50,3 @@ En este directorio se encuentran ficheros que aportan funcionalidades de uso gen
   - [Botón con Posición de Fila](./Archivos_Auxiliares/Boton_Posicion_Fila/README.md)
   - Funciones Auxiliares 
   - Excepción de Reserva Vencida
-
-## Posibles capacidades extra:
-
-1. Gestionar personal del hotel.
-
-## Desglose por pantallas:
-
-### Pantalla Principal:
-
-![Imagen de muestra](./Imagenes/img_dash@2x-1.png)
-
-1. Sector Superior
-    - Fecha.
-    - Nueva reserva.
-    - Resumen de eventos y ocupacion del dia.
-    - Habitaciones fuera de servicio.
-
-2. Sector inferior.
-    - Informacion detallada:
-        - Toda la informacion para el dia actual y el siguiente.
-        - Llegadas.
-        - Salidas.
-        - Ocupacion
-
-    - Actividad del dia:
-        - Clientes registrados.
-        - Ingresos totales.
-        - Cancelaciones.
