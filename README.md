@@ -24,10 +24,10 @@ Este proyecto fue desarrollado utilizando:
 
 En este directorio se encuentran los archivos que controlan la lógica basada en Programación Orientada a Objetos de la aplicación. Las clases que se gestionan aquí son:
 
-  - [Habitación](./Clases/Habitacion/README.md)
-  - [Cliente](./Clases/Cliente/README.md)
-  - [Reserva](./Clases/Reserva/README.md)
-  - [Controlador de Base de Datos](./Clases/ControladorBD/README.md)
+  - [Habitación](./Clases/Habitacion)
+  - [Cliente](./Clases/Cliente)
+  - [Reserva](./Clases/Reserva)
+  - [Controlador de Base de Datos](./Clases/ControladorBD)
 
 ### Componentes Visuales:
 
