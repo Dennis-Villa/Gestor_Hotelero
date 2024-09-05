@@ -122,7 +122,7 @@ Devuelve un vector de objetos de tipo [Habitacion](../Habitacion) con los datos 
 
 ***
 
-### Habitacion* cambiarEstadoHabitacion(Habitacion* habitacion)
+### Habitacion* cambiarEstadoHabitacion([Habitacion](../Habitacion)* habitacion)
 
 Modifica los datos de la habitación en la Base de Datos según los de la referencia pasada como argumento.
 
@@ -174,7 +174,7 @@ Cambia el estado de la reserva con el número correspondiente en la Base de Dato
 
 ***
 
-### Reserva* cambiarEstadoReserva(Reserva* reservaACambiar, QString estado)
+### Reserva* cambiarEstadoReserva([Reserva](../Reserva)* reservaACambiar, QString estado)
 
 Cambia el estado de la reserva correspondiente en la Base de Datos.
 
@@ -186,7 +186,7 @@ Cambia el valor de [desgloseGastos](../Reserva/README.md#desglosegastos-vectorpa
 
 ***
 
-### void modificarReserva(Reserva* reserva)
+### void modificarReserva([Reserva](../Reserva)* reserva)
 
 Modifica los datos de la reserva en la Base de Datos según los de la referencia pasada como argumento.
 
