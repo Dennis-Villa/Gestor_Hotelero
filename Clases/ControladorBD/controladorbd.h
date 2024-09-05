@@ -19,6 +19,8 @@ public:
     ControladorBD();
     ~ControladorBD();
 
+    QSqlDatabase getBD(){return this->bd;}
+
     bool abreBD();
 
     Cliente* crearCliente(QString nombre, QString email, QString telefono, QString nacionalidad);

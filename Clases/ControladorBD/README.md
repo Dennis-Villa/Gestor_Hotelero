@@ -1,6 +1,6 @@
-# Clase Habitación
+# Clase ControladorBD
 
-Esta clase busca gestionar, utilizando Programación Orientada a Objetos, las propiedades y métodos necesarios para establecer la funcionalidad de gestionar un cliente en un servicio hotelero.
+Esta clase busca gestionar, utilizando Programación Orientada a Objetos, las propiedades y métodos necesarios para controlar una Base de Datos SQLite en función de las necesidades de una entidad hotelera.
 
 ## Elementos de la clase
 
@@ -8,12 +8,7 @@ Esta clase busca gestionar, utilizando Programación Orientada a Objetos, las pr
 
 |||
 |---|---|
-|int|[identificador](#identificador-int)|
-|QString|[nombre](#nombre-qstring)|
-|QString|[email](#email-qstring)|
-|QString|[nacionalidad](#nacionalidad-qstring)|
-|int|[cantidadEstancias](#cantidadestancias-int)|
-|QString|[telefono](#telefono-qstring)|
+|QSqlDatabase|[bd](#bd-qsqldatabase)|
 
 ***
 
@@ -21,127 +16,182 @@ Esta clase busca gestionar, utilizando Programación Orientada a Objetos, las pr
 
 |Retorno|Método|
 |---|---|
-||[Cliente](#clientelong-long-identificador-qstring-nombre-qstring-email-qstring-nacionalidad-qstring-telefono--null)(long long identificador, QString nombre, QString email, QString nacionalidad, QString telefono = NULL)|
-||[Cliente](#clientelong-long-identificador-qstring-nombre-qstring-email-qstring-nacionalidad-int-cantidadestancias-qstring-telefono--null)(long long identificador, QString nombre, QString email, QString nacionalidad, int cantidadEstancias, QString telefono = NULL)|
-|int|[getIdentificador](#identificador-int)()|
-|void|[setIdentificador](#identificador-int)(int identificador)|
-|QString|[getNombre](#nombre-qstring)()|
-|void|[setNombre](#nombre-qstring)(QString nombre)|
-|QString|[getEmail](#email-qstring)()|
-|void|[setEmail](#email-qstring)(QString email)|
-|QString|[getNacionalidad](#nacionalidad-qstring)()|
-|void|[setNacionalidad](#nacionalidad-qstring)(QString nacionalidad)|
-|int|[getCanidadEstancias](#cantidadestancias-int)()|
-|void|[setCantidadEstancias](#cantidadestancias-int)(int estancias)|
-|QString|[getTelefono](#telefono-qstring)()|
-|void|[setTelefono](#telefono-qstring)(QString telefono)|
-|void|[aniadirEstancia](#void-aniadirestancia)()|
+||[ControladorBD](#controladorbd)()|
+||[~ControladorBD](#controladorbd-1)()|
+|QSqlDatabase|[getBD](#bd-qsqldatabase)()|
+|bool|[abreBD](#bool-abrebd)()|
+|Cliente*|[crearCliente](#cliente-crearclienteqstring-nombre-qstring-email-qstring-telefono-qstring-nacionalidad)(QString nombre, QString email, QString telefono, QString nacionalidad)|
+|Cliente*|[buscarCliente](#cliente-buscarclienteint-identificador)(int identificador)|
+|vector<Cliente>|[getClientes](#vector-getclientes)()|
+|Cliente*|[aniadirEstancia](#cliente-aniadirestanciacliente-cliente)(Cliente* cliente)|
+|void|[eliminarCliente](#void-eliminarclienteint-identificador)(int identificador)|
+|Habitacion*|[crearHabitacion](#habitacion-crearhabitacionint-numero-qstring-tipo-int-tamanio-int-camas-float-coste)(int numero, QString tipo, int tamanio, int camas, float coste)|
+|Habitacion*|[buscarHabitacion](#habitacion-buscarhabitacionint-numero)(int numero)|
+|void|[getHabitaciones](#vector-gethabitaciones)()|
+|Habitacion*|[cambiarEstadoHabitacion](#habitacion-cambiarestadohabitacionhabitacion-habitacion)(Habitacion* habitacion)|
+|Habitacion*|[cambiarDisponibilidadHabitacion](#habitacion-cambiardisponibilidadhabitacionint-numero-bool-disponible)(int numero, bool disponible)|
+|Habitacion*|[cambiarEnArreglosHabitacion](#habitacion-cambiarenarregloshabitacionint-numero-bool-enarreglos)(int numero, bool enArreglos)|
+|void|[eliminarHabitacion](#void-eliminarhabitacionint-numero)(int numero)|
+|Reserva*|[crearReserva](#reserva-crearreservaqstring-estado-qdate-inicio-qdate-fin-int-noches-int-cliente-float-importe-int-habitacion---1)(QString estado, QDate inicio, QDate fin, int noches, int cliente, float importe, int habitacion = -1)|
+|Reserva*|[buscarReserva](#reserva-buscarreservaint-numeroconfirmacion)(int numeroConfirmacion)|
+|void|[getReservas](#vector-getreservas)()|
+|Reserva*|[cambiarEstadoReserva](#reserva-cambiarestadoreservaint-numeroconfirmacion-qstring-estado)(int numeroConfirmacion, QString estado)|
+|Reserva*|[cambiarEstadoReserva](#reserva-cambiarestadoreservareserva-reservaacambiar-qstring-estado)(Reserva* reservaACambiar, QString estado)|
+|Reserva*|[aniadirGasto](#reserva-aniadirgastoint-numeroconfirmacion-qstring-gasto-float-importe)(int numeroConfirmacion, QString gasto, float importe)|
+|void|[modificarReserva](#void-modificarreservareserva-reserva)(Reserva* reserva)|
+|void|[eliminarReserva](#void-eliminarreservaint-numeroconfirmacion)(int numeroConfirmacion)|
 
 ## Descripción Detallada
 
-### identificador: int
+### bd: QSqlDatabase
 
-Esta propiedad almacena el número asignado al cliente por la base de datos y actúa como su identificador único.  
-Este valor es necesario al construir una instancia de la clase.  
-No puede ser negativo.
+Este atributo continene la interfaz para conectar con la Base de Datos SQLite.
+A través de él se realizan todas las consultas a la Base de Datos.
   
 **Funciones de acceso:**
   
 |Tipo|Retorno|Función|
 |---|---|---|
-|Lectura|int|getIdentificador()|
-|Escritura|void|setIdentificador(int identificador)|
+|Lectura|QSqlDatabase|getBD()|
 
 ***
 
-### nombre: QString
+### ControladorBD()
 
-Esta propiedad almacena el nombre del cliente.  
-Este valor es necesario al construir una instancia de la clase.  
-No puede estar vacío, solamente puede estar formado por letras y debe tener al menos un apellido.
-  
-**Funciones de acceso:**
-  
-|Tipo|Retorno|Función|
-|---|---|---|
-|Lectura|QString|getNombre()|
-|Escritura|void|setNombre(QString nombre)|
+Construye un objeto de tipo ControladorBD con una conexión establecida a la base de datos SQLite del hotel y llama al método [abreBD](#bool-abrebd)().
 
 ***
 
-### email: QString
+### ~ControladorBD()
 
-Esta propiedad almacena el email del cliente.  
-Este valor es necesario al construir una instancia de la clase.  
-No puede estar vacío y debe tener estructura de email.
-  
-**Funciones de acceso:**
-  
-|Tipo|Retorno|Función|
-|---|---|---|
-|Lectura|QString|getEmail()|
-|Escritura|void|setEmail(QString email)|
+Destruye el objeto de tipo ControladorBD y cierra la base de datos asociada a él.
 
 ***
 
-### nacionalidad: QString
+### bool abreBD()
 
-Esta propiedad almacena el país de nacionalidad del cliente.  
-Este valor es necesario al construir una instancia de la clase.  
-No puede estar vacío.
-  
-**Funciones de acceso:**
-  
-|Tipo|Retorno|Función|
-|---|---|---|
-|Lectura|QString|getNacionalidad()|
-|Escritura|void|setNacionalidad(QString nacionalidad)|
+Verifica que sea posible abrir la base de datos referenciada por [bd](#bd-qsqldatabase) y devuelve `true` en ese caso.
 
 ***
 
-### cantidadEstancias: int
+### Cliente* crearCliente(QString nombre, QString email, QString telefono, QString nacionalidad)
 
-Esta propiedad almacena la cantidad de estancias que ha tenido el cliente en el hotel.  
-Este valor puede ser indicado al crear una instancia, de lo contrario se establecerá en 0.  
-No puede ser negativo.
-  
-**Funciones de acceso:**
-  
-|Tipo|Retorno|Función|
-|---|---|---|
-|Lectura|int|getCanidadEstancias()|
-|Escritura|void|setCantidadEstancias(int estancias)|
+Inserta un nuevo cliente en la Base de Datos y devuelve la referencia a un objeto de tipo [Cliente](../Cliente) creado con el atributo [identificador](../Cliente/README.md#identificador-int) devuelto por la Base de Datos.
 
 ***
 
-### telefono: QString
+### Cliente* buscarCliente(int identificador)
 
-Esta propiedad almacena el teléfono del cliente.  
-Este valor puede ser indicado al crear una instancia, de lo contrario se establecerá en `NULL`.  
-Debe tener 9 dígitos.
-  
-**Funciones de acceso:**
-  
-|Tipo|Retorno|Función|
-|---|---|---|
-|Lectura|QString|getTelefono()|
-|Escritura|void|setTelefono(QString telefono)|
+Busca al cliente con el identificador correspondiente en la Base de Datos.
 
 ***
 
-### Cliente(long long identificador, QString nombre, QString email, QString nacionalidad, QString telefono = NULL)
+### vector<Cliente> getClientes()
 
-Construye un objeto de tipo cliente con los parámetros establecidos, estableciendo el valor de [cantidadEstancias](#cantidadestancias-int) por defecto en 0.
-
-***
-
-### Cliente(long long identificador, QString nombre, QString email, QString nacionalidad, int cantidadEstancias, QString telefono = NULL)
-
-Sobrecarga el constructor anterior.  
-Establece el valor de [cantidadEstancias](#cantidadestancias-int).
+Devuelve un vector de objetos de tipo [Cliente](../Cliente) con los datos de todos los clientes en la Base de Datos.
 
 ***
 
-### void aniadirEstancia()
+### Cliente* aniadirEstancia([Cliente](../Cliente)* cliente)
 
-Aumenta en 1 el valor de [cantidadEstancias](#cantidadestancias-int) para el cliente.
+Modifica al cliente correspondiente en la Base de Datos, aumentando en 1 el valor de su cantidad de estancias. Llama al método [aniadirEstancia](../Cliente/README.md#void-aniadirestancia) del objeto pasado como argumento.
+
+***
+
+### void eliminarCliente(int identificador)
+
+Elimina al cliente con el identificador correspondiente de la Base de Datos.
+
+***
+
+### Habitacion* crearHabitacion(int numero, QString tipo, int tamanio, int camas, float coste)
+
+Inserta una nueva habitación en la Base de Datos.
+
+***
+
+### Habitacion* buscarHabitacion(int numero)
+
+Busca la habitación con el número correspondiente en la Base de Datos.
+
+***
+
+### vector<Habitacion> getHabitaciones()
+
+Devuelve un vector de objetos de tipo [Habitacion](../Habitacion) con los datos de todas las habitaciones en la Base de Datos.
+
+***
+
+### Habitacion* cambiarEstadoHabitacion(Habitacion* habitacion)
+
+Modifica los datos de la habitación en la Base de Datos según los de la referencia pasada como argumento.
+
+***
+
+### Habitacion* cambiarDisponibilidadHabitacion(int numero, bool disponible)
+
+Modifica el valor de [disponible](../Habitacion/README.md#disponible-bool) de la habitación en la Base de Datos con número coincidente, según el valor de disponible pasado como atributo.  
+No puede establecerse en `true` si el valor de [enArreglos](../Habitacion/README.md#enarreglos-bool) es también `true`.
+
+***
+
+### Habitacion* cambiarEnArreglosHabitacion(int numero, bool enArreglos)
+
+Modifica el valor de [enArreglos](../Habitacion/README.md#enarreglos-bool) de la habitación en la Base de Datos con número coincidente, según el valor de enArreglos pasado como atributo.  
+Si se establece en `true`, establece el valor de [disponible](../Habitacion/README.md#disponible-bool) en `false`.
+
+***
+
+### void eliminarHabitacion(int numero)
+
+Elimina la habitación con el identificador correspondiente de la Base de Datos.
+
+***
+
+### Reserva* crearReserva(QString estado, QDate inicio, QDate fin, int noches, int cliente, float importe, int habitacion = -1)
+
+Inserta una nueva reserva en la Base de Datos.  
+Llama a los métodos [cambiarEstadoReserva](#reserva-cambiarestadoreservaint-numeroconfirmacion-qstring-estado) y [aniadirGasto](#reserva-aniadirgastoint-numeroconfirmacion-qstring-gasto-float-importe) para establecer datos adicionales necesarios en la Base de Datos.  
+Devuelve la referencia a un objeto de tipo [Reserva](../Reserva) creado con el atributo [numeroConfirmacion](../Reserva/README.md#numeroconfirmacion-int) devuelto por la Base de Datos.
+
+***
+
+### Reserva* buscarReserva(int numeroConfirmacion)
+
+Busca la reserva con el número correspondiente en la Base de Datos.
+
+***
+
+### vector<Reserva> getReservas()
+
+Devuelve un vector de objetos de tipo [Reserva](../Reserva) con los datos de todas las reservas en la Base de Datos.
+
+***
+
+### Reserva* cambiarEstadoReserva(int numeroConfirmacion, QString estado)
+
+Cambia el estado de la reserva con el número correspondiente en la Base de Datos.
+
+***
+
+### Reserva* cambiarEstadoReserva(Reserva* reservaACambiar, QString estado)
+
+Cambia el estado de la reserva correspondiente en la Base de Datos.
+
+***
+
+### Reserva* aniadirGasto(int numeroConfirmacion, QString gasto, float importe)
+
+Cambia el valor de [desgloseGastos](../Reserva/README.md#desglosegastos-vectorpairqstringfloat) e [importe](../Reserva/README.md#importe-float), añadiendo un nuevo gasto, a la reserva con el número correspondiente en la Base de Datos.
+
+***
+
+### void modificarReserva(Reserva* reserva)
+
+Modifica los datos de la reserva en la Base de Datos según los de la referencia pasada como argumento.
+
+***
+
+### void eliminarReserva(int numeroConfirmacion)
+
+Elimina la reserva con el numero de confirmación correspondiente de la Base de Datos.

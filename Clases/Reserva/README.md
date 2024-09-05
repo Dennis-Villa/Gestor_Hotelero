@@ -202,86 +202,82 @@ Construye un objeto de tipo cliente con los parámetros establecidos, establecie
 
 ### Reserva(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, Habitacion \*habitacion, QString estadoReserva = "Pendiente")
 
-Sobrecarga el constructor anterior.  
-Establece el valor de [cantidadEstancias](#cantidadestancias-int).
+Sobrecarga el constructor.  
 
 ***
 
 ### Reserva(int numeroConfirmacion, Cliente *cliente, QDate fechaInicio, QDate fechaFin, int cantidadNoches, float importe, QString estadoReserva, Habitacion \*habitacion = nullptr)
 
-Sobrecarga el constructor anterior.  
-Establece el valor de [cantidadEstancias](#cantidadestancias-int).
+Sobrecarga el constructor.
 
 ***
 
 ### Reserva(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, QDate fechaInicio, QDate fechaFin, QString desgloseGastos, float importe, QString estadoReserva, Habitacion \*habitacion = nullptr)
 
-Sobrecarga el constructor anterior.  
-Establece el valor de [cantidadEstancias](#cantidadestancias-int).
+Sobrecarga el constructor.  
 
 ***
 
 ### Reserva(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, QString fechaInicio, QString fechaFin, QString desgloseGastos, float importe, QString estadoReserva, Habitacion \*habitacion = nullptr)
 
-Sobrecarga el constructor anterior.  
-Establece el valor de [cantidadEstancias](#cantidadestancias-int).
+Sobrecarga el constructor.  
 
 ***
 
 ### int getClienteID()
 
-Aumenta en 1 el valor de [cantidadEstancias](#cantidadestancias-int) para el cliente.
+Devuelve el valor del atributo [identificador](../Cliente/README.md#identificador-int) del cliente.
 
 ***
 
 ### QString getClienteNombre()
 
-Aumenta en 1 el valor de [cantidadEstancias](#cantidadestancias-int) para el cliente.
+Devuelve el valor del atributo [nombre](../Cliente/README.md#nombre-qstring) del cliente.
 
 ***
 
 ### int getNumeroHabitacion()
 
-Aumenta en 1 el valor de [cantidadEstancias](#cantidadestancias-int) para el cliente.
+Devuelve el valor del atributo [numeroHabitacion](../Habitacion/README.md#numerohabitacion-int) de la habitación.
 
 ***
 
 ### int getPisoHabitacion()
 
-Aumenta en 1 el valor de [cantidadEstancias](#cantidadestancias-int) para el cliente.
+Devuelve el valor del atributo [piso](../Habitacion/README.md#piso-int) de la habitación.
 
 ***
 
 ### bool tieneHabitacion()
 
-Aumenta en 1 el valor de [cantidadEstancias](#cantidadestancias-int) para el cliente.
+Devuelve `true` si la reserva tiene una habitación asignada y `false` en caso contrario.
 
 ***
 
 ### void registarEntrada()
 
-Aumenta en 1 el valor de [cantidadEstancias](#cantidadestancias-int) para el cliente.
+Establece el valor del atributo [fechaInicio](#fechainicio-qdate) con la fecha actual y el de [fechaFin](#fechafin-qdate) con la fecha actual más [cantidadNoches](#cantidadnoches-int).
 
 ***
 
 ### void registarSalida()
 
-Aumenta en 1 el valor de [cantidadEstancias](#cantidadestancias-int) para el cliente.
+Llama al método [aniadirEstancia](../Cliente/README.md#void-aniadirestancia)() del cliente.
 
 ***
 
 ### void aniadirGasto(QString nombreServicio, float coste)
 
-Aumenta en 1 el valor de [cantidadEstancias](#cantidadestancias-int) para el cliente.
+Añade un elemento al atributo [desgloseGastos](#desglosegastos-vectorpairqstringfloat) y aumenta el valor de [importe](#importe-float) en `coste`.
 
 ***
 
 ### void modificarGastoHabitacion(float gasto)
 
-Aumenta en 1 el valor de [cantidadEstancias](#cantidadestancias-int) para el cliente.
+Modifica el coste del primer gasto en [desgloseGastos](#desglosegastos-vectorpairqstringfloat), que corresponde al alquiler de la habitación.
 
 ***
 
 ### QString convertirGastosATexto()
 
-Aumenta en 1 el valor de [cantidadEstancias](#cantidadestancias-int) para el cliente.
+Devuelve la información de los gastos en [desgloseGastos](#desglosegastos-vectorpairqstringfloat) como un texto, separando cada gasto con un salto de línea.

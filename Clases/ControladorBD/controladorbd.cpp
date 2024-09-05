@@ -6,6 +6,8 @@ ControladorBD::ControladorBD()
 
     this->bd = QSqlDatabase::addDatabase("QSQLITE");
     this->bd.setDatabaseName(path);
+
+    this->abreBD();
 }
 
 ControladorBD::~ControladorBD()
