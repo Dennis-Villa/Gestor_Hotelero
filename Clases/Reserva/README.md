@@ -33,7 +33,7 @@ Esta clase busca gestionar, utilizando Programación Orientada a Objetos, las pr
 |void|[setNumeroConfiramcion](#numeroconfirmacion-int)(int numero)|
 |QString|[getEstadoReserva](#estadoreserva-qstring)()|
 |void|[setEstadoReserva](#estadoreserva-qstring)(QString estado)|
-|vector<pair<QString,float> >|[getDesgloseGastos](#desglosegastos-vectorpairqstringfloat)()|
+|vector<pair<QString,float>>|[getDesgloseGastos](#desglosegastos-vectorpairqstringfloat)()|
 |QString|[getDesgloseGastosString](#desglosegastos-vectorpairqstringfloat)()|
 |float|[getImporte](#importe-float)()|
 |int|[getCantidadNoches](#cantidadnoches-int)()|
