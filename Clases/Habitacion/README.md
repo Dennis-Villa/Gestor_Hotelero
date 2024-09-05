@@ -2,7 +2,7 @@
 
 Esta clase busca gestionar, utilizando Programación Orientada a Objetos, las propiedades y métodos necesarios para establecer la funcionalidad de gestionar una habitación en un servicio hotelero.
 
-***
+## Elementos de la clase
 
 ### Atributos de la clase
 
@@ -14,7 +14,6 @@ Esta clase busca gestionar, utilizando Programación Orientada a Objetos, las pr
 |int|[numero](#numero-int)|
 |int|[tamanioM2](#tamaniom2-int)|
 |int|[numeroCamas](#numerocamas-int)|
-|float|[costePorNoche](#costepornoche-float)|
 |bool|[disponible](#disponible-bool)|
 |bool|[enArreglos](#enarreglos-bool)|
 
