@@ -8,6 +8,7 @@ EstadoHabitacion::EstadoHabitacion(ControladorBD *controladorBD, QWidget *parent
     ui->setupUi(this);
 
     this->controladorBD = controladorBD;
+    this->habitacion = nullptr;
 
     connect(ui->pushButtonCancelar, SIGNAL(clicked(bool)), this, SLOT(cerrar()));
     connect(ui->pushButtonModificar, SIGNAL(clicked(bool)), this, SLOT(modificar()));
@@ -41,17 +42,6 @@ void EstadoHabitacion::mostrar()
     }
 
     this->open();
-
-    // Habitacion *habitacionActual = nullptr;
-
-    // ui->labelNumeroHabitacion->setText(QString::number(habitacionActual->getNumeroHabitacion()));
-    // ui->spinBoxCamas->setValue(habitacionActual->getNumeroCamas());
-    // ui->doubleSpinBoxCoste->setValue(habitacionActual->getCostePorNoche());
-
-    // ui->checkBoxDisponible->setChecked(habitacionActual->getDisponible());
-    // ui->checkBoxEnArreglos->setChecked(habitacionActual->getEnArreglos());
-
-    // this->open();
 }
 
 void EstadoHabitacion::limpiar()
@@ -73,57 +63,26 @@ void EstadoHabitacion::modificar()
 {
     Habitacion *habitacion = this->habitacion;
 
-    try
+    if (habitacion != nullptr)
     {
-        this->habitacion->setTipoHabitacion(ui->comboBoxTipo->currentText());
-        this->habitacion->setNumeroCamas(ui->spinBoxCamas->value());
-        this->habitacion->setCostePorNoche(ui->doubleSpinBoxCoste->value());
+        try
+        {
+            this->habitacion->setTipoHabitacion(ui->comboBoxTipo->currentText());
+            this->habitacion->setNumeroCamas(ui->spinBoxCamas->value());
+            this->habitacion->setCostePorNoche(ui->doubleSpinBoxCoste->value());
 
-        habitacion->setEnArreglos(ui->checkBoxEnArreglos->isChecked());
-        habitacion->setDisponible(ui->checkBoxDisponible->isChecked());
+            habitacion->setEnArreglos(ui->checkBoxEnArreglos->isChecked());
+            habitacion->setDisponible(ui->checkBoxDisponible->isChecked());
 
-        *habitacion = *this->controladorBD->cambiarEstadoHabitacion(habitacion);
+            *habitacion = *this->controladorBD->cambiarEstadoHabitacion(habitacion);
 
-        emit actualizar(true);
+            emit actualizar(true);
 
-        QMessageBox::information(this, "Exito", "Habitación modificada exitosamente.");
+            QMessageBox::information(this, "Exito", "Habitación modificada exitosamente.");
+        }
+        catch (exception &ex)
+        {
+            QMessageBox::critical(this, "Error", ex.what());
+        }
     }
-    catch (exception &ex)
-    {
-        QMessageBox::critical(this, "Error", ex.what());
-    }
-
-
-
-
-    // Habitacion *habitacionActual = nullptr;
-
-    // for (int i = 0; i < (int)this->habitaciones->size(); i++)
-    // {
-    //     if (this->habitaciones->at(i).getNumeroHabitacion() == this->numeroHabitacion)
-    //     {
-    //         habitacionActual = &this->habitaciones->at(i);
-    //         break;
-    //     }
-    // }
-
-    // try
-    // {
-    //     habitacionActual->setTipoHabitacion(ui->comboBoxTipo->currentText());
-    //     habitacionActual->setNumeroCamas(ui->spinBoxCamas->value());
-    //     habitacionActual->setCostePorNoche(ui->doubleSpinBoxCoste->value());
-
-    //     habitacionActual->setEnArreglos(ui->checkBoxEnArreglos->isChecked());
-    //     habitacionActual->setDisponible(ui->checkBoxDisponible->isChecked());
-
-    //     *habitacionActual = *this->controladorBD->cambiarEstadoHabitacion(habitacionActual);
-
-    //     emit actualizar(true);
-
-    //     QMessageBox::information(this, "Exito", "Habitación modificada exitosamente.");
-    // }
-    // catch (exception &ex)
-    // {
-    //     QMessageBox::critical(this, "Error", ex.what());
-    // }
 }

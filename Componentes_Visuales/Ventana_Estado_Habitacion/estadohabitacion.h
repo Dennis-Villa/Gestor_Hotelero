@@ -25,7 +25,7 @@ public:
     void limpiar();
 
 signals:
-    void actualizar(bool = false);
+    void actualizar(bool actualizar = false);
 
 public slots:
     void cerrar();
