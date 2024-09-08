@@ -170,32 +170,46 @@ Rellena el QComboBox de la interfaz de usuario con los diferentes pisos del hote
 
 Llama al método [limpiarVentana](#void-limpiarventana)(), establece el atributo [ventanaAbierta](#ventanaabierta-bool) en `false` y emite la señal [cerrarVentana](#cerrarventanabool-cerrar--false)(`true`).
 
+***
+
 ### void actualizarCoste()
 
 Actualiza el coste de la reserva mostrado en la interfaz de usuario según la habitación y cantidad de días seleccionados.
+
+***
 
 ### void actualizarNumerosHabitaciones()
 
 Rellena el QComboBox de la interfaz de usuario con las habitaciones del hotel.  
 Muestra solamente las habitaciones disponibles en el piso seleccionado.
 
+***
+
 ### void activarSeleccionFecha()
 
 Activa o desactiva la posibilidad de elegir una fecha para reservar.
+
+***
 
 ### void modificarReserva()
 
 Si la ventana fue abierta para modificar una reserva, actualiza su valor tanto en la Base de Datos como en el objeto referenciado por [reserva](#reserva-reserva) según los datos introducidos en la interfaz de usuario.  
 Emite la señal [aniadido](#aniadidobool-actualizar--false)(true).
 
+***
+
 ### void aniadir()
 
 Si la ventana fue abierta para añadir una reserva, añade su valor tanto en la Base de Datos como en el vector de tipo [Reserva](../../Clases/Reserva) referenciado por [reservas](#reservas-vectorreserva) según los datos introducidos en la interfaz de usuario.  
 Emite la señal [aniadido](#aniadidobool-actualizar--false)(true).
 
+***
+
 ### void habilitarHabitacion(int arg1)
 
 Activa o desactiva la posibilidad de elegir una habitación para reservar.
+
+***
 
 ### void actualizarClientes(const QString &arg1)
 
