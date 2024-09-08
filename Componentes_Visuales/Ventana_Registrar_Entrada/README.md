@@ -1,22 +1,18 @@
-# Clase Reserva
+# Ventana Estado de Habitación
 
-Esta clase busca gestionar, utilizando Programación Orientada a Objetos, las propiedades y métodos necesarios para establecer la funcionalidad de gestionar una reserva en un servicio hotelero.
+Esta ventana y su clase correspondiente, manejan la lógica para mostrar los datos de una habitación específica del hotel y permitir hacer modificaciones a dichos datos. Utiliza como base una ventana QDialog de Qt.
 
-## Elementos de la clase
+![Ventana Estado de Habitación](../../Imagenes/Captura_Ventana_Informacion_Habitacion.PNG)
 
-### Atributos de la clase
+## Elementos
+
+### Atributos
 
 |||
 |---|---|
-|int|[numeroConfirmacion](#numeroconfirmacion-int)|
-|QString|[estadoReserva](#estadoreserva-qstring)|
-|vector<pair<QString,float> >|[desgloseGastos](#desglosegastos-vectorpairqstringfloat)|
-|float|[importe](#importe-float)|
-|int|[cantidadNoches](#cantidadnoches-int)|
-|QDate|[fechaInicio](#fechainicio-qdate)|
-|QDate|[fechaFin](#fechafin-qdate)|
-|Cliente*|[cliente](#cliente-cliente)|
-|Habitacion*|[habitacion](#habitacion-habitacion)|
+|Ui::EstadoHabitacion*|[ui](#ui-uiestadohabitacion)|
+|[Habitacion](../../Clases/Habitacion)*|[habitacion](#habitacion-habitacion)|
+|[ControladorBD](../../Clases/ControladorBD)*|[controladorBD](#controladorbd-controladorbd)|
 
 ***
 
@@ -24,260 +20,92 @@ Esta clase busca gestionar, utilizando Programación Orientada a Objetos, las pr
 
 |Retorno|Método|
 |---|---|
-||[Reserva](#reservaint-numeroconfirmacion-cliente-cliente-int-cantidadnoches-qstring-estadoreserva--pendiente)(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, QString estadoReserva = "Pendiente")|
-||[Reserva](#reservaint-numeroconfirmacion-cliente-cliente-int-cantidadnoches-habitacion-habitacion-qstring-estadoreserva--pendiente)(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, Habitacion \*habitacion, QString estadoReserva = "Pendiente")|
-||[Reserva](#reservaint-numeroconfirmacion-cliente-cliente-qdate-fechainicio-qdate-fechafin-int-cantidadnoches-float-importe-qstring-estadoreserva-habitacion-habitacion--nullptr)(int numeroConfirmacion, Cliente *cliente, QDate fechaInicio, QDate fechaFin, int cantidadNoches, float importe, QString estadoReserva, Habitacion \*habitacion = nullptr)|
-||[Reserva](#reservaint-numeroconfirmacion-cliente-cliente-int-cantidadnoches-qdate-fechainicio-qdate-fechafin-qstring-desglosegastos-float-importe-qstring-estadoreserva-habitacion-habitacion--nullptr)(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, QDate fechaInicio, QDate fechaFin, QString desgloseGastos, float importe, QString estadoReserva, Habitacion \*habitacion = nullptr)|
-||[Reserva](#reservaint-numeroconfirmacion-cliente-cliente-int-cantidadnoches-qstring-fechainicio-qstring-fechafin-qstring-desglosegastos-float-importe-qstring-estadoreserva-habitacion-habitacion--nullptr)(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, QString fechaInicio, QString fechaFin, QString desgloseGastos, float importe, QString estadoReserva, Habitacion \*habitacion = nullptr)|
-|int|[getNumeroConfirmacion](#numeroconfirmacion-int)()|
-|void|[setNumeroConfiramcion](#numeroconfirmacion-int)(int numero)|
-|QString|[getEstadoReserva](#estadoreserva-qstring)()|
-|void|[setEstadoReserva](#estadoreserva-qstring)(QString estado)|
-|vector<pair<QString,float>>|[getDesgloseGastos](#desglosegastos-vectorpairqstringfloat)()|
-|QString|[getDesgloseGastosString](#desglosegastos-vectorpairqstringfloat)()|
-|float|[getImporte](#importe-float)()|
-|int|[getCantidadNoches](#cantidadnoches-int)()|
-|void|[setCantidadNoches](#cantidadnoches-int)(int noches)|
-|QDate|[getFechaInicio](#fechainicio-qdate)()|
-|QString|[getFechaInicioString](#fechainicio-qdate)()|
-|QDate|[getFechaFin](#fechafin-qdate)()|
-|QString|[getFechaFinString](#fechafin-qdate)()|
-|[Cliente](../Cliente)*|[getCliente](#cliente-cliente)()|
-|void|[setCliente](#cliente-cliente)([Cliente](../Cliente)* cliente)|
-|[Habitacion](../Habitacion)*|[getHabitacion](#habitacion-habitacion)()|
-|void|[setHabitacion](#habitacion-habitacion)([Habitacion](../Habitacion)* habitacion)|
-|int|[getClienteID](#int-getclienteid)()|
-|QString|[getClienteNombre](#qstring-getclientenombre)()|
-|int|[getNumeroHabitacion](#int-getnumerohabitacion)()|
-|int|[getPisoHabitacion](#int-getpisohabitacion)()|
-|bool|[tieneHabitacion](#bool-tienehabitacion)()|
-|void|[registarEntrada](#void-registarentrada)()|
-|void|[registarSalida](#void-registarsalida)()|
-|void|[aniadirGasto](#void-aniadirgastoqstring-nombreservicio-float-coste)(QString nombreServicio, float coste)|
-|void|[modificarGastoHabitacion](#void-modificargastohabitacionfloat-gasto)(float gasto)|
-|QString|[convertirGastosATexto](#qstring-convertirgastosatexto)()|
+||[EstadoHabitacion](#estadohabitacioncontroladorbd-controladorbd-qwidget-parent--nullptr)([ControladorBD](../../Clases/ControladorBD)* controladorBD, QWidget* parent = nullptr)|
+||~[EstadoHabitacion](#estadohabitacion)()|
+|void|[setHabitacion](#habitacion-habitacion)([Habitacion](../../Clases/Habitacion)* habitacion)|
+|void|[mostrar](#void-mostrar)()|
+|void|[limpiar](#void-limpiar)()|
+
+### Slots Públicos
+
+|Retorno|Slot|
+|---|---|
+|void|[cerrar](#void-cerrar)()|
+|void|[modificar](#void-modificar)()|
+
+### Señales
+
+|Retorno|Señal|
+|---|---|
+|void|[actualizar](#void-actualizarbool-actualizar--false)(bool actualizar = false)|
 
 ## Descripción Detallada
 
-### numeroConfirmacion: int
+### ui: Ui::EstadoHabitacion*
 
-Esta propiedad almacena el número asignado a la reserva por la base de datos y actúa como su identificador único.  
-Este valor es necesario al construir una instancia de la clase.  
-No puede ser negativo.
+Este atributo almacena una referencia a la interfaz del usuario para poder acceder a los elementos visuales incuidos en ella.
+
+***
+
+### habitacion: [Habitacion](../../Clases/Habitacion)*
+
+Este atributo almacena una referencia al objeto de tipo [Habitacion](../../Clases/Habitacion) cuyos datos serán mostrados y/o modificados.  
+Este valor se inicializa como `nullptr` al crear una instancia.  
   
 **Funciones de acceso:**
   
 |Tipo|Retorno|Función|
 |---|---|---|
-|Lectura|int|getNumeroConfirmacion()|
-|Escritura|void|setNumeroConfiramcion(int numero)|
+|Escritura|void|setHabitacion([Habitacion](../../Clases/Habitacion)* habitacion)|
 
 ***
 
-### estadoReserva: QString
+### controladorBD: [ControladorBD](../../Clases/ControladorBD)*
 
-Esta propiedad almacena el estado de la reserva, el cual puede seleccionarse solamente de los valores: *Pendiente*, *Confirmado*, *En Estadía*, *Estancia Finalizada* y *Vencida*.  
-Este valor es necesario al construir una instancia de la clase.  
-Una reserva en estado *Confirmado* debe tener una fecha de inicio establecida. Una reserva en estado *En Estadía* llama al método [registarEntrada](#void-registarentrada).
-  
-**Funciones de acceso:**
-  
-|Tipo|Retorno|Función|
-|---|---|---|
-|Lectura|QString|getEstadoReserva()|
-|Escritura|void|setEstadoReserva(QString estado)|
+Este atributo almacena una referencia al objeto de tipo [ControladorBD](../../Clases/ControladorBD) que maneja las consultas a la base de datos del hotel.  
+Este valor debe ser indicado al crear una instancia.
 
 ***
 
-### desgloseGastos: vector<pair<QString,float>>
+### EstadoHabitacion([ControladorBD](../../Clases/ControladorBD)* controladorBD, QWidget* parent = nullptr)
 
-Esta propiedad almacena los gastos de la reserva utilizando pares formados por una descripción del gasto y su importe correspondiente.  
-Este valor puede ser indicado al crear una instancia, de lo contrario se establecerá como un vector vacío.
-El importe total de los gastos debe coincidir con el atributo [importe](#importe-float) de la reserva.
-  
-**Funciones de acceso:**
-  
-|Tipo|Retorno|Función|
-|---|---|---|
-|Lectura|vector<pair<QString,float> >|getDesgloseGastos()|
-|Lectura|QString|getDesgloseGastosString()|
+Construye un objeto de tipo EstadoHabitacion con los parámetros establecidos y lo conecta con su interfaz de usuario.  
+Conecta la señal de click en el botón Cancelar con el SLOT [cerrar](#void-cerrar)().  
+Conecta la señal de click en el botón Modificar con el SLOT [modificar](#void-modificar)().
 
 ***
 
-### importe: float
+### ~EstadoHabitacion()
 
-Esta propiedad almacena el importe total de los gastos de la reserva.  
-Este valor puede ser indicado al crear una instancia, de lo contrario se establecerá con valor 0.  
-El valor debe coincidir con el total de gastos del atributo [desgloseGastos](#desglosegastos-vectorpairqstringfloat) de la reserva.
-  
-**Funciones de acceso:**
-  
-|Tipo|Retorno|Función|
-|---|---|---|
-|Lectura|float|getImporte()|
+Elimina el atributo [ui](#ui-uiestadohabitacion).  
 
 ***
 
-### cantidadNoches: int
+### void mostrar()
 
-Esta propiedad almacena la cantidad de noches de estancia de la reserva.  
-Este valor es necesario al construir una instancia de la clase.  
-Debe ser al menos 1 noche.
-  
-**Funciones de acceso:**
-  
-|Tipo|Retorno|Función|
-|---|---|---|
-|Lectura|int|getCantidadNoches()|
-|Escritura|void|setCantidadNoches(int noches)|
+Comprueba si se estableció una referencia a un objeto de tipo [Habitacion](../../Clases/Habitacion) en el atributo [habitacion](#habitacion-habitacion), en cuyo caso, llena la información correspondiente en la interfaz de usuario con los datos de la habitación. 
 
 ***
 
-### fechaInicio: QDate
+### void limpiar()
 
-Esta propiedad almacena la fecha de inicio de la estancia.  
-Para reservas con [estadoReserva](#estadoreserva-qstring) en *Pendiente* se establecerá en el 1ro de Enero de 1970. Cualquier otro estado debe incluir la fecha de inicio al construir la instancia.  
-Para reservas con [estadoReserva](#estadoreserva-qstring) en *Confirmado* fechaInicio debe ser mayor o igual a la fecha actual.
-  
-**Funciones de acceso:**
-  
-|Tipo|Retorno|Función|
-|---|---|---|
-|Lectura|QDate|getFechaInicio()|
-|Lectura|QString|getFechaInicioString()|
+Borra los datos guardados en los elementos de la interfaz de usuario.  
 
 ***
 
-### fechaFin: QDate
+### void cerrar()
 
-Esta propiedad almacena la fecha de fin de la estancia.  
-Para reservas con [estadoReserva](#estadoreserva-qstring) en *Pendiente* se establecerá en el 1ro de Enero de 1970. Para cualquier otro estado se calculará sumando [cantidadNoches](#cantidadnoches-int) a [fechaInicio](#fechainicio-qdate).  
-Para reservas con [estadoReserva](#estadoreserva-qstring) en *Confirmado* o *En Estadía* fechaFin debe ser mayor o igual a la fecha actual.
-  
-**Funciones de acceso:**
-  
-|Tipo|Retorno|Función|
-|---|---|---|
-|Lectura|QDate|getFechaFin()|
-|Lectura|QString|getFechaFinString()|
+Llama al método [limpiar](#void-limpiar)() y cierra la ventana.
 
 ***
 
-### cliente: Cliente*
+### void modificar()
 
-Esta propiedad almacena un puntero con la dirección de memoria del objeto [Cliente](../Cliente) que almacena los datos del cliente que hizo la reserva.  
-Este valor es necesario al construir una instancia de la clase.  
-No puede ser un puntero nulo.
-  
-**Funciones de acceso:**
-  
-|Tipo|Retorno|Función|
-|---|---|---|
-|Lectura|[Cliente](../Cliente)*|getCliente()|
-|Escritura|void|setCliente([Cliente](../Cliente)* cliente)|
+Comprueba si se estableció una referencia a un objeto de tipo [Habitacion](../../Clases/Habitacion) en el atributo [habitacion](#habitacion-habitacion).  
+En caso positivo, modifica la Base de Datos y el objeto referenciado por el atributo [habitacion](#habitacion-habitacion) con los datos en la interfaz de usuario y emite la señal [actualizar](#void-actualizarbool-actualizar--false)(true).
 
 ***
 
-### habitacion: Habitacion*
+### void actualizar(bool actualizar = false)
 
-Esta propiedad almacena un puntero con la dirección de memoria del objeto [Habitación](../Habitacion) que almacena los datos de la habitación que se registra en la reserva.  
-Para reservas con [estadoReserva](#estadoreserva-qstring) en *Pendiente* no es necesario especificar habitación, en cuyo caso se establecerá como puntero nulo.  
-Para cualquier otro estado se debe especificar.  
-Para reservas con [estadoReserva](#estadoreserva-qstring) *En Estadía* se establecerá la propiedad [disponible](../Habitacion/README.md#disponible-bool) de la habitación en `false`.  
-  
-**Funciones de acceso:**
-  
-|Tipo|Retorno|Función|
-|---|---|---|
-|Lectura|[Habitacion](../Habitacion)*|getHabitacion()|
-|Escritura|void|setHabitacion([Habitacion](../Habitacion)* habitacion)|
-
-***
-
-### Reserva(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, QString estadoReserva = "Pendiente")
-
-Construye un objeto de tipo cliente con los parámetros establecidos, estableciendo el valor de [cantidadEstancias](#cantidadestancias-int) por defecto en 0.
-
-***
-
-### Reserva(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, Habitacion \*habitacion, QString estadoReserva = "Pendiente")
-
-Sobrecarga el constructor.  
-
-***
-
-### Reserva(int numeroConfirmacion, Cliente *cliente, QDate fechaInicio, QDate fechaFin, int cantidadNoches, float importe, QString estadoReserva, Habitacion \*habitacion = nullptr)
-
-Sobrecarga el constructor.
-
-***
-
-### Reserva(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, QDate fechaInicio, QDate fechaFin, QString desgloseGastos, float importe, QString estadoReserva, Habitacion \*habitacion = nullptr)
-
-Sobrecarga el constructor.  
-
-***
-
-### Reserva(int numeroConfirmacion, Cliente *cliente, int cantidadNoches, QString fechaInicio, QString fechaFin, QString desgloseGastos, float importe, QString estadoReserva, Habitacion \*habitacion = nullptr)
-
-Sobrecarga el constructor.  
-
-***
-
-### int getClienteID()
-
-Devuelve el valor del atributo [identificador](../Cliente/README.md#identificador-int) del cliente.
-
-***
-
-### QString getClienteNombre()
-
-Devuelve el valor del atributo [nombre](../Cliente/README.md#nombre-qstring) del cliente.
-
-***
-
-### int getNumeroHabitacion()
-
-Devuelve el valor del atributo [numeroHabitacion](../Habitacion/README.md#numerohabitacion-int) de la habitación.
-
-***
-
-### int getPisoHabitacion()
-
-Devuelve el valor del atributo [piso](../Habitacion/README.md#piso-int) de la habitación.
-
-***
-
-### bool tieneHabitacion()
-
-Devuelve `true` si la reserva tiene una habitación asignada y `false` en caso contrario.
-
-***
-
-### void registarEntrada()
-
-Establece el valor del atributo [fechaInicio](#fechainicio-qdate) con la fecha actual y el de [fechaFin](#fechafin-qdate) con la fecha actual más [cantidadNoches](#cantidadnoches-int).
-
-***
-
-### void registarSalida()
-
-Llama al método [aniadirEstancia](../Cliente/README.md#void-aniadirestancia)() del cliente.
-
-***
-
-### void aniadirGasto(QString nombreServicio, float coste)
-
-Añade un elemento al atributo [desgloseGastos](#desglosegastos-vectorpairqstringfloat) y aumenta el valor de [importe](#importe-float) en `coste`.
-
-***
-
-### void modificarGastoHabitacion(float gasto)
-
-Modifica el coste del primer gasto en [desgloseGastos](#desglosegastos-vectorpairqstringfloat), que corresponde al alquiler de la habitación.
-
-***
-
-### QString convertirGastosATexto()
-
-Devuelve la información de los gastos en [desgloseGastos](#desglosegastos-vectorpairqstringfloat) como un texto, separando cada gasto con un salto de línea.
+Se emite cuando se cambia la información en el objeto de tipo [Habitacion](../../Clases/Habitacion) referenciado por el atributo [habitacion](#habitacion-habitacion).
