@@ -55,8 +55,8 @@ Esta ventana y su clase correspondiente, manejan la lógica para añadir o modif
 
 |Retorno|Señal|
 |---|---|
-|void|[cerrarVentana](#cerrarventanabool-cerrar--false)(bool cerrar = false)|
-|void|[aniadido](#aniadidobool-actualizar--false)(bool actualizar = false)|
+|void|[cerrarVentana](#void-cerrarventanabool-cerrar--false)(bool cerrar = false)|
+|void|[aniadido](#void-aniadidobool-actualizar--false)(bool actualizar = false)|
 
 ## Descripción Detallada
 
@@ -168,7 +168,7 @@ Rellena el QComboBox de la interfaz de usuario con los diferentes pisos del hote
 
 ### void cerrar()
 
-Llama al método [limpiarVentana](#void-limpiarventana)(), establece el atributo [ventanaAbierta](#ventanaabierta-bool) en `false` y emite la señal [cerrarVentana](#cerrarventanabool-cerrar--false)(`true`).
+Llama al método [limpiarVentana](#void-limpiarventana)(), establece el atributo [ventanaAbierta](#ventanaabierta-bool) en `false` y emite la señal [cerrarVentana](#void-cerrarventanabool-cerrar--false)(`true`).
 
 ***
 
@@ -194,14 +194,14 @@ Activa o desactiva la posibilidad de elegir una fecha para reservar.
 ### void modificarReserva()
 
 Si la ventana fue abierta para modificar una reserva, actualiza su valor tanto en la Base de Datos como en el objeto referenciado por [reserva](#reserva-reserva) según los datos introducidos en la interfaz de usuario.  
-Emite la señal [aniadido](#aniadidobool-actualizar--false)(true).
+Emite la señal [aniadido](#void-aniadidobool-actualizar--false)(true).
 
 ***
 
 ### void aniadir()
 
 Si la ventana fue abierta para añadir una reserva, añade su valor tanto en la Base de Datos como en el vector de tipo [Reserva](../../Clases/Reserva) referenciado por [reservas](#reservas-vectorreserva) según los datos introducidos en la interfaz de usuario.  
-Emite la señal [aniadido](#aniadidobool-actualizar--false)(true).
+Emite la señal [aniadido](#void-aniadidobool-actualizar--false)(true).
 
 ***
 
@@ -218,12 +218,12 @@ Muestra solamente los clientes cuyo nombre o identificador coincidan con el valo
 
 ***
 
-### cerrarVentana(bool cerrar = false)
+### void cerrarVentana(bool cerrar = false)
 
 Se emite cuando se deba cerrar la ventana.
 
 ***
 
-### aniadido(bool actualizar = false)
+### void aniadido(bool actualizar = false)
 
 Se emite cuando se añade un objeto de tipo [Reserva](../../Clases/Reserva) al vector referenciado por el atributo [reservas](#reservas-vectorreserva), o cuando se modifica el objeto referenciado por el atributo [reserva](#reserva-reserva).

@@ -30,15 +30,15 @@ Esta ventana y su clase correspondiente, manejan la lógica para añadir un clie
 
 |Retorno|Slot|
 |---|---|
-|void|[aniadirCliente](#aniadidobool-actualizar--false)()|
+|void|[aniadirCliente](#void-aniadircliente)()|
 |void|[cerrar](#void-cerrar)()|
 
 ### Señales
 
 |Retorno|Señal|
 |---|---|
-|void|[cerrarVentana](#cerrarventanabool-cerrar--false)(bool cerrar = false)|
-|void|[aniadido](#aniadidobool-actualizar--false)(bool actualizar = false)|
+|void|[cerrarVentana](#void-cerrarventanabool-cerrar--false)(bool cerrar = false)|
+|void|[aniadido](#void-aniadidobool-actualizar--false)(bool actualizar = false)|
 
 ## Descripción Detallada
 
@@ -100,22 +100,22 @@ Borra los datos guardados en los elementos de la interfaz de usuario.
 
 Lee los datos en la interfaz de usuario y llama con ellos al método [crearCliente](../../Clases/ControladorBD/README.md#cliente-crearclienteqstring-nombre-qstring-email-qstring-telefono-qstring-nacionalidad) de la clase [ControladorBD](../../Clases/ControladorBD).  
 Toma el objeto de tipo [Cliente](../../Clases/Cliente) devuelto por el método y lo añade al vector de clientes referenciado por el atributo [clientes](#clientes-vectorcliente).
-Emite la señal [aniadido](#aniadidobool-actualizar--false)(`true`).
+Emite la señal [aniadido](#void-aniadidobool-actualizar--false)(`true`).
 
 ***
 
 ### void cerrar()
 
-Llama al método [limpiarVentana](#void-limpiarventana)(), establece el atributo [ventanaAbierta](#ventanaabierta-bool) en `false` y emite la señal [cerrarVentana](#cerrarventanabool-cerrar--false)(`true`).
+Llama al método [limpiarVentana](#void-limpiarventana)(), establece el atributo [ventanaAbierta](#ventanaabierta-bool) en `false` y emite la señal [cerrarVentana](#void-cerrarventanabool-cerrar--false)(`true`).
 
 ***
 
-### cerrarVentana(bool cerrar = false)
+### void cerrarVentana(bool cerrar = false)
 
 Se emite cuando se deba cerrar la ventana.
 
 ***
 
-### aniadido(bool actualizar = false)
+### void aniadido(bool actualizar = false)
 
 Se emite cuando se añade un objeto de tipo [Cliente](../../Clases/Cliente) al vector referenciado por el atributo [clientes](#clientes-vectorcliente).

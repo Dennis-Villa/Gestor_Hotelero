@@ -1,8 +1,8 @@
-# Ventana Estado de Habitación
+# Ventana Registrar Salida
 
-Esta ventana y su clase correspondiente, manejan la lógica para mostrar los datos de una habitación específica del hotel y permitir hacer modificaciones a dichos datos. Utiliza como base una ventana QDialog de Qt.
+Esta ventana y su clase correspondiente, manejan la lógica para registrar la salida de un cliente luego de su estadía. Utiliza como base una ventana QDialog de Qt.
 
-![Ventana Estado de Habitación](../../Imagenes/Captura_Ventana_Informacion_Habitacion.PNG)
+![Ventana Registrar Salida](../../Imagenes/Captura_Ventana_Registrar_Salida.PNG)
 
 ## Elementos
 
@@ -10,9 +10,10 @@ Esta ventana y su clase correspondiente, manejan la lógica para mostrar los dat
 
 |||
 |---|---|
-|Ui::EstadoHabitacion*|[ui](#ui-uiestadohabitacion)|
-|[Habitacion](../../Clases/Habitacion)*|[habitacion](#habitacion-habitacion)|
+|Ui::RegistrarSalida*|[ui](#ui-uiregistrarsalida)|
+|vector\<[Reserva](../../Clases/Reserva)>*|[reservas](#reservas-vectorreserva)|
 |[ControladorBD](../../Clases/ControladorBD)*|[controladorBD](#controladorbd-controladorbd)|
+|bool|[ventanaAbierta](#ventanaabierta-bool)|
 
 ***
 
@@ -20,92 +21,135 @@ Esta ventana y su clase correspondiente, manejan la lógica para mostrar los dat
 
 |Retorno|Método|
 |---|---|
-||[EstadoHabitacion](#estadohabitacioncontroladorbd-controladorbd-qwidget-parent--nullptr)([ControladorBD](../../Clases/ControladorBD)* controladorBD, QWidget* parent = nullptr)|
-||~[EstadoHabitacion](#estadohabitacion)()|
-|void|[setHabitacion](#habitacion-habitacion)([Habitacion](../../Clases/Habitacion)* habitacion)|
-|void|[mostrar](#void-mostrar)()|
-|void|[limpiar](#void-limpiar)()|
+||[RegistrarSalida](#registrarsalidavectorreserva-reservas-controladorbd-controladorbd--nullptr-qwidget-parent--nullptr)(vector\<[Reserva](../../Clases/Reserva)>\* reservas, [ControladorBD](../../Clases/ControladorBD) *controladorBD = nullptr, QWidget\* parent = nullptr)|
+||~[RegistrarSalida](#registrarsalida)()|
+|void|[abrirVentana](#void-abrirventana)()|
+|void|[limpiarVentana](#void-limpiarventana)()|
+|bool|[establecerCliente](#void-establecerclienteqstring-cliente)(QString cliente)|
 
-### Slots Públicos
+### Slots Privados
 
 |Retorno|Slot|
 |---|---|
 |void|[cerrar](#void-cerrar)()|
-|void|[modificar](#void-modificar)()|
+|void|[rellenarComboBoxClientes](#void-rellenarcomboboxclientes)()|
+|void|[rellenarComboBoxClientes](#void-rellenarcomboboxclientessetint-clientesid)(set\<int\> *clientesID)|
+|void|[buscarClientes](#void-buscarclientesqstring-cliente--)(QString cliente = "")|
+|void|[rellenarInformacionReserva](#void-rellenarinformacionreserva)()|
+|void|[registrar](#void-registrar)()|
 
 ### Señales
 
 |Retorno|Señal|
 |---|---|
-|void|[actualizar](#void-actualizarbool-actualizar--false)(bool actualizar = false)|
+|void|[cerrarVentana](#void-cerrarventanabool-cerrar--false)(bool cerrar = false)|
+|void|[registrado](#void-registradobool-actualizar--false)(bool actualizar = false)|
 
 ## Descripción Detallada
 
-### ui: Ui::EstadoHabitacion*
+### ui: Ui::RegistrarSalida*
 
 Este atributo almacena una referencia a la interfaz del usuario para poder acceder a los elementos visuales incuidos en ella.
 
 ***
 
-### habitacion: [Habitacion](../../Clases/Habitacion)*
+### reservas: vector\<[Reserva](../../Clases/Reserva)>*
 
-Este atributo almacena una referencia al objeto de tipo [Habitacion](../../Clases/Habitacion) cuyos datos serán mostrados y/o modificados.  
-Este valor se inicializa como `nullptr` al crear una instancia.  
-  
-**Funciones de acceso:**
-  
-|Tipo|Retorno|Función|
-|---|---|---|
-|Escritura|void|setHabitacion([Habitacion](../../Clases/Habitacion)* habitacion)|
+Este atributo almacena una referencia a las reservas almacenadas en la memoria de la aplicación.  
+Este valor debe ser indicado al crear una instancia.  
 
 ***
 
 ### controladorBD: [ControladorBD](../../Clases/ControladorBD)*
 
 Este atributo almacena una referencia al objeto de tipo [ControladorBD](../../Clases/ControladorBD) que maneja las consultas a la base de datos del hotel.  
-Este valor debe ser indicado al crear una instancia.
+Este valor debe ser indicado al crear una instancia.  
 
 ***
 
-### EstadoHabitacion([ControladorBD](../../Clases/ControladorBD)* controladorBD, QWidget* parent = nullptr)
+### ventanaAbierta: bool
 
-Construye un objeto de tipo EstadoHabitacion con los parámetros establecidos y lo conecta con su interfaz de usuario.  
-Conecta la señal de click en el botón Cancelar con el SLOT [cerrar](#void-cerrar)().  
-Conecta la señal de click en el botón Modificar con el SLOT [modificar](#void-modificar)().
-
-***
-
-### ~EstadoHabitacion()
-
-Elimina el atributo [ui](#ui-uiestadohabitacion).  
+Este atributo indica si esta ventana se encuentra visible para el usuario.  
+Este valor se inicializa como `false` al crear una instancia.  
 
 ***
 
-### void mostrar()
+### RegistrarSalida(vector\<[Reserva](../../Clases/Reserva)>\* reservas, [ControladorBD](../../Clases/ControladorBD) *controladorBD = nullptr, QWidget\* parent = nullptr)
 
-Comprueba si se estableció una referencia a un objeto de tipo [Habitacion](../../Clases/Habitacion) en el atributo [habitacion](#habitacion-habitacion), en cuyo caso, llena la información correspondiente en la interfaz de usuario con los datos de la habitación. 
+Construye un objeto de tipo RegistrarSalida con los parámetros establecidos y lo conecta con su interfaz de usuario.  
+Conecta las señales con sus slots correspondientes.  
 
 ***
 
-### void limpiar()
+### ~RegistrarSalida()
+
+Elimina el atributo [ui](#ui-uiregistrarsalida).  
+
+***
+
+### void abrirVentana()
+
+Establece el valor del atributo [ventanaAbierta](#ventanaabierta-bool) en `true`.
+
+***
+
+### void limpiarVentana()
 
 Borra los datos guardados en los elementos de la interfaz de usuario.  
 
 ***
 
+### void establecerCliente(QString cliente)
+
+Establece el nombre del cliente para registrar su salida.
+
+***
+
 ### void cerrar()
 
-Llama al método [limpiar](#void-limpiar)() y cierra la ventana.
+Llama al método [limpiarVentana](#void-limpiarventana)(), establece el atributo [ventanaAbierta](#ventanaabierta-bool) en `false` y emite la señal [cerrarVentana](#void-cerrarventanabool-cerrar--false)(`true`).
 
 ***
 
-### void modificar()
+### void rellenarComboBoxClientes()
 
-Comprueba si se estableció una referencia a un objeto de tipo [Habitacion](../../Clases/Habitacion) en el atributo [habitacion](#habitacion-habitacion).  
-En caso positivo, modifica la Base de Datos y el objeto referenciado por el atributo [habitacion](#habitacion-habitacion) con los datos en la interfaz de usuario y emite la señal [actualizar](#void-actualizarbool-actualizar--false)(true).
+Rellena el QComboBox de la interfaz de usuario con los datos de todos los clientes en estadía que deban salir en el día actual.
 
 ***
 
-### void actualizar(bool actualizar = false)
+### void rellenarComboBoxClientes(set\<int>* clientesID)
 
-Se emite cuando se cambia la información en el objeto de tipo [Habitacion](../../Clases/Habitacion) referenciado por el atributo [habitacion](#habitacion-habitacion).
+Sobrecarga del método [rellenarComboBoxClientes](#void-rellenarcomboboxclientes)().  
+Muestra solamente los clientes cuyo identificador se encuentre en el conjunto `clientesID`.
+
+***
+
+### void buscarClientes(QString cliente = "")
+
+Rellena el QComboBox de la interfaz de usuario con los clientes del hotel.  
+Muestra solamente los clientes cuyo nombre o identificador coincidan con el valor escrito.
+
+***
+
+### void rellenarInformacionReserva()
+
+Muestra la información correspondiente de la reserva a registrar.
+
+***
+
+### void registrar()
+
+Actualiza los datos de la reserva tanto en la Base de Datos como en el objeto correspondiente en el vector referenciado por [reservas](#reservas-vectorreserva).  
+Emite la señal [registrado](#void-registradobool-actualizar--false)(true).
+
+***
+
+### void cerrarVentana(bool cerrar = false)
+
+Se emite cuando se deba cerrar la ventana.
+
+***
+
+### void registrado(bool actualizar = false)
+
+Se emite cuando se modifica el estado en un objeto de tipo [Reserva](../../Clases/Reserva) en el vector referenciado por el atributo [reservas](#reservas-vectorreserva).
