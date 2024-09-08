@@ -41,12 +41,9 @@ private slots:
     void actualizarNumerosHabitaciones();
     void activarSeleccionFecha();
     void modificarReserva();
-
-    void on_pushButtonAniadir_clicked();
-
-    void on_checkBoxHabitacion_stateChanged(int arg1);
-
-    void on_lineEditCliente_textChanged(const QString &arg1);
+    void aniadir();
+    void habilitarHabitacion(int arg1);
+    void actualizarClientes(const QString &arg1);
 
 private:
     void rellenarComboBoxClientes();

@@ -18,6 +18,8 @@ AniadirReserva::AniadirReserva(vector<Cliente> *clientes, vector<Habitacion> *ha
 
     connect(ui->pushButtonCerrar, SIGNAL(clicked(bool)), this, SLOT(cerrar()));
     connect(this, SIGNAL(rejected()), this, SLOT(cerrar()));
+
+    connect(ui->checkBoxHabitacion, SIGNAL(stateChanged(int)), this, SLOT(habilitarHabitacion(int)));
     connect(ui->checkBoxHabitacion, SIGNAL(stateChanged(int)), this, SLOT(actualizarCoste()));
     connect(ui->comboBoxNumero, SIGNAL(currentTextChanged(QString)), this, SLOT(actualizarCoste()));
     connect(ui->spinBoxNoches, SIGNAL(valueChanged(int)), this, SLOT(actualizarCoste()));
@@ -26,7 +28,9 @@ AniadirReserva::AniadirReserva(vector<Cliente> *clientes, vector<Habitacion> *ha
     connect(ui->dateEditInicio, SIGNAL(dateChanged(QDate)), this, SLOT(actualizarNumerosHabitaciones()));
     connect(ui->spinBoxNoches, SIGNAL(valueChanged(int)), this, SLOT(actualizarNumerosHabitaciones()));
     connect(ui->comboBoxEstado, SIGNAL(currentTextChanged(QString)), this, SLOT(activarSeleccionFecha()));
+    connect(ui->lineEditCliente, SIGNAL(textChanged(QString)), this, SLOT(actualizarClientes(QString)));
 
+    connect(ui->pushButtonAniadir, SIGNAL(clicked(bool)), this, SLOT(aniadir()));
     connect(ui->pushButtonModificar, SIGNAL(clicked(bool)), this, SLOT(modificarReserva()));
 }
 
@@ -44,6 +48,9 @@ void AniadirReserva::abrirVentana()
     this->rellenarPisosHabitaciones();
 
     ui->dateEditInicio->setDate(QDate::currentDate());
+
+    ui->lineEditCliente->setReadOnly(false);
+    ui->comboBoxCliente->setEnabled(true);
 
     this->ventanaAbierta = true;
 }
@@ -159,9 +166,11 @@ void AniadirReserva::actualizarCoste()
             }
         }
     }
+    else
+        ui->doubleSpinBoxCoste->setValue(valor);
 }
 
-void AniadirReserva::on_pushButtonAniadir_clicked()
+void AniadirReserva::aniadir()
 {
     QString estado = ui->comboBoxEstado->currentText();
     int noches = ui->spinBoxNoches->value();
@@ -207,7 +216,7 @@ void AniadirReserva::on_pushButtonAniadir_clicked()
     }
 }
 
-void AniadirReserva::on_checkBoxHabitacion_stateChanged(int arg1)
+void AniadirReserva::habilitarHabitacion(int arg1)
 {
     qDebug() << arg1;
 
@@ -278,7 +287,7 @@ void AniadirReserva::rellenarPisosHabitaciones()
 }
 
 
-void AniadirReserva::on_lineEditCliente_textChanged(const QString &arg1)
+void AniadirReserva::actualizarClientes(const QString &arg1)
 {
     QString busquedaClientes = arg1.trimmed();
 
