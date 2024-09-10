@@ -9,7 +9,7 @@ VentanaPrincipal::VentanaPrincipal(QWidget *parent)
 
     this->iniciarVentana();
 
-    this->conecciones();
+    this->conexiones();
 }
 
 VentanaPrincipal::~VentanaPrincipal()
@@ -274,7 +274,7 @@ void VentanaPrincipal::llenarInfoReservas()
     }
 }
 
-void VentanaPrincipal::conecciones()
+void VentanaPrincipal::conexiones()
 {
     connect(ui->actionCliente, SIGNAL(triggered(bool)), this, SLOT(nuevoCliente()));
     connect(ui->pushButtonNuevoCliente, SIGNAL(clicked(bool)), this, SLOT(nuevoCliente()));

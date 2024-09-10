@@ -76,7 +76,7 @@ public slots:
     void llenarInfoReservas();
 
 private:
-    void conecciones();
+    void conexiones();
 
     Ui::VentanaPrincipal *ui;
     QDate fechaActual = QDate::currentDate();
