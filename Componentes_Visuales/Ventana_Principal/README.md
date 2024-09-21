@@ -212,146 +212,143 @@ Se encarga de llenar las tablas que muestran los datos de todos los clientes, ha
 Llama a los métodos [aniadirLineaInfoCliente](#void-aniadirlineainfoclientecliente-cliente)([Cliente](../../Clases/Cliente)), [aniadirLineaInfoHabitacion](#void-aniadirlineainfohabitacionhabitacion-habitacion)([Habitacion](../../Clases/Habitacion)) y [aniadirLineaInfoReserva](#void-aniadirlineainforeservareserva-reserva)([Reserva](../../Clases/Reserva)) según corresponda.
 
 ***
-***
-***
-***
-***
-***
-***
-***
-***
-***
-***
-***
-***
 
 ### void limpiarTabla(QTableWidget* tabla)
 
-Rellena el QComboBox de la interfaz de usuario con los datos de todos los clientes.
+Elimina todas las filas en el objeto de tipo QTableWidget pasado como referencia.
 
 ***
 
 ### void aniadirLineaInfoCliente([Cliente](../../Clases/Cliente) cliente)
 
-Rellena el QComboBox de la interfaz de usuario con los datos de todos los clientes.
+Añade una fila a tableWidgetClientes con la información de un objeto de tipo [Cliente](../../Clases/Cliente).  
+Incluye un botón de tipo [BotonPosicionFila](../../Archivos_Auxiliares/Boton_Posicion_Fila) para eliminar al cliente específico de esa fila llamando al slot [eliminarCliente](#void-eliminarclienteint-clienteid---1)(int).
 
 ***
 
 ### void aniadirLineaInfoHabitacion([Habitacion](../../Clases/Habitacion) habitacion)
 
-Rellena el QComboBox de la interfaz de usuario con los datos de todos los clientes.
+Añade una fila a tableWidgetHabitaciones con la información de un objeto de tipo [Habitacion](../../Clases/Habitacion).  
+Incluye un botón de tipo [BotonPosicionFila](../../Archivos_Auxiliares/Boton_Posicion_Fila) para modificar los datos de la habitación específica de esa fila llamando al slot [modificarEstadoHabitacion](#void-modificarestadohabitacionint-numerohabitacion---1)(int).
 
 ***
 
 ### void aniadirLineaInfoReserva([Reserva](../../Clases/Reserva) reserva)
 
-Rellena el QComboBox de la interfaz de usuario con los datos de todos los clientes.
+Añade una fila a tableWidgetReservas con la información de un objeto de tipo [Reserva](../../Clases/Reserva).  
+Incluye dos botones de tipo [BotonPosicionFila](../../Archivos_Auxiliares/Boton_Posicion_Fila) para mostrar o modificar los datos de la reserva específica de esa fila llamando a los slots [mostrarInfoReserva](#void-mostrarinforeservaint-numeroreserva---1)(int) y [modificarReserva](#void-modificarreservaint-numeroreserva---1)(int).
 
 ***
 
 ### void conexiones()
 
-Rellena el QComboBox de la interfaz de usuario con los datos de todos los clientes.
+Establece todas las conexiones entre señales y slots necesarias al iniciar la aplicación.
 
 ***
 
 ### void llenarInfoReservas()
 
 Se encarga de llenar las tablas que muestran la ocupación actual del hotel y las reservas entrantes y salientes.  
-Para cada reserva almacenada llama al método [llenarTablaReserva](#void-llenartablareservaqdate-fechacomparacion-qdate-fechaactual-reserva-reserva-qtablewidget-tablewidget-int-fila)(QDate fechaComparacion, QDate fechaActual, [Reserva](../../Clases/Reserva) reserva, QTableWidget* tableWidget, int* fila) con parámetros correspondientes a la tabla a llenar, y al método [llenarTablaOcupacion](#void-llenartablaocupacionreserva-reserva-qdate-fechaactual-int-fila)([Reserva](../../Clases/Reserva) reserva, QDate fechaActual, int* fila).
+Para cada reserva almacenada llama al método [llenarTablaReserva](#void-llenartablareservaqdate-fechacomparacion-qdate-fechaactual-reserva-reserva-qtablewidget-tablewidget-int-fila)(QDate fechaComparacion, QDate fechaActual, [Reserva](../../Clases/Reserva) reserva, QTableWidget\* tableWidget, int\* fila) con parámetros correspondientes a la tabla a llenar, y al método [llenarTablaOcupacion](#void-llenartablaocupacionreserva-reserva-qdate-fechaactual-int-fila)([Reserva](../../Clases/Reserva) reserva, QDate fechaActual, int* fila).
 
 ***
 
 ### void nuevoCliente()
 
-Rellena el QComboBox de la interfaz de usuario con los datos de todos los clientes.
+Deshabilita la ventana principal y abre la interfaz de usuario del atributo [ventanaNuevoCliente](#ventananuevocliente-aniadircliente).
 
 ***
 
 ### void nuevaHabitacion()
 
-Rellena el QComboBox de la interfaz de usuario con los datos de todos los clientes.
+Deshabilita la ventana principal y abre la interfaz de usuario del atributo [ventanaNuevaHabitacion](#ventananuevahabitacion-aniadirhabitacion).
 
 ***
 
 ### void crearNuevaReserva()
 
-Rellena el QComboBox de la interfaz de usuario con los datos de todos los clientes.
+Deshabilita la ventana principal y abre la interfaz de usuario del atributo [ventanaNuevaReserva](#ventananuevareserva-aniadirreserva).
 
 ***
 
 ### void cerrarNuevoCliente(bool cerrar = false)
 
-Rellena el QComboBox de la interfaz de usuario con los datos de todos los clientes.
+Cuando el parámetro tiene valor `true` cierra la interfaz de usuario del atributo [ventanaNuevoCliente](#ventananuevocliente-aniadircliente) y habilita la ventana principal.
 
 ***
 
 ### void cerrarNuevaHabitacion(bool cerrar = false)
 
-Rellena el QComboBox de la interfaz de usuario con los datos de todos los clientes.
+Cuando el parámetro tiene valor `true` cierra la interfaz de usuario del atributo [ventanaNuevaHabitacion](#ventananuevahabitacion-aniadirhabitacion) y habilita la ventana principal.
 
 ***
 
 ### void cerrarNuevaReserva(bool cerrar = false)
 
-Rellena el QComboBox de la interfaz de usuario con los datos de todos los clientes.
+Cuando el parámetro tiene valor `true` cierra la interfaz de usuario del atributo [ventanaNuevaReserva](#ventananuevareserva-aniadirreserva) y habilita la ventana principal.
 
 ***
 
 ### void cerrarRegistrarEntrada(bool cerrar = false)
 
-Rellena el QComboBox de la interfaz de usuario con los datos de todos los clientes.
+Cuando el parámetro tiene valor `true` cierra la interfaz de usuario del atributo [ventanaRegistrarEntrada](#ventanaregistrarentrada-registrarentrada) y habilita la ventana principal.
 
 ***
 
 ### void cerrarRegistrarSalida(bool cerrar = false)
 
-Rellena el QComboBox de la interfaz de usuario con los datos de todos los clientes.
+Cuando el parámetro tiene valor `true` cierra la interfaz de usuario del atributo [cerrarRegistrarSalida](#ventanaregistrarsalida-registrarsalida) y habilita la ventana principal.
 
 ***
 
 ### void registrarNuevaEntrada(int fila = -1, int columna = -1)
 
-Rellena el QComboBox de la interfaz de usuario con los datos de todos los clientes.
+Si la fecha en la interfaz de usuario es la fecha actual llama al método [establecerCliente](../Ventana_Registrar_Entrada/README.md#void-establecerclienteqstring-cliente)([Cliente](../../Clases/Cliente)) del atributo [ventanaRegistrarEntrada](#ventanaregistrarentrada-registrarentrada) con el nombre del cliente en el tableWidgetLlegadasHoy en la fila pasada como parámetro.  
+Deshabilita la ventana principal y abre la interfaz de usuario del atributo [ventanaRegistrarEntrada](#ventanaregistrarentrada-registrarentrada).
 
 ***
 
 ### void registrarNuevaSalida(int fila = -1, int columna = -1)
 
-Rellena el QComboBox de la interfaz de usuario con los datos de todos los clientes.
+Si la fecha en la interfaz de usuario es la fecha actual llama al método [establecerCliente](../Ventana_Registrar_Salida/README.md#void-establecerclienteqstring-cliente)([Cliente](../../Clases/Cliente)) del atributo [ventanaRegistrarSalida](#ventanaregistrarsalida-registrarsalida) con el nombre del cliente en el tableWidgetSalidasHoy en la fila pasada como parámetro.  
+Deshabilita la ventana principal y abre la interfaz de usuario del atributo [ventanaRegistrarSalida](#ventanaregistrarsalida-registrarsalida).
 
 ***
 
 ### void eliminarCliente(int clienteID = -1)
 
-Rellena el QComboBox de la interfaz de usuario con los datos de todos los clientes.
+Elimina al cliente con identificador pasado como parámetro y cualquier reserva asociada a dicho cliente de la base de datos y los vectores [clientes](#clientes-vectorcliente) y [reservas](#reservas-vectorreserva).
 
 ***
 
 ### void modificarEstadoHabitacion(int numeroHabitacion = -1)
 
-Rellena el QComboBox de la interfaz de usuario con los datos de todos los clientes.
+Llama al método [setHabitacion](../Ventana_Estado_Habitacion/README.md#habitacion-habitacion)([Habitacion](../../Clases/Habitacion)) del atributo [ventanaEstadoHabitacion](#ventanaestadohabitacion-estadohabitacion) con una referencia al objeto de tipo [Habitacion](../../Clases/Habitacion) en el atributo [habitaciones](#habitaciones-vectorhabitacion) cuyo número de habitación coincida con el parámetro numeroHabitacion.  
+Muestra la interfaz de usuario del atributo [ventanaEstadoHabitacion](#ventanaestadohabitacion-estadohabitacion).
 
 ***
 
 ### void mostrarInfoReserva(int numeroReserva = -1)
 
-Rellena el QComboBox de la interfaz de usuario con los datos de todos los clientes.
+Llama al método [setReserva](../Ventana_Info_Reserva/README.md#reserva-reserva)([Reserva](../../Clases/Reserva)) del atributo [ventanaInfoReserva](#ventanainforeserva-inforeserva) con una referencia al objeto de tipo [Reserva](../../Clases/Reserva) en el atributo [reservas](#reservas-vectorreserva) cuyo número de reserva coincida con el parámetro numeroReserva.  
+Muestra la interfaz de usuario del atributo [ventanaInfoReserva](#ventanainforeserva-inforeserva).
 
 ***
 
 ### void modificarReserva(int numeroReserva = -1)
 
-Rellena el QComboBox de la interfaz de usuario con los datos de todos los clientes.
+Llama al método [abrirVentana](../Ventana_Nueva_Reserva/README.md#void-abrirventanareserva-reserva)([Reserva](../../Clases/Reserva)) del atributo [ventanaNuevaReserva](#ventananuevareserva-aniadirreserva) con una referencia al objeto de tipo [Reserva](../../Clases/Reserva) en el atributo [reservas](#reservas-vectorreserva) cuyo número de reserva coincida con el parámetro numeroReserva.  
+Muestra la interfaz de usuario del atributo [ventanaNuevaReserva](#ventananuevareserva-aniadirreserva).
 
 ***
 
 ### void aniadirGasto(int numeroReserva = -1)
 
-Rellena el QComboBox de la interfaz de usuario con los datos de todos los clientes.
+Llama al método [setReserva](../Ventana_Nuevo_Gasto/README.md#reserva-reserva)([Reserva](../../Clases/Reserva)) del atributo [ventanaNuevoGasto](#ventananuevogasto-aniadirgasto) con una referencia al objeto de tipo [Reserva](../../Clases/Reserva) en el atributo [reservas](#reservas-vectorreserva) cuyo número de reserva coincida con el parámetro numeroReserva.  
+Muestra la interfaz de usuario del atributo [ventanaNuevoGasto](#ventananuevogasto-aniadirgasto).
 
 ***
 
 ### void actualizarVectores(bool actualizar = false)
 
-Rellena el QComboBox de la interfaz de usuario con los datos de todos los clientes.
+Si el parámetro actualizar es `true` llama a los métodos [llenarInfoDatos](#void-llenarinfodatos) y [llenarInfoReservas](#void-llenarinforeservas).
