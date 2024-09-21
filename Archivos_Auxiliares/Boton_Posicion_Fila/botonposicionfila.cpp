@@ -2,11 +2,15 @@
 
 BotonPosicionFila::BotonPosicionFila(QWidget *parent)
     : QPushButton(parent)
-{}
+{
+    this->setID();
+}
 
 BotonPosicionFila::BotonPosicionFila(QString texto, QWidget *parent)
     : QPushButton(texto, parent)
-{}
+{
+    this->setID();
+}
 
 BotonPosicionFila::BotonPosicionFila(int id, QWidget *parent)
     : QPushButton(parent)

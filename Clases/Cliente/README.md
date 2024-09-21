@@ -131,7 +131,7 @@ Debe tener 9 dígitos.
 
 ### Cliente(long long identificador, QString nombre, QString email, QString nacionalidad, QString telefono = NULL)
 
-Construye un objeto de tipo cliente con los parámetros establecidos, estableciendo el valor de [cantidadEstancias](#cantidadestancias-int) por defecto en 0.
+Construye un objeto de tipo Cliente con los parámetros establecidos, estableciendo el valor de [cantidadEstancias](#cantidadestancias-int) por defecto en 0.
 
 ***
 

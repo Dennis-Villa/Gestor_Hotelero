@@ -13,7 +13,7 @@ public:
     explicit BotonPosicionFila(int id, QWidget *parent = nullptr);
     explicit BotonPosicionFila(QString texto, int id, QWidget *parent = nullptr);
 
-    void setID(int ID);
+    void setID(int ID = -1);
 
 signals:
     void clicked(int);
