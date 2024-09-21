@@ -3,7 +3,7 @@
 
 #include <QString>
 #include <stdexcept>
-#include "Archivos_Auxiliares/Funciones_Auxiliares.h"
+#include "Archivos_Auxiliares\Funciones_Auxiliares\Funciones_Auxiliares.h"
 
 using namespace std;
 

@@ -4,7 +4,7 @@
 #include <stdexcept>
 #include <QRegularExpression>
 
-#include "Archivos_Auxiliares/Funciones_Auxiliares.h"
+#include "Archivos_Auxiliares\Funciones_Auxiliares\Funciones_Auxiliares.h"
 
 Cliente::Cliente(long long identificador, QString nombre, QString email, QString nacionalidad, QString telefono)
 {

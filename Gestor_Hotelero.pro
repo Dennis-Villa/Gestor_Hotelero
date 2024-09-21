@@ -10,7 +10,7 @@ CONFIG += c++17
 
 SOURCES += \
     Archivos_Auxiliares\Boton_Posicion_Fila\botonposicionfila.cpp \
-    Archivos_Auxiliares\Funciones_Auxiliares.cpp \
+    Archivos_Auxiliares\Funciones_Auxiliares\Funciones_Auxiliares.cpp \
     Clases\Cliente\cliente.cpp \
     Clases\Habitacion\habitacion.cpp \
     Clases\ControladorBD\controladorbd.cpp \
@@ -28,7 +28,7 @@ SOURCES += \
 
 HEADERS += \
     Archivos_Auxiliares\Boton_Posicion_Fila\botonposicionfila.h \
-    Archivos_Auxiliares\Funciones_Auxiliares.h \
+    Archivos_Auxiliares\Funciones_Auxiliares\Funciones_Auxiliares.h \
     Componentes_Visuales/Ventana_Estado_Habitacion/estadohabitacion.h \
     Componentes_Visuales/Ventana_Info_Reserva/inforeserva.h \
     Componentes_Visuales/Ventana_Nuevo_Gasto/aniadirgasto.h \

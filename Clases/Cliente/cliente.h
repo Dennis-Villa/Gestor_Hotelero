@@ -2,7 +2,7 @@
 #define CLIENTE_H
 
 #include <QString>
-#include "Archivos_Auxiliares/Funciones_Auxiliares.h"
+#include "Archivos_Auxiliares\Funciones_Auxiliares\Funciones_Auxiliares.h"
 
 using namespace std;
 
